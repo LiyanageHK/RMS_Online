@@ -25,15 +25,13 @@ After installing these, restart your terminal or command prompt to apply changes
 ### 2. Clone the Repository
 
 ```bash
-git clone your-repo-url.git
+git clone https://github.com/LiyanageHK/RMS_Online.git
 ```
-
-Replace `your-repo-url.git` with the actual repository URL.
 
 Navigate into the project directory:
 
 ```bash
-cd your-project-directory
+cd RMS
 ```
 
 ### 3. Install Composer Dependencies
@@ -65,10 +63,10 @@ cp .env.example .env
 Use the following application key:
 
 ```bash
-APP_KEY=your-app-key-here
+APP_KEY=base64:xv4cO8QdgJMsBZw19hy/skT2dMXe9W1kieS6oy4WQws=
 ```
 
-Replace `your-app-key-here` with the actual key provided.
+
 
 ### 7. Start the Development Server
 
@@ -99,6 +97,7 @@ Before making changes, create a new branch:
 ```bash
 git checkout -b feature-branch-name
 ```
+eg :  git checkout dev/hiruni
 
 Replace `feature-branch-name` with something relevant to your changes.
 
