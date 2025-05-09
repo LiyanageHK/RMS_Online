@@ -1,0 +1,64 @@
+/* About Page Styles */
+.about-container {
+    background-color: #f4f4f4;
+    padding: 60px 0;
+}
+
+.about-header h1 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: var(--primary-orange);
+}
+
+.about-header p {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+}
+
+.about-content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.about-left {
+    flex: 1;
+    padding-right: 30px;
+}
+
+.about-img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.about-right {
+    flex: 1.6;
+    padding-left: 30px;
+}
+
+.about-right h2 {
+    font-size: 28px;
+    color: var(--primary-orange);
+    margin-bottom: 15px;
+}
+
+.about-right p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.about-right ul {
+    list-style: none;
+    padding: 0;
+}
+
+.about-right ul li {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #555;
+}

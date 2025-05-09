@@ -1,0 +1,134 @@
+@extends('layouts.admin')
+
+@section('title', 'Create Employee')
+
+@section('content')
+<div style="display: flex; justify-content: center; width: 100%; margin-top: 40px;">
+    <div style="width: 90%; max-width: 800px; border: 2px solid #ddd; padding: 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); position: relative;">
+
+        <!-- Title + Cancel Button -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h2 style="font-weight: bold; font-size: 24px; margin: 0;">Create Employee</h2>
+            <a href="{{ route('employees.index') }}" title="Cancel" style="color: #666; text-decoration: none;">
+                <span class="material-icons" style="font-size: 28px;">close</span>
+            </a>
+        </div>
+
+        <form action="{{ route('employees.store') }}" method="POST">
+            @csrf
+
+            <!-- Display Validation Errors -->
+            @if ($errors->any())
+                <div style="background-color: #f8d7da; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                    <ul style="list-style: none; margin: 0; padding: 0;">
+                        @foreach ($errors->all() as $error)
+                            <li style="color: #721c24;">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <!-- Form Fields -->
+            <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #F9F9F9;">
+                <!-- Full Name -->
+                <div style="margin-bottom: 20px;">
+                    <label for="name" style="font-weight: bold;">Full Name <span style="color: red;">*</span></label>
+                    <input type="text" id="name" name="name" value="{{ old('name') }}" required style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+
+                <!-- Email Address -->
+                <div style="margin-bottom: 20px;">
+                    <label for="email" style="font-weight: bold;">Email Address <span style="color: red;">*</span></label>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" 
+                        oninput="validateEmail()" placeholder="example@example.com">
+                    <small id="email-error" style="color: red; display: none;">Please enter a valid email address.</small>
+                </div>
+
+                <!-- NIC -->
+                <div style="margin-bottom: 20px;">
+                    <label for="nic" style="font-weight: bold;">NIC <span style="color: red;">*</span></label>
+                    <input type="text" id="nic" name="nic" value="{{ old('nic') }}" required style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                    <small style="color: #555;">NIC will be used as the default password. The employee can change it later.</small>
+                </div>
+
+                <!-- Phone Number -->
+                <div style="margin-bottom: 20px;">
+                    <label for="phone" style="font-weight: bold;">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" 
+                        pattern="^\+94[0-9]{9}$" oninput="validatePhone()" placeholder="+94XXXXXXXXX">
+                    <small id="phone-error" style="color: red; display: none;">Please enter a valid phone number (+94XXXXXXXXX).</small>
+                </div>
+
+                <!-- Position -->
+                <div style="margin-bottom: 20px;">
+                    <label for="position" style="font-weight: bold;">Position <span style="color: red;">*</span></label>
+                    <select id="position" name="position" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                        <option value="">Select Position</option>
+                        <option value="Administrator" {{ old('position') == 'Administrator' ? 'selected' : '' }}>Administrator</option>
+                        <option value="Chef" {{ old('position') == 'Chef' ? 'selected' : '' }}>Chef</option>
+                        <option value="Kitchen Staff" {{ old('position') == 'Kitchen Staff' ? 'selected' : '' }}>Kitchen Staff</option>
+                        <option value="Driver" {{ old('position') == 'Driver' ? 'selected' : '' }}>Driver</option>
+                    </select>
+                </div>
+
+                <!-- Address and Other Fields -->
+                <div style="margin-bottom: 20px;">
+                    <label for="address_line1" style="font-weight: bold;">Address Line 1 <span style="color: red;">*</span></label>
+                    <input type="text" id="address_line1" name="address_line1" value="{{ old('address_line1') }}" required style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="address_line2" style="font-weight: bold;">Address Line 2</label>
+                    <input type="text" id="address_line2" name="address_line2" value="{{ old('address_line2') }}" style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="city" style="font-weight: bold;">City <span style="color: red;">*</span></label>
+                    <input type="text" id="city" name="city" value="{{ old('city') }}" required style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="postal_code" style="font-weight: bold;">Postal Code <span style="color: red;">*</span></label>
+                    <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code') }}" required style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div style="display: flex; justify-content: flex-end; margin-top: 30px;">
+                <button type="submit" style="background-color: #E7592B; color: white; font-size: 14px; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer;">
+                    Save Employee
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Real-time validation for email
+    function validateEmail() {
+        const email = document.getElementById('email').value;
+        const emailError = document.getElementById('email-error');
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        
+        if (!email.match(emailPattern)) {
+            emailError.style.display = 'block';
+        } else {
+            emailError.style.display = 'none';
+        }
+    }
+
+    // Real-time validation for phone number
+    function validatePhone() {
+        const phone = document.getElementById('phone').value;
+        const phoneError = document.getElementById('phone-error');
+        const phonePattern = /^\+94[0-9]{9}$/;
+        
+        if (!phone.match(phonePattern)) {
+            phoneError.style.display = 'block';
+        } else {
+            phoneError.style.display = 'none';
+        }
+    }
+</script>
+
+@endsection
