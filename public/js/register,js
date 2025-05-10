@@ -1,0 +1,37 @@
+// public/js/register.js
+
+document.addEventListener("DOMContentLoaded", function() {
+    const registerForm = document.querySelector("form");
+
+    registerForm.addEventListener("submit", function(event) {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const passwordConfirmation = document.getElementById("password_confirmation").value;
+
+        // Basic validation for form fields before submitting
+        if (!name || !email || !password || !passwordConfirmation) {
+            event.preventDefault();
+            alert("Please fill in all fields.");
+        }
+
+        // Check if passwords match
+        if (password !== passwordConfirmation) {
+            event.preventDefault();
+            alert("Passwords do not match.");
+        }
+    });
+});
+
+/**
+ * Toggle password visibility
+ */
+function togglePassword(fieldId) {
+    const field = document.getElementById(fieldId);
+    if (field.type === "password") {
+        field.type = "text";
+    } else {
+        field.type = "password";
+    }
+
+}

@@ -11,6 +11,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    // Specify the custom primary key name
+    protected $primaryKey = 'user_id'; // Change 'user_id' to your actual column name if different
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -19,8 +23,12 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
+        'address',
+        'profile_image',
         'password',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,4 +52,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    protected $table = 'users';
+
+
+
+
+    public function orders()
+{
+    return $this->hasMany(Order::class);
+}
+
+
+
+
 }
