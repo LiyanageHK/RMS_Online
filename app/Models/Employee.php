@@ -14,12 +14,13 @@ class Employee extends Authenticatable
         'email',
         'nic',
         'phone',
-        'position',
+        'position', // Add this to store the foreign key
         'password',
         'address_line1',
         'address_line2',
         'city',
         'postal_code',
+        
     ];
 
     protected $hidden = [
@@ -31,4 +32,20 @@ class Employee extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Relationship: Each employee belongs to a role.
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Accessor: Get the role name directly.
+     */
+    public function getRoleNameAttribute()
+    {
+        return $this->role?->name ?? 'N/A';
+    }
 }
