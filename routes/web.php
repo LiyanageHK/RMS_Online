@@ -33,6 +33,7 @@ Auth::routes();
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     
+    
     // 🔸 Category CRUD
     Route::get('categories', [ItemCategoryController::class, 'index'])->name('admin.categories.index');
     Route::get('categories/create', [ItemCategoryController::class, 'create'])->name('admin.categories.create');
@@ -100,5 +101,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // Employee Routes
 
-// Inventory Routes
+Route::get('/inventory-center', [InventoryController::class, 'index']); 
+
+
+
+
+
 
