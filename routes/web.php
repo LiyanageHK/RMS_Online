@@ -23,6 +23,7 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+
 Auth::routes();
 
 
@@ -30,6 +31,7 @@ Auth::routes();
 
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
+    
     
     // 🔸 Category CRUD
     Route::get('categories', [ItemCategoryController::class, 'index'])->name('admin.categories.index');
