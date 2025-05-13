@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 <div style="padding: 30px; background-color: #f5f5f5; min-height: 100vh;">
@@ -31,7 +31,7 @@
                         <p><strong>Email:</strong><br>{{ $employee->email }}</p>
                         <p><strong>Phone:</strong><br>{{ $employee->phone ?? '-' }}</p>
                         <p><strong>NIC:</strong><br>{{ $employee->nic }}</p>
-                        <p><strong>Position:</strong><br>{{ ucfirst($employee->position) }}</p>
+                       <p><strong>Position:</strong><br>{{ ucfirst(DB::table('role')->where('role', $employee->position)->value('role')) }}</p>
                     </div>
                 </div>
 

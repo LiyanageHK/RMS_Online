@@ -5,6 +5,7 @@ use App\Models\GRN;
 use App\Models\GRNItem;
 use App\Models\Items;
 use App\Models\Supplier;
+use App\Models\PurchaseOrder;
 
 
 use Illuminate\Http\Request;
@@ -37,7 +38,8 @@ class GRNController extends Controller
 {
     $suppliers = Supplier::all();
     $items = Items::all();
-    return view('GRN.create', compact('suppliers','items'));
+    $purchaseOrders = PurchaseOrder::all();
+    return view('GRN.create', compact('suppliers','items','purchaseOrders'));
 }
 
 public function store(Request $request)

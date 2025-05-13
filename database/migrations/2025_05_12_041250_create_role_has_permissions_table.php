@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items', function (Blueprint $table) {
-        $table->id();
-        $table->integer('category_id')->unsigned();
-        $table->string('name');
-        $table->decimal('price', 10, 2);
-        $table->text('description')->nullable();
-        $table->timestamps();
-    });
+        Schema::create('role_has_permissions', function (Blueprint $table) {
+            $table->unsignedBigInteger('permission_id');
+            $table->unsignedBigInteger('role_id');
+        });
     }
 
     /**
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('role_has_permissions');
     }
 };

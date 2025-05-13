@@ -46,6 +46,7 @@
             <span class="btn-content"><span class="material-icons">local_shipping</span> Delivery Center</span>
         </button>
 
+        <!-- ✅ Employee Center -->
         <a href="{{ route('employees.index') }}" class="sidebar-btn anchor-btn {{ request()->is('employees*') ? 'active' : '' }}">
             <span class="btn-content"><span class="material-icons">people</span> Employee Center</span>
         </a>
@@ -56,7 +57,7 @@
 
         <!-- Customer Communication -->
         @php
-            $communicationExpanded = request()->is('contact-messages*') || request()->is('feedback*');
+            $communicationExpanded = request()->is('contact*') || request()->is('feedback*');
         @endphp
         <div>
             <button class="sidebar-btn" onclick="toggleMenu(this)">
@@ -64,7 +65,7 @@
                 <span class="material-icons toggle-icon">{{ $communicationExpanded ? 'expand_less' : 'expand_more' }}</span>
             </button>
             <div class="submenu" style="display: {{ $communicationExpanded ? 'block' : 'none' }}; margin-left: 20px; margin-top: 6px; text-align: left;">
-                <a href="{{ route('contact.index') }}" class="submenu-link {{ request()->is('contact-messages*') ? 'active' : '' }}">Contact Us</a>
+                <a href="{{ route('contact.index') }}" class="submenu-link {{ request()->is('contact*') ? 'active' : '' }}">Contact Us</a>
                 <a href="{{ route('feedback.index') }}" class="submenu-link {{ request()->is('feedback*') ? 'active' : '' }}">Feedback</a>
             </div>
         </div>
@@ -82,27 +83,25 @@
         width: 100%;
         border: none;
         border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.3s;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 6px;
         text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
         text-decoration: none;
-        box-sizing: border-box;
     }
 
     .sidebar-btn:hover,
     .anchor-btn:hover {
-        background-color: #e0e0e0;
+        background-color: #eee;
     }
 
     .sidebar-btn.active,
     .anchor-btn.active {
         background-color: #E7592B;
         color: white;
-        font-weight: bold;
     }
 
     .btn-content {
@@ -111,49 +110,27 @@
         gap: 10px;
     }
 
+    .material-icons {
+        font-size: 20px;
+    }
+
     .submenu-link {
         display: block;
-        padding: 10px 16px;
-        width: 100%;
-        color: #555;
+        padding: 8px 12px;
+        border-radius: 4px;
+        color: #333;
         text-decoration: none;
-        font-size: 15px;
-        border-radius: 6px;
-        background-color: #f8f8f8;
-        margin-bottom: 6px;
-        box-sizing: border-box;
+        font-size: 14px;
+        margin-bottom: 4px;
     }
 
+    .submenu-link.active,
     .submenu-link:hover {
-        background-color: #e0e0e0;
-        color: #E7592B;
-    }
-
-    .submenu-link.active {
         background-color: #E7592B;
         color: white;
-        font-weight: bold;
     }
 
     .toggle-icon {
-        font-size: 18px;
-        color: #888;
-    }
-
-    .material-icons {
-        vertical-align: middle;
-        font-size: 20px;
+        margin-left: auto;
     }
 </style>
-
-<!-- Toggle Submenu Script -->
-<script>
-    function toggleMenu(button) {
-        const submenu = button.nextElementSibling;
-        const icon = button.querySelector('.toggle-icon');
-
-        const isVisible = submenu.style.display === "block";
-        submenu.style.display = isVisible ? "none" : "block";
-        icon.textContent = isVisible ? "expand_more" : "expand_less";
-    }
-</script>

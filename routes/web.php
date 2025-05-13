@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\InventoryController;
 
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
-use App\Http\Controllers\EmployeeController;
+//use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GRNController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ContactController;
@@ -26,12 +26,13 @@ Route::get('/', function () {
 Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
 
 Route::get('/about', function () {
-    return view('about');
+    return view('client.about');
 })->name('about');
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+//Route::get('/contact', function () {
+   // return view('contact');
+//})->name('contact');
 Auth::routes();
 
 
@@ -110,7 +111,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Core resources
 Route::resource('suppliers', SupplierController::class);
 Route::resource('purchase_orders', PurchaseOrderController::class);
-Route::resource('employees', EmployeeController::class);
 Route::resource('grns', GRNController::class);
 
 // Order Status Management
@@ -118,11 +118,11 @@ Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 Route::post('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 
 // Static client views
-Route::view('about', 'client.about')->name('client.about');
-Route::view('menu', 'client.menu')->name('client.menu');
+//Route::view('about', 'client.about')->name('client.about');
+//Route::view('menu', 'client.menu')->name('client.menu');
 
 // Contact Us (Client Side)
-Route::get('/contact', [ContactController::class, 'show'])->name('client.contact');
+
 Route::post('/contact/submit', [ContactController::class, 'submit'])->name('client.contact.submit');
 
 // Feedback (Client Side)
@@ -139,3 +139,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
     Route::get('/feedback/{id}', [FeedbackController::class, 'show'])->name('feedback.show');
 });
+
+

@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items', function (Blueprint $table) {
-        $table->id();
-        $table->integer('category_id')->unsigned();
-        $table->string('name');
-        $table->decimal('price', 10, 2);
-        $table->text('description')->nullable();
-        $table->timestamps();
-    });
+        Schema::create('item_categories', function (Blueprint $table) {
+            $table->id(); // Auto-incrementing primary key
+            $table->string('name');
+            $table->timestamps(); // created_at and updated_at
+        });
     }
 
     /**
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('item_categories');
     }
 };

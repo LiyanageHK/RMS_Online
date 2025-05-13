@@ -12,19 +12,19 @@ return new class extends Migration
     public function up()
 {
     Schema::create('employees', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->string('email')->unique();
-        $table->string('nic')->unique();
-        $table->string('password');
-        $table->enum('position', ['Administrator','Chef', 'Kitchen_staff', 'Driver']);
-        $table->string('phone')->nullable();
-        $table->string('address_line1');
-        $table->string('address_line2')->nullable();
-        $table->string('city');
-        $table->string('postal_code');
-        $table->timestamps();
-    });
+            $table->id(); // same as bigint(20) UNSIGNED NOT NULL
+            $table->string('name');
+            $table->string('email');
+            $table->string('nic');
+            $table->string('password');
+            $table->string('position');
+            $table->string('phone')->nullable();
+            $table->string('address_line1');
+            $table->string('address_line2')->nullable();
+            $table->string('city');
+            $table->string('postal_code');
+            $table->timestamps(); // adds created_at and updated_at as timestamps
+        });
 }
 
 

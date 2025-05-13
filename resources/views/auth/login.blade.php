@@ -67,13 +67,5 @@
     <!-- Divider -->
     <div class="divider">OR</div>
     
-    <!-- Register Link -->
-    @if (Route::has('register'))
-        <div class="form-group">
-            <a href="{{ route('register') }}" class="btn btn-secondary">
-                Create New Account
-            </a>
-        </div>
-    @endif
 </form>
 @endsection

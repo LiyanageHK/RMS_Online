@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Create Employee')
 
@@ -63,12 +63,11 @@
                 <div style="margin-bottom: 20px;">
                     <label for="position" style="font-weight: bold;">Position <span style="color: red;">*</span></label>
                     <select id="position" name="position" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-                        <option value="">Select Position</option>
-                        <option value="Administrator" {{ old('position') == 'Administrator' ? 'selected' : '' }}>Administrator</option>
-                        <option value="Chef" {{ old('position') == 'Chef' ? 'selected' : '' }}>Chef</option>
-                        <option value="Kitchen Staff" {{ old('position') == 'Kitchen Staff' ? 'selected' : '' }}>Kitchen Staff</option>
-                        <option value="Driver" {{ old('position') == 'Driver' ? 'selected' : '' }}>Driver</option>
-                    </select>
+    <option value="">Select Position</option>
+    @foreach($roles as $role)
+        <option value="{{ $role->role }}" {{ old('position') == $role->role ? 'selected' : '' }}>{{ $role->role }}</option>
+    @endforeach
+</select>
                 </div>
 
                 <!-- Address and Other Fields -->

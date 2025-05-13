@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
@@ -22,7 +25,7 @@ class EmployeeController extends Controller
             });
         }
 
-        $employees = $query->orderBy('id')->paginate(10);  // Added pagination for better performance
+        //$employees = $query->orderBy('id')->paginate(10);  // Added pagination for better performance
 
         return view('employees.index', compact('employees'));
     }
@@ -54,7 +57,7 @@ class EmployeeController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'nic' => $request->nic,
-            'password' => bcrypt($request->nic), // Default password set as NIC
+            'password' => Hash::make($request->password), // Default password set as NIC
             'position' => $request->position,
             'phone' => $request->phone,
             'address_line1' => $request->address_line1,
@@ -62,6 +65,7 @@ class EmployeeController extends Controller
             'city' => $request->city,
             'postal_code' => $request->postal_code,
         ]);
+
 
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }

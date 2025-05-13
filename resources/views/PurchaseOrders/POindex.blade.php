@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
     <!-- Top Row -->
@@ -40,7 +40,7 @@
             <tbody>
                 @forelse($purchaseOrders as $po)
                     <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                        <td style="padding: 12px;">PO#{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}</td>
+                        <td style="padding: 12px;">PO{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}</td>
                         <td style="padding: 12px;">{{ $po->supplier->name }}</td>
                         <td style="padding: 12px;">{{ $po->created_at->format('Y-m-d') }}</td>
                         <td style="padding: 12px;">{{ $po->delivery_date ? \Carbon\Carbon::parse($po->delivery_date)->format('Y-m-d') : '-' }}</td>

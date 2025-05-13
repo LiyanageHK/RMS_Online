@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
     <!-- Top Row -->
@@ -32,7 +32,7 @@
                         <td style="padding: 12px;">{{ $contact->name }}</td>
                         <td style="padding: 12px;">{{ $contact->email }}</td>
                         <td style="padding: 12px; text-align: left; max-width: 300px; word-wrap: break-word;">{{ Str::limit($contact->message, 50) }}</td>
-                        <td style="padding: 12px; text-align: right;">
+                        <td style="padding: 12px; text-align: left;">
                             <a href="{{ route('contact.show', $contact->id) }}" style="background-color: #6c757d; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
                                 <span class="material-icons" style="font-size: 16px; margin-right: 4px;">visibility</span> View / Reply
                             </a>

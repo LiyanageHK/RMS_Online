@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
     <!-- Top Row -->
@@ -44,7 +44,10 @@
                         <td style="padding: 12px;">{{ $employee->name }}</td>
                         <td style="padding: 12px;">{{ $employee->phone ?? '-' }}</td>
                         <td style="padding: 12px;">{{ $employee->email }}</td>
-                        <td style="padding: 12px;">{{ $employee->position }}</td>
+                        <td style="padding: 12px;">
+    {{ \DB::table('role')->where('role', $employee->position)->value('role') }}
+</td>
+
                         <td style="padding: 12px; text-align: right;">
                             <a href="{{ route('employees.show', $employee->id) }}" style="margin-right: 8px; background-color: #6c757d; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
                                 <span class="material-icons" style="font-size: 16px; margin-right: 4px;">visibility</span> View

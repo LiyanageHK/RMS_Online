@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Edit Purchase Order')
 
@@ -54,8 +54,8 @@
                     <select id="item_select" style="width: 99%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; padding-right: 30px;">
                         <option value="">-- Choose an Item to Order --</option>
                         @foreach($items as $item)
-                            <option value="{{ $item->id }}" data-item_name="{{ $item->item_name }}" data-price="{{ $item->price }}">
-                                {{ $item->item_name }} - ${{ number_format($item->price, 2) }}
+                            <option value="{{ $item->id }}" data-name="{{ $item->name }}" data-price="{{ $item->price }}">
+                                {{ $item->name }} - ${{ number_format($item->price, 2) }}
                             </option>
                         @endforeach
                     </select>
@@ -75,9 +75,9 @@
                         @foreach($po->items as $poItem)
                             <tr data-id="{{ $poItem->item_id }}">
                                 <td style="padding: 10px;">
-                                    {{ $poItem->item->item_name }}
+                                    {{ $poItem->item->name }}
                                     <input type="hidden" name="items[{{ $poItem->item_id }}][item_id]" value="{{ $poItem->item_id }}">
-                                    <input type="hidden" name="items[{{ $poItem->item_id }}][item_name]" value="{{ $poItem->item->item_name }}">
+                                    <input type="hidden" name="items[{{ $poItem->item_id }}][name]" value="{{ $poItem->item->name }}">
                                 </td>
                                 <td style="padding: 10px;">
                                     ${{ number_format($poItem->price, 2) }}
@@ -130,7 +130,7 @@
     itemSelect.addEventListener('change', function () {
         const selected = itemSelect.options[itemSelect.selectedIndex];
         const itemId = selected.value;
-        const itemName = selected.getAttribute('data-item_name');
+        const itemName = selected.getAttribute('data-name');
         const itemPrice = parseFloat(selected.getAttribute('data-price'));
 
         if (!itemId || addedItemIds.has(itemId)) return;
@@ -142,7 +142,7 @@
             <td style="padding: 10px;">
                 ${itemName}
                 <input type="hidden" name="items[${itemId}][item_id]" value="${itemId}">
-                <input type="hidden" name="items[${itemId}][item_name]" value="${itemName}">
+                <input type="hidden" name="items[${itemId}][name]" value="${itemName}">
             </td>
             <td style="padding: 10px;">
                 $${itemPrice.toFixed(2)}

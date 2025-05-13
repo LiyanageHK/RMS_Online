@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-        $table->decimal('total', 10, 2);
-        $table->date('delivery_date')->nullable();
-        $table->enum('order_status', ['Confirmed', 'Preparing', 'Waiting for Delivery'])->default('Confirmed');
+            $table->string('address');
+            $table->string('landmark')->nullable();
+            $table->string('phone');
+            $table->decimal('total', 10, 2);
+            $table->unsignedBigInteger('u_id'); // user ID
+            $table->string('payment_status'); // 'Paid' or 'Cash on Delivery'
+            $table->enum('order_status', ['Confirmed', 'Preparing', 'Waiting for Delivery'])->default('Confirmed');
             $table->timestamps();
-        });
+});
     }
 
     /**
@@ -29,3 +33,4 @@ return new class extends Migration
         Schema::dropIfExists('orders');
     }
 };
+

@@ -57,6 +57,8 @@ public function destroy($id)
     return redirect()->route('purchase_orders.index')->with('success', 'Purchase Order deleted successfully.');
 }
 
+    
+
     public function store(Request $request)
     {
         // Store Purchase Order

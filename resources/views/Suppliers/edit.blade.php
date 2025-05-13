@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Edit Supplier')
 
@@ -43,7 +43,7 @@
         <option value="">-- Select Category --</option>
         <option value="Vegetables" {{ old('category', $supplier->category) == 'Vegetables' ? 'selected' : '' }}>Vegetables</option>
         <option value="Meat" {{ old('category', $supplier->category) == 'Meat' ? 'selected' : '' }}>Meat</option>
-        <option value="Seafood" {{ old('category', $supplier->category) == 'Seafood' ? 'selected' : '' }}>Dairy</option>
+        <option value="Seafood" {{ old('category', $supplier->category) == 'Seafood' ? 'selected' : '' }}>Seafood</option>
     </select>
 </div>
 

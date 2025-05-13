@@ -25,7 +25,7 @@ class ContactController extends Controller
 
         Contact::create($validated);
 
-        return redirect()->route('client.contact')->with('contact_success', 'Thank you for your message! We will get back to you shortly.');
+        return redirect()->route('contact')->with('contact_success', 'Thank you for your message! We will get back to you shortly.');
     }
 
     // ADMIN SIDE

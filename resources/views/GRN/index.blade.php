@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
     <!-- Top Row -->
@@ -39,10 +39,12 @@
             <tbody>
                 @forelse($grns as $grn)
                     <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                        <td style="padding: 12px;">GRN#{{ str_pad($grn->id, 5, '0', STR_PAD_LEFT) }}</td>
+                        <td style="padding: 12px;">GRN{{ str_pad($grn->id, 5, '0', STR_PAD_LEFT) }}</td>
                         <td style="padding: 12px;">{{ $grn->supplier->name }}</td>
                         <td style="padding: 12px;">{{ \Carbon\Carbon::parse($grn->grn_date)->format('Y-m-d') }}</td>
-                        <td style="padding: 12px;" class="{{ $grn->reference ? '' : 'center' }}">{{ $grn->reference ?? '-' }}</td>
+                        <td style="padding: 12px;" class="{{ $grn->reference ? '' : 'center' }}">
+    {{ $grn->reference ? 'PO' . str_pad($grn->reference, 5, '0', STR_PAD_LEFT) : '-' }}
+</td>
                         <td style="padding: 12px; text-align: center;">{{ $grn->items->count() }}</td>
                         <td style="padding: 12px; text-align: right;">
                             <a href="{{ route('grns.show', $grn->id) }}" style="margin-right: 8px; background-color: #6c757d; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
@@ -51,7 +53,7 @@
                             <form action="{{ route('grns.destroy', $grn->id) }}" method="POST" class="delete-form" style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" class="delete-button" data-name="GRN#{{ str_pad($grn->id, 5, '0', STR_PAD_LEFT) }}" style="background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; cursor: pointer;">
+                                <button type="button" class="delete-button" data-name="GRN{{ str_pad($grn->id, 5, '0', STR_PAD_LEFT) }}" style="background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; cursor: pointer;">
                                     <span class="material-icons" style="font-size: 16px; margin-right: 4px;">delete</span> Delete
                                 </button>
                             </form>

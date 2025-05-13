@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->string('position', 30)->change();
+        Schema::create('permissions', function (Blueprint $table) {
+            $table->id(); // bigint unsigned primary key
+            $table->string('name');
+            $table->string('guard_name');
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
+
     }
 
     /**
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->string('position', 10)->change(); // original length
-        });
+        Schema::dropIfExists('permissions');
     }
 };

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Create Purchase Order')
 
@@ -44,8 +44,8 @@
                     <select id="item_select" style="width: 99%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                         <option value="">-- Choose an Item --</option>
                         @foreach($items as $item)
-                            <option value="{{ $item->id }}" data-item_name="{{ $item->item_name }}" data-price="{{ $item->price }}">
-                                {{ $item->item_name }} - ${{ number_format($item->price, 2) }}
+                            <option value="{{ $item->id }}" data-name="{{ $item->name }}" data-price="{{ $item->price }}">
+                                {{ $item->name }} - ${{ number_format($item->price, 2) }}
                             </option>
                         @endforeach
                     </select>
@@ -99,7 +99,7 @@
     itemSelect.addEventListener('change', function () {
         const selected = itemSelect.options[itemSelect.selectedIndex];
         const itemId = selected.value;
-        const itemName = selected.getAttribute('data-item_name');
+        const itemName = selected.getAttribute('data-name');
         const itemPrice = parseFloat(selected.getAttribute('data-price'));
 
         if (!itemId || addedItemIds.has(itemId)) return;
@@ -111,7 +111,7 @@
             <td>
                 ${itemName}
                 <input type="hidden" name="items[${itemId}][item_id]" value="${itemId}">
-                <input type="hidden" name="items[${itemId}][item_name]" value="${itemName}">
+                <input type="hidden" name="items[${itemId}][name]" value="${itemName}">
             </td>
             <td>
                 $${itemPrice.toFixed(2)}
@@ -122,10 +122,11 @@
             </td>
             <td class="item-total">$${itemPrice.toFixed(2)}</td>
             <td style="text-align: center;">
-                <button type="button" class="remove-btn" style="color: #e74c3c; border: none; background: none; cursor: pointer;">
-                    <span class="material-icons">delete</span>
-                </button>
-            </td>
+    <button type="button" class="remove-btn" style="color: #dc3545; border: none; background: none; cursor: pointer; display: flex; align-items: center; gap: 5px;cursor: pointer;">
+        <span class="material-icons">delete</span>
+        <span style="font-weight: bold;">Delete</span>
+    </button>
+</td>
         `;
         tableBody.appendChild(row);
         updateTotalAmount();
