@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Employee;
 use App\Models\Delivery;
+use App\Models\Driver;
+
 use Illuminate\Support\Facades\DB;
 
 
@@ -161,8 +163,40 @@ public function editDelivery(Request $request, $delivery_id)
 
 
 
+public function driverListView()
+{
+    $drivers = Employee::where('position', 'Driver')->get();
+    return view('driver.driverList', [
+        'drivers' => $drivers,
+        'section' => 'delivery'
+        ]);
+}
 
 
+public function showDriversOnRide()
+{
+    // Get deliveries where a driver is assigned
+    $driversOnRide = DB::table('delivery')
+        ->whereNotNull('assigned_to')  // Ensure that there's a driver assigned
+        ->where('assigned_to', '!=', '') // Exclude empty values
+        ->select('assigned_to', 'phone', 'address', 'created_at')
+        ->get();
+
+    // Pass the $driversOnRide variable to the Blade view
+    return view('driver.driverList', compact('driversOnRide'));
+}
+
+
+public function deliveryHistory()
+{
+      $deliveries = Delivery::all();
+    return view('driver.deliveryHistory', [
+        'deliveries' => $deliveries,
+        'section' => 'delivery',
+    ]);
+
+
+}
 
 
 

@@ -32,6 +32,12 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 Route::put('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
 
+
+
+Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+
+
+
 Route::get('/home', function () {
     return view('homepage');
 })->name('homepage');
@@ -68,6 +74,15 @@ Route::get('/profile', [ProfileController::class, 'show'])->middleware('auth');
 
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 
+
+//Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
+
+
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+
+Route::put('/profile/update/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
+
+Route::get('/profile/orders', [UserController::class, 'showOrderHistory'])->name('profile.orders');
 
 
 
@@ -182,3 +197,39 @@ Route::get('/driver/edit/delivery/{delivery_id}', [DriverController::class, 'edi
 
 // Route to update the delivery
 Route::put('/driver/edit/delivery/{delivery_id}', [DriverController::class, 'updateDelivery'])->name('driver.update.delivery');
+
+
+
+//Loyalty program
+Route::get('/customers/{userid}/loyalty', [CustomerController::class, 'loyalty'])->name('customer.loyalty');
+Route::post('/loyalty/redeem', [CustomerController::class, 'redeem'])->name('loyalty.redeem');
+
+
+
+Route::get('/admin/customer/loyalty-program', [CustomerController::class, 'showLoyaltyProgram'])->name('loyalty-program');
+
+
+//Display Driver List in Admin Panel
+Route::get('/drivers', [DriverController::class, 'driverListView'])->name('driver.list');
+
+
+//to display drivers on ride
+Route::get('/drivers-on-ride', [DriverController::class, 'showDriversOnRide']);
+
+
+Route::get('/drivers', [DriverController::class, 'driverListView'])->name('driver.list');
+
+//delivery History
+
+Route::get('/delivery-history', [DriverController::class, 'deliveryHistory'])->name('delivery.history');
+
+
+//customer Email Service
+
+
+Route::get('/customer/email-service', [CustomerController::class, 'customerEmail'])->name('customer.email');
+Route::post('/customer/send-emails', [CustomerController::class, 'sendCustomerEmails'])->name('customer.sendEmails');
+
+
+// Route for email service
+Route::get('/customer/email-service', [CustomerController::class, 'showEmailService'])->name('customer.emailService');

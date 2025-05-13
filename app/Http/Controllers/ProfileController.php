@@ -27,6 +27,20 @@ public function show()
 }
 
 
+public function orders()
+{
+    $user = auth()->user();
+
+    $orders = Order::where('user_id', $user->id)
+                    ->with('items')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+    return view('orders', compact('orders'));
+}
+
+
+
 
 public function update(Request $request, $id)
     {
@@ -61,6 +75,16 @@ public function update(Request $request, $id)
 
 
     }
+
+    public function showLoyaltyProgram()
+{
+    $users = User::all(); // or your custom query with loyalty filter
+    return view('customer.loyalty_program', [
+        'section' => 'customer',
+        'users' => $users,
+    ]);
+}
+
 
 
 }

@@ -58,33 +58,50 @@
         @method('DELETE')
     </form>
 
-    <!-- Custom Modal -->
-    <div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
-        <div style="background: white; width: 300px; margin: 150px auto; padding: 20px; border-radius: 8px; text-align: center;">
-            <p style="margin-bottom: 20px;">Are you sure you want to delete this customer?</p>
-            <button onclick="submitDelete()" style="background-color: red; color: white; padding: 6px 12px; margin-right: 10px; border: none; border-radius: 4px;">Yes</button>
-            <button onclick="closeModal()" style="padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;">Cancel</button>
+
+
+
+
+
+<!-- Custom Confirmation Modal -->
+    <div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
+        <div style="background-color: #fff; padding: 30px; border-radius: 12px; width: 400px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.15); text-align: center;">
+            <div style="margin-bottom: 15px;">
+                <span class="material-icons" style="font-size: 40px; color: #dc3545;">warning</span>
+            </div>
+            <h4 style="margin-bottom: 10px; font-size: 18px; color: #333;">Confirm Deletion</h4>
+            <p id="modalMessage" style="font-size: 15px; margin-bottom: 25px;">Are you sure you want to delete this employee?</p>
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <button id="cancelBtn" style="padding: 10px 20px; background-color: #6c757d; border: none; color: #fff; border-radius: 5px; font-weight: bold; font-size: 14px; cursor: pointer;">Cancel</button>
+                <button id="confirmDeleteBtn" style="padding: 10px 20px; background-color: #dc3545; border: none; color: #fff; border-radius: 5px; font-weight: bold; font-size: 14px; cursor: pointer;">Delete</button>
+            </div>
         </div>
     </div>
 
+    <!-- Modal Script -->
     <script>
-        let deleteUrl = '';
+        let formToSubmit = null;
 
-        function confirmDelete(id) {
-            deleteUrl = `/customer/${id}`;
-            document.getElementById('confirmModal').style.display = 'block';
+        function showDeleteModal(id, name) {
+            formToSubmit = document.getElementById('deleteForm-' + id);
+            document.getElementById('modalMessage').textContent = Are you sure you want to delete "${name}"?;
+            document.getElementById('confirmModal').style.display = 'flex';
         }
 
-        function submitDelete() {
-            const form = document.getElementById('deleteForm');
-            form.action = deleteUrl;
-            form.submit();
-        }
-
-        function closeModal() {
+        document.getElementById('cancelBtn').addEventListener('click', function () {
             document.getElementById('confirmModal').style.display = 'none';
-        }
+            formToSubmit = null;
+        });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+            if (formToSubmit) formToSubmit.submit();
+        });
     </script>
+
+
+
+
+
 </div>
 
 

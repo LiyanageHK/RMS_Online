@@ -8,6 +8,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Order;
+use App\Models\Reward;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
+
 
 
 
@@ -149,13 +154,56 @@ class CustomerController extends Controller
         return redirect()->route('customer.overview')->with('success', 'Customer deleted.');
     }
 
-    public function showLoyaltyProgram()
-    {
-        // Fetch users and their loyalty points (example)
-        $users = User::all(); // Replace Customer::all() with User::all()
 
-        // Return the view and pass the user data
-        return view('customer.loyalty_program', compact('users'));
+
+
+
+ public function showLoyaltyProgram()
+    {
+        // Fetch customers who have placed more than 3 orders
+        $loyalCustomers = User::join('orders', 'users.user_id', '=', 'orders.user_id')
+            ->select('users.name', 'users.email', 'orders.user_id', DB::raw('COUNT(*) as orders_count'))
+            ->groupBy('orders.user_id', 'users.name', 'users.email')
+            ->having('orders_count', '>', 3)
+            ->get();
+
+                // Define the $section variable
+    $section = 'loyalty';
+
+        return view('customer.loyalty_program', compact('loyalCustomers','section'));
+    }
+
+
+
+
+    // Show the customer email form
+    public function showEmailService()
+{
+    // You may need to adjust the query based on your user/customer model
+    $customers = User::paginate(10); // or Customer::paginate(10);
+
+    return view('customer.emailService', compact('customers'));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -165,4 +213,4 @@ class CustomerController extends Controller
 
 
 
-}
+

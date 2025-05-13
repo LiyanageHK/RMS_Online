@@ -43,7 +43,8 @@
             <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
                 <a href="http://localhost:8000/admin/customer/overview#" class="submenu-link">Customer Overview</a>
                 <a href="{{ route('loyalty-program') }}"  class="submenu-link" onclick="showLoyaltyTable()">Loyalty Program</a>
-                <!-- <a href="#" class="submenu-link">Email Services</a> -->
+                <a href="{{ route('customer.emailService') }}" class="submenu-link">Email Services</a>
+
             </div>
         </div>
 
@@ -62,11 +63,13 @@
                 <span class="material-icons toggle-icon">expand_more</span>
             </button>
             <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
-                <a href="#" class="submenu-link">History</a>
-                <a href="#" class="submenu-link">Driver</a>
+
+                <a href="{{ route('delivery.history') }}" class="submenu-link">History</a>
+                <a href="{{ route('driver.list') }}" class="submenu-link">Driver</a>
                 <a href="{{ route('pending-allocation') }}" class="submenu-link">Driver Allocation</a>
             </div>
         </div>
+
 
 
         <button class="sidebar-btn">

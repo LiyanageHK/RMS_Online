@@ -77,13 +77,15 @@
         <br><br>
         <!-- Register Link -->
         <p>Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
+
+         <!-- Admin Question -->
+        <p>Are you an Admin?</p>
     </div>
 
 
 
 
-        <!-- Admin Question -->
-        <p>Are you an Admin?</p>
+
 
 
 

@@ -1,67 +1,38 @@
+{{-- resources/views/profile.blade.php --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Customer Profile</title>
+    <title>Edit Profile - Flame & Crust</title>
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 </head>
 <body>
 
 
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                {{-- <img src="https://via.placeholder.com/50/ff0000/ffffff?text=FC" alt="Flame & Crust Logo"> --}}
-                <div>
-                    <h1>FLAME & CRUST</h1>
-                    <span>PIZZARIA</span>
-                </div>
-            </div>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
-            </button>
-            <nav id="mainNav">
-                <ul>
-                    <li><a href="{{ route('home') }}" @if(Request::routeIs('home')) class="active" @endif>HOME</a></li>
-                    <li><a href="{{ route('menu') }}" @if(Request::routeIs('menu')) class="active" @endif>MENU</a></li>
-                    <li><a href="{{ route('about') }}" @if(Request::routeIs('about')) class="active" @endif>ABOUT US</a></li>
-                    <li><a href="{{ route('contact') }}" @if(Request::routeIs('contact')) class="active" @endif>CONTACT US</a></li>
-                    @auth
-                        <li><span class="username">{{ Auth::user()->name }}</span></li>
-                    @else
-                        <li><a href="{{ route('login') }}">LOGIN</a></li>
-                    @endauth
 
-
-                </ul>
-            </nav>
-        </div>
-    </header>
 
 <div class="container">
     <h2>Welcome, {{ $user->name }}</h2>
     <p>{{ \Carbon\Carbon::now()->format('D, d M Y') }}</p>
 
     <div class="profile-card">
-     <!--     <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo" />   -->
-
         <div class="info">
             <h3>{{ $user->name }}</h3>
             <p><strong>Email:</strong> {{ $user->email }}</p>
             <p><strong>Contact:</strong> {{ $user->phone ?? 'N/A' }}</p>
             <p><strong>Address:</strong> {{ $user->address ?? 'N/A' }}</p>
-            <p><strong>Loyalty Points:</strong> {{ $user->loyalty_points ?? 0 }} Points</p>
+            <p><strong>Are you a Loyalty Customer:</strong> {{ $user->loyalty_points ?? 0 }} Points</p>
         </div>
-
-
     </div>
-</div>
 
-<!-- Add the Edit Modal -->
+
+    <br>
+    <br>
+
+    <!-- Add the Edit Modal -->
 <div class="edit-modal" id="editModal">
     <div class="modal-content">
         <span class="close-btn" id="closeModal">&times;</span>
@@ -215,97 +186,28 @@
 
 
 
+    @if ($errors->any())
+        <div class="error-messages">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li style="color: red;">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-<div class="order-history-section container">
-    <div class="order-header">
-        <h2>Order History</h2>
-        <a href="{{ route('menu') }}" class="btn-order">Place New Order</a>
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+      <div class="button-group">
+
+
+        <a href="{{ route('profile.orders') }}" class="btn">View Order History</a>
     </div>
 
-    <table class="order-table">
-        <thead>
-            <tr>
-                <th>Order Number</th>
-                <th>Items</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($orders as $order)
-                <tr>
-                    <td>#{{ $order->order_number }}</td>
-                    <td>{{ implode(', ', $order->items->pluck('name')->toArray()) }}</td>
-                    <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d M Y') }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="3">You have no previous orders.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
 </div>
 
-
-
-
-
-
-<footer>
-    <div class="container">
-        <div class="footer-container">
-            <div class="footer-about">
-                <div class="footer-logo">
-                    <h2>FLAME & CRUST</h2>
-                    <span>PIZZARIA</span>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit..</p>
-            </div>
-            <div class="footer-links">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('menu') }}">Menu</a></li>
-                    <li><a href="{{ route('about') }}">About Us</a></li>
-                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
-                </ul>
-            </div>
-            <div class="footer-links">
-                <h3>Contact Us</h3>
-                <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Pizza Street, Food City</li>
-                    <li><i class="fas fa-phone"></i> (123) 456-7890</li>
-                    <li><i class="fas fa-envelope"></i> info@flameandcrust.com</li>
-                </ul>
-            </div>
-        </div>
-        <div class="copyright">
-            <p>&copy; {{ date('Y') }} Flame & Crust Pizzeria. All Rights Reserved.</p>
-        </div>
-    </div>
-</footer>
-
-<!-- Scripts -->
-<script src="{{ asset('js/login.js') }}"></script>
-<script src="{{ asset('js/register.js') }}"></script>
-
-<script>
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mainNav = document.getElementById('mainNav');
-
-    mobileMenuBtn.addEventListener('click', () => {
-        mainNav.classList.toggle('active');
-    });
-
-    // Close menu when clicking on a link
-    const navLinks = document.querySelectorAll('nav ul li a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            mainNav.classList.remove('active');
-        });
-    });
-</script>
 
 
 </body>

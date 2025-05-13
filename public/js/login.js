@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-<script>
+
     // Wait until the document is fully loaded
     document.addEventListener("DOMContentLoaded", function () {
         // Password toggle functionality
@@ -50,5 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
             this.classList.toggle('fa-eye-slash');
         });
     });
-</script>
+
+
 

@@ -22,13 +22,13 @@
                     <th style="padding: 12px; border: 1px solid #ddd; text-align: left; font-weight: bold;">Phone</th>
                     <th style="padding: 12px; border: 1px solid #ddd; text-align: left; font-weight: bold;">order Value</th>
                     <th style="padding: 12px; border: 1px solid #ddd; text-align: left; font-weight: bold;">Order Status</th>
-                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left; font-weight: bold;">Action</th> <!-- New column for button -->
+                    <th style="padding: 12px; border: 1px solid #ddd; text-align: left; font-weight: bold;">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($orders as $order)
                     <tr>
-                        <td style="padding: 12px; border: 1px solid #ddd;">{{ $order->order_number }}</td>
+                        <td style="padding: 12px; border: 1px solid #ddd;">{{ $order->id }}</td>
                         <td style="padding: 12px; border: 1px solid #ddd;">{{ $order->address }}</td>
                         <td style="padding: 12px; border: 1px solid #ddd;">{{ $order->phone }}</td>
                         <td style="padding: 12px; border: 1px solid #ddd;">Rs. {{ number_format($order->total, 2) }}</td>
