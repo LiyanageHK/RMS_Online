@@ -82,6 +82,9 @@
 
 
 
+        <!-- Admin Question -->
+        <p>Are you an Admin?</p>
+
 
 
 
