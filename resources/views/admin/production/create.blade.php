@@ -128,7 +128,7 @@
                     <tr>
                         <th>Select</th>
                         <th>Item Name</th>
-                        <th>Quantity</th>
+                        <th>Quantity (Grams)</th>
                     </tr>
                 </thead>
                 <tbody>
