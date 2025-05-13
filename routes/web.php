@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\InventoryController;  // Import the InventoryController
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -94,6 +96,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // Employee Routes
 
-// Inventory Routes
+Route::get('/inventory-center', [InventoryController::class, 'index']); 
 
-   
+
+
+
+
