@@ -9,6 +9,10 @@ use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminOrderController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -92,8 +96,43 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Employee Routes
 
-// Inventory Routes
 
-   
+
+
+
+
+ // cart CRUD
+ Route::controller(CartController::class)->middleware(['auth', 'verified'])->group(function(){
+Route::get('/productdetails.', [CartController::class, 'view'])->name('productdetails.view');
+Route::get('/cart','showCart')->name('cartview');
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::delete('/cart/{id}', 'removeItem')->name('cart.remove');
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add.to.cart');
+Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity'); 
+    
+});
+
+ // order CRUD
+ Route::controller(OrderController::class)->middleware(['auth', 'verified'])->group(function(){
+    
+    Route::post('/confirm-order', 'confirmOrder')->name('confirm.order');
+    Route::get('/stripe-success', 'stripeSuccess')->name('stripe.success');
+    Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('user.orders');
+    Route::get('/order-details/{id}', [OrderController::class, 'getOrderDetails']);
+    Route::patch('/cancel-order/{id}', [OrderController::class, 'cancelOrder']);
+    Route::get('/successorder', 'stripeSuccess')->name('stripe.success');
+    Route::get('/successorder', [OrderController::class, 'paymentcomplete'])->name('ordersuccess');
+    });
+
+
+// admin order
+    Route::prefix('admin/orders')->group(function () {
+    Route::get('/', [AdminOrderController::class, 'index']);
+    Route::delete('/delete/{id}', [AdminOrderController::class, 'delete']);
+    Route::delete('/delete-all', [AdminOrderController::class, 'deleteAll']);
+    Route::get('/download/{id}', [AdminOrderController::class, 'downloadPDF']);
+    Route::get('/download-all', [AdminOrderController::class, 'downloadAllPDF']);
+    });
+
+    require __DIR__.'/auth.php';
