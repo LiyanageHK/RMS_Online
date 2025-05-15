@@ -11,6 +11,7 @@
 </head>
 <body>
 
+@include('partials.header')
 
 
 
@@ -29,8 +30,13 @@
     </div>
 
 
+
     <br>
     <br>
+
+
+
+
 
     <!-- Add the Edit Modal -->
 <div class="edit-modal" id="editModal">
@@ -166,6 +172,55 @@
 </script>
 
 
+
+<!-- Change Password Button -->
+<a href="#" class="btn-edit" id="changePasswordBtn">Change Password</a>
+
+
+<script>
+    const changePasswordBtn = document.getElementById('changePasswordBtn');
+    const changePasswordModal = document.getElementById('changePasswordModal');
+    const closeChangePasswordModal = document.getElementById('closeChangePasswordModal');
+
+    changePasswordBtn.addEventListener('click', () => {
+        changePasswordModal.style.display = 'block';
+    });
+
+    closeChangePasswordModal.addEventListener('click', () => {
+        changePasswordModal.style.display = 'none';
+    });
+
+    window.onclick = function(event) {
+        if (event.target === changePasswordModal) {
+            changePasswordModal.style.display = 'none';
+        }
+    };
+</script>
+
+<script>
+    function validatePasswordChange() {
+        const newPassword = document.querySelector('input[name="new_password"]').value;
+        const confirmPassword = document.querySelector('input[name="new_password_confirmation"]').value;
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#]).{8,}$/;
+
+        if (!passwordRegex.test(newPassword)) {
+            alert('New password must be at least 8 characters and include uppercase, lowercase, number, and special character.');
+            return false;
+        }
+
+        if (newPassword !== confirmPassword) {
+            alert('New password and confirmation do not match.');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+
+
+
 @if ($errors->any())
     <script>
         window.addEventListener('load', function () {
@@ -208,6 +263,35 @@
 
 </div>
 
+
+<div class="profile-sections">
+
+    <!-- Wishlist Section -->
+    <div class="profile-card">
+        <h3><i class="fas fa-heart"></i> Wishlist</h3>
+        <p>You haven't added any items to your wishlist yet.</p>
+        {{-- Later you can loop through wishlist items here --}}
+        {{-- @foreach($wishlist as $item) --}}
+        {{--     <p>{{ $item->product_name }}</p> --}}
+        {{-- @endforeach --}}
+    </div>
+
+    <!-- Shopping Cart Section -->
+    <div class="profile-card">
+        <h3><i class="fas fa-shopping-cart"></i> Shopping Cart</h3>
+        <p>Your shopping cart is currently empty.</p>
+        {{-- Later you can loop through cart items here --}}
+        {{-- @foreach($cart as $item) --}}
+        {{--     <p>{{ $item->product_name }} - Qty: {{ $item->quantity }}</p> --}}
+        {{-- @endforeach --}}
+    </div>
+
+</div>
+
+
+
+
+@include('partials.footer')
 
 
 </body>

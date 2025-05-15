@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 
 
-
 class CustomerController extends Controller
 {
     public function index(Request $request)
@@ -25,9 +24,17 @@ class CustomerController extends Controller
 
         if ($request->has('search')) {
             $search = $request->input('search');
-            $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+            $q->where('user_id', 'like', "%{$search}%")
+              ->orWhere('name', 'like', "%{$search}%")
+              ->orWhere('email', 'like', "%{$search}%")
+              ->orWhere('phone', 'like', "%{$search}%")
+              ->orWhere('address', 'like', "%{$search}%")
+              ->orWhere('profile_image', 'like', "%{$search}%")
+              ->orWhere('email_verified_at', 'like', "%{$search}%")
+              ->orWhere('created_at', 'like', "%{$search}%")
+              ->orWhere('updated_at', 'like', "%{$search}%");
+        });
         }
 
         $users = $query->orderBy('user_id', 'desc')->get();
@@ -160,30 +167,87 @@ class CustomerController extends Controller
 
  public function showLoyaltyProgram()
     {
-        // Fetch customers who have placed more than 3 orders
-        $loyalCustomers = User::join('orders', 'users.user_id', '=', 'orders.user_id')
-            ->select('users.name', 'users.email', 'orders.user_id', DB::raw('COUNT(*) as orders_count'))
-            ->groupBy('orders.user_id', 'users.name', 'users.email')
-            ->having('orders_count', '>', 3)
-            ->get();
 
-                // Define the $section variable
+
+
+
+
+
+    $loyalCustomers = DB::table('loyalty_customers')
+        ->leftJoin('orders', 'loyalty_customers.user_id', '=', 'orders.user_id')
+        ->select(
+            'loyalty_customers.user_id',
+            'loyalty_customers.name',
+            'loyalty_customers.email',
+            'loyalty_customers.phone',
+            'loyalty_customers.loyalty_level',
+            DB::raw('COUNT(orders.id) as orders_count')
+        )
+        ->groupBy(
+            'loyalty_customers.user_id',
+            'loyalty_customers.name',
+            'loyalty_customers.email',
+            'loyalty_customers.phone',
+            'loyalty_customers.loyalty_level'
+        )
+        ->get();
+
     $section = 'loyalty';
 
-        return view('customer.loyalty_program', compact('loyalCustomers','section'));
+    return view('customer.loyalty_program', compact('loyalCustomers', 'section'));
+
+
+
     }
 
 
 
 
-    // Show the customer email form
-    public function showEmailService()
-{
-    // You may need to adjust the query based on your user/customer model
-    $customers = User::paginate(10); // or Customer::paginate(10);
 
-    return view('customer.emailService', compact('customers'));
+
+
+public function insertLoyalCustomers()
+{
+    // Get all customers who placed 3 or more orders
+    $loyalCustomers = DB::table('users')
+        ->join('orders', 'users.user_id', '=', 'orders.user_id')
+        ->select(
+            'users.user_id',
+            'users.name',
+            'users.email',
+            'users.phone',
+            DB::raw('COUNT(orders.id) as order_count')
+        )
+        ->groupBy('users.user_id', 'users.name', 'users.email', 'users.phone')
+        ->having('order_count', '>=', 3)
+        ->get();
+
+    foreach ($loyalCustomers as $customer) {
+        // Determine loyalty level
+        $level = 'Silver';
+        if ($customer->order_count >= 10) {
+            $level = 'Platinum';
+        } elseif ($customer->order_count >= 5) {
+            $level = 'Gold';
+        }
+
+        // Insert or update in loyalty_customers
+        DB::table('loyalty_customers')->updateOrInsert(
+            ['user_id' => $customer->user_id],
+            [
+                'name' => $customer->name,
+                'email' => $customer->email,
+                'phone' => $customer->phone,
+                'loyalty_level' => $level
+            ]
+        );
+    }
+
+    return redirect()->back()->with('success', 'Loyal customers with correct loyalty levels inserted or updated.');
 }
+
+
+
 
 
 

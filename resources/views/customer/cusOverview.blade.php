@@ -8,14 +8,22 @@
         <div style="color: green; margin: 10px 0;">{{ session('success') }}</div>
     @endif
 
+    <br>
+
     <a href="{{ route('customer.create') }}" style="padding: 8px 14px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">Add New Customer</a>
 
+
+
+
     <!-- Search bar -->
-    <form method="GET" action="{{ route('customer.overview') }}" style="margin: 20px 0;">
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search customers..."
+<div style="margin: 20px 0; text-align: right;">
+    <form method="GET" action="{{ route('customer.overview') }}" style="display: inline-block;">
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search here..."
                style="padding: 8px; width: 300px; border: 1px solid #ccc; border-radius: 4px;">
         <button type="submit" style="padding: 8px 14px; background-color: #007bff; color: white; border: none; border-radius: 4px;">Search</button>
     </form>
+</div>
+
 
     <table border="1" cellpadding="10" cellspacing="0" style="margin-top: 20px; width: 100%; border-collapse: collapse;">
         <thead style="background-color: #f4f4f4;">
@@ -80,23 +88,27 @@
 
     <!-- Modal Script -->
     <script>
-        let formToSubmit = null;
+    let userIdToDelete = null;
 
-        function showDeleteModal(id, name) {
-            formToSubmit = document.getElementById('deleteForm-' + id);
-            document.getElementById('modalMessage').textContent = Are you sure you want to delete "${name}"?;
-            document.getElementById('confirmModal').style.display = 'flex';
+    function confirmDelete(userId) {
+        userIdToDelete = userId;
+        document.getElementById('modalMessage').textContent = `Are you sure you want to delete customer CUS#${String(userId).padStart(4, '0')}?`;
+        document.getElementById('confirmModal').style.display = 'flex';
+    }
+
+    document.getElementById('cancelBtn').addEventListener('click', function () {
+        document.getElementById('confirmModal').style.display = 'none';
+        userIdToDelete = null;
+    });
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+        if (userIdToDelete !== null) {
+            const form = document.getElementById('deleteForm');
+            form.action = `/customer/${userIdToDelete}`; // adjust route prefix if needed
+            form.submit();
         }
-
-        document.getElementById('cancelBtn').addEventListener('click', function () {
-            document.getElementById('confirmModal').style.display = 'none';
-            formToSubmit = null;
-        });
-
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-            if (formToSubmit) formToSubmit.submit();
-        });
-    </script>
+    });
+</script>
 
 
 

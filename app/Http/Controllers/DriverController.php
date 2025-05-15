@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Employee;
@@ -87,6 +88,7 @@ public function allocateDriver(Request $request)
             'address'   => 'required|string|max:255',
             'landmark'  => 'nullable|string|max:255',
             'phone'     => 'required|string|max:20',
+            'total'     => 'nullable|numeric',
         ]);
 
         $delivery = Delivery::firstOrNew(['order_id' => $validated['order_id']]);
@@ -95,8 +97,14 @@ public function allocateDriver(Request $request)
             'address'     => $validated['address'],
             'landmark'    => $validated['landmark'],
             'phone'       => $validated['phone'],
+             'total'       => $validated['total'],
             'assigned_to' => Employee::find($validated['driver_id'])->name ?? null,
         ])->save();
+
+        // Update the order status to "Dispatched"
+        $order = Order::find($validated['order_id']);
+        $order->order_status = 'Dispatched';
+        $order->save();
 
         return redirect()
         ->route('driver.allocate', ['order_id' => $validated['order_id']])
@@ -197,6 +205,10 @@ public function deliveryHistory()
 
 
 }
+
+
+
+
 
 
 

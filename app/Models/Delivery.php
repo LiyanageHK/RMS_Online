@@ -10,8 +10,9 @@ class Delivery extends Model
 
     protected $fillable = [
 
-        'order_id',   // Add this line
+        'order_id',
 
+         'driver_id',
         'address',    // Add address if it's fillable
         'landmark',   // Add landmark if it's fillable
         'phone',      // Add phone if it's fillable

@@ -4,7 +4,7 @@
     <div class="allocation-container">
 
         <div class="header">
-            <h1>Allocate Driver for Order #{{ $order->order_number }}</h1>
+            <h1>Allocate Driver for Order #{{ $order->id }}</h1>
         </div>
 
         @if (session('success'))
@@ -28,6 +28,8 @@
             <input type="hidden" name="address" value="{{ $delivery->address ?? $order->address }}">
             <input type="hidden" name="landmark" value="{{ $delivery->landmark ?? '' }}">
             <input type="hidden" name="phone" value="{{ $delivery->phone ?? $order->phone }}">
+            <input type="hidden" name="total" value="{{ $delivery->total ?? $order->total }}">
+
 
             <div class="form-group">
                 <label>Address:</label>
@@ -42,6 +44,11 @@
             <div class="form-group">
                 <label>Phone:</label>
                 <input type="text" value="{{ $delivery->phone ?? $order->phone }}" readonly class="input-field">
+            </div>
+
+            <div class="form-group">
+                <label>Order Total:</label>
+                <input type="number" value="{{ $delivery->total ?? $order->total }}" readonly class="input-field">
             </div>
 
             <div class="form-group">
@@ -138,7 +145,7 @@
         // Add success message pop-up functionality
         @if (session('success'))
             window.onload = function() {
-                alert('{{ session('success') }}'); // Show the pop-up message
+               alert('{{ session('success') }}'); // Show the pop-up message
                 window.location.href = '{{ route('driver.pendingAllocation') }}'; // Redirect to the pending allocation page
             };
         @endif

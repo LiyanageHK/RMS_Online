@@ -1,464 +1,231 @@
-/* Reset and Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
+/* Container */
+.profile-container {
+    max-width: 800px;
+    margin: 100px auto 50px auto;
+    padding: 20px;
+    background-color: #fefefe;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f4;
+}
+
+/* Welcome Title */
+.profile-container h2 {
+    font-size: 26px;
     color: #333;
-    line-height: 1.6;
+    margin-bottom: 10px;
 }
 
-/* Heading and Date */
-.container h2 {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #222;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.container p {
-    font-size: 16px;
+/* Date */
+.profile-container p {
     color: #666;
-    margin-bottom: 30px;
-    font-style: italic;
+    font-size: 14px;
 }
 
 /* Profile Card */
 .profile-card {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 15px;
+    background: #fafafa;
     padding: 20px;
-    gap: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
 }
 
-.profile-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+.profile-card h3 {
+    margin-bottom: 15px;
+    color: #222;
 }
 
-/* Profile Image */
-.profile-card .logo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #007bff;
-    transition: transform 0.3s ease;
-}
-
-.profile-card .logo:hover {
-    transform: scale(1.1);
-}
-
-/* Profile Info */
-.profile-card .info {
-    flex: 1;
-}
-
-.profile-card .info h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #333;
-    font-weight: bold;
-}
-
-.profile-card .info p {
-    font-size: 16px;
-    margin-bottom: 12px;
+.profile-card p {
+    margin: 8px 0;
     color: #555;
 }
 
-.profile-card .info strong {
-    color: #444;
-}
-
-/* Edit Button */
-.btn-edit {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 25px;
-    border-radius: 6px;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 15px;
-    font-size: 15px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.btn-edit:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-.btn-edit:focus {
-    outline: none;
-}
-
-/* Container */
-.container {
-    max-width: 1100px;
-    margin: 40px auto;
-    padding: 0 15px;
-}
-
-/* Box Shadows */
-.profile-card, .btn-edit {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.profile-card:hover, .btn-edit:hover {
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .profile-card {
-        flex-direction: column;
-        align-items: center;
-    }
-}
-    .profile-card .logo {
-        margin-bottom: 15px;
-    }
-
-    .container h2 {
-        font-size: 24px;
-    }
-
-    .order-history-section {
-        margin-top: 40px;
-        background-color: #fff;
-        padding: 25px;
-        border-radius: 15px;
-        border: 1px solid #ddd;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
-
-    .order-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .order-header h2 {
-        font-size: 24px;
-        color: #333;
-    }
-
-    .btn-order {
-        background-color: #28a745;
-        color: white;
-        padding: 10px 18px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 14px;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-order:hover {
-        background-color: #218838;
-    }
-
-    .order-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .order-table th,
-    .order-table td {
-        text-align: left;
-        padding: 12px 15px;
-        border-bottom: 1px solid #eee;
-        font-size: 15px;
-    }
-
-    .order-table th {
-        background-color: #f7f7f7;
-        color: #444;
-    }
-
-    .order-table tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    /* Zebra striping for table rows */
-    .order-table tbody tr:nth-child(even) {
-        background-color: #fafafa;
-    }
-
-    /* Hover effect on table rows */
-    .order-table tbody tr:hover {
-        background-color: #eef6ff;
-        transition: background-color 0.3s ease;
-    }
-
-    /* Styling for empty state message */
-    .order-table td[colspan="3"] {
-        text-align: center;
-        font-style: italic;
-        color: #999;
-    }
-
-    /* More spacing between sections */
-    .order-history-section {
-        margin-top: 320px;
-    }
-
-    /* Highlighting loyalty points */
-    .profile-card .info p:last-child {
-        font-weight: bold;
-        color: #28a745;
-    }
-
-    /* Responsive tweaks */
-    @media (max-width: 480px) {
-        .order-header {
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
-        .order-table th,
-        .order-table td {
-            font-size: 13px;
-            padding: 10px;
-        }
-
-        .btn-order {
-            width: 100%;
-            text-align: center;
-        }
-    }
-
-    /* Improve edit button on small screens */
-    @media (max-width: 600px) {
-        .btn-edit {
-            width: 100%;
-            text-align: center;
-            padding: 14px;
-        }
-    }
-
-    .btn-edit {
-        display: inline-block;
-        background-color: #007bff; /* Flame red */
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: bold;
-        float: right;
-        margin-top: -350px; /* Adjust based on header spacing */
-        margin-right: 300px;
-        transition: background-color 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-edit:hover {
-        background-color: #3783d5;
-    }
-
-    .username {
-        color: #fff;
-        padding: 0.5rem 1rem;
-        display: inline-block;
-    }
-
-
-    /* Profile Page Styling */
-.user-info p {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.order-history {
-    margin-top: 20px;
-}
-
-.order-item ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.order-item li {
-    margin-bottom: 5px;
-}
-
-.user-avatar img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-top: 20px;
-}
-
-.edit-profile a {
-    margin-top: 20px;
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-}
-
-.edit-profile a:hover {
-    background-color: #0056b3;
-}
-
-
-
-/* Modal Styles */
-/* Modal Styles */
+/* Edit Modal */
 .edit-modal {
     display: none;
     position: fixed;
-    z-index: 999;
+    z-index: 2000;
     left: 0;
     top: 0;
-    width: 100vw;
-    height: 95vh;
-    overflow-y: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.3s ease-in-out;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
 }
 
-/* Modal Content Box */
 .modal-content {
     background-color: #fff;
-    margin: 5% auto;
-    padding: 30px 40px;
-    border-radius: 12px;
-    width: 60%;
+    margin: 8% auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
     max-width: 600px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    animation: slideUp 0.4s ease-out;
-    position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.25);
 }
 
-/* Modal Close Button */
 .close-btn {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
+    float: right;
+    font-size: 24px;
     cursor: pointer;
-    transition: color 0.3s ease;
+    color: #444;
 }
 
-.close-btn:hover,
-.close-btn:focus {
+.close-btn:hover {
     color: #000;
 }
 
-/* Form Styling */
+/* Form Styles */
+form#profileForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 .form-group {
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-.modal-content label {
+.form-group label {
     font-weight: bold;
-    color: #444;
-    display: block;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
-.modal-content input[type="text"],
-.modal-content input[type="email"],
-.modal-content input[type="password"],
-.modal-content textarea {
-    width: 100%;
-    padding: 12px;
+.form-group input,
+.form-group textarea {
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
+    font-size: 14px;
 }
 
-.modal-content input:focus,
-.modal-content textarea:focus {
-    border-color: #007bff;
-    outline: none;
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
 }
 
-/* Submit Button */
-.modal-content button[type="submit"] {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
+.form-group button {
+    background-color: #e63946;
     color: white;
-    font-size: 16px;
     border: none;
+    padding: 12px;
+    font-size: 16px;
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.modal-content button[type="submit"]:hover {
-    background-color: #0056b3;
+.form-group button:hover {
+    background-color: #d62828;
 }
 
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+/* Error & Success Messages */
+.error-messages ul {
+    padding-left: 20px;
+    color: red;
 }
 
-@keyframes slideUp {
-    from {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* Responsive Modal */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 90%;
-        padding: 20px;
-    }
-}
-
-
-
-.alert-success {
+.alert.alert-success {
     background-color: #d4edda;
     color: #155724;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 6px;
     border: 1px solid #c3e6cb;
-    font-weight: bold;
+}
+
+/* Edit Button */
+.btn-edit {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 18px;
+    background-color: #457b9d;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-edit:hover {
+    background-color: #1d3557;
+}
+
+/* Button Group */
+.button-group {
+    margin-top: 30px;
+}
+
+.button-group .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2a9d8f;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.button-group .btn:hover {
+    background-color: #21867a;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+    }
+
+    .profile-container {
+        margin-top: 120px;
+        padding: 15px;
+    }
 }
 
 
-.error-messages ul {
-    padding: 10px;
-    background-color: #ffe6e6;
-    border: 1px solid #ff0000;
-    border-radius: 5px;
+
+
+/*Profile sidebar*/
+.profile-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.profile-main {
+    flex: 2;
+}
+
+.profile-sidebar {
+    flex: 1;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 20px;
+    height: fit-content;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.profile-sidebar h4 {
     margin-bottom: 15px;
-    list-style-type: none;
+    color: #333;
 }
 
-.error-messages li {
-    color: #cc0000;
-    margin: 5px 0;
+.profile-sidebar ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.profile-sidebar li {
+    margin-bottom: 10px;
+}
+
+.profile-sidebar a {
+    color: #2a9d8f;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.profile-sidebar a:hover {
+    text-decoration: underline;
 }

@@ -1,57 +1,76 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="allocation-container">
-        <h2>Delivery History</h2>
+<div class="allocation-container">
+    <h2>Delivery History</h2><br><br>
 
-        @if (session('success'))
-            <div class="alert success">{{ session('success') }}</div>
-        @endif
+    @if (session('success'))
+        <div class="alert success">{{ session('success') }}</div>
+    @endif
 
-        @if ($errors->any())
-            <div class="alert error">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+    @if ($errors->any())
+        <div class="alert error">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+                <div class="search-filter">
+                    <input type="text" id="searchInput" placeholder="Search deliveries..." onkeyup="filterTable()">
+                </div>
             </div>
-        @endif
 
-        @if ($deliveries->isEmpty())
-            <p>No deliveries found.</p>
-        @else
-            <table class="driver-table">
-                <thead>
+    @if ($deliveries->isEmpty())
+        <p>No deliveries found.</p>
+    @else
+        <table class="driver-table" id="deliveryTable">
+            <thead>
+                <tr>
+                    <th>Delivery ID</th>
+                    <th>Order ID</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Driver Allocated</th>
+                    <th>Total Amount</th>
+                    <th>Driver Allocate At</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($deliveries as $delivery)
                     <tr>
-                        <th>Delivery ID</th>
-                        <th>Order ID</th>
-                        <th>Address</th>
-                        <th>Phone</th>
-                        <th>Driver Allocated</th>
-                        <th>Total Amount</th>
-                        <th>Driver Allocate At</th>
-
+                        <td>{{ 'DLY#' . str_pad($delivery->delivery_id, 4, '0', STR_PAD_LEFT) }}</td>
+                        <td>{{ $delivery->order_id }}</td>
+                        <td>{{ $delivery->address ?? 'N/A' }}</td>
+                        <td>{{ $delivery->phone ?? 'N/A' }}</td>
+                        <td>{{ $delivery->assigned_to ?? 'N/A' }}</td>
+                        <td>{{ $delivery->total ?? 'N/A' }}</td>
+                        <td>{{ \Carbon\Carbon::parse($delivery->created_at)->format('Y-m-d H:i') }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach ($deliveries as $delivery)
-                        <tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+</div>
 
-                            <td>{{ 'DLY#' . str_pad($delivery->delivery_id, 4, '0', STR_PAD_LEFT) }}</td>
+<script>
+    function filterTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const table = document.getElementById('deliveryTable');
+        const rows = table.getElementsByTagName('tr');
 
-                            <td>{{ $delivery->order_id }}</td>
-                            <td>{{ $delivery->address ?? 'N/A' }}</td>
-                            <td>{{ $delivery->phone ?? 'N/A' }}</td>
-                            <td>{{ $delivery->assigned_to ?? 'N/A' }}</td>
-                            <td>{{ $delivery->total ?? 'N/A' }}</td>
-                            <td>{{ \Carbon\Carbon::parse($delivery->created_at)->format('Y-m-d H:i') }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
-    </div>
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(" ");
+            const show = rowText.includes(input);
+            rows[i].style.display = show ? '' : 'none';
+        }
+    }
+</script>
+
+
 @endsection
 
 <style>
@@ -88,6 +107,20 @@
         border: 1px solid #f5c6cb;
     }
 
+    .search-filter {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .search-filter input, .search-filter select {
+        padding: 10px;
+        width: 48%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
     .driver-table {
         width: 100%;
         border-collapse: collapse;
@@ -106,5 +139,25 @@
 
     .driver-table tr:hover {
         background-color: #f1f1f1;
+
+
+
+    .search-filter {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+
+
+
+
+    }
+
+
     }
 </style>
+
+@section('scripts')
+
+@endsection

@@ -9,6 +9,20 @@ use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\InventoryController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\LoginController as AuthLogin;
+use App\Http\Controllers\Auth\UserController as RegUser;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
+//use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\CustomerController;
+use App\Http\Controllers\Auth\PageController;
+use App\Models\Order;
+use App\Http\Controllers\Auth\UserLoginController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +37,29 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+
+
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
+//Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+//Route::post('/login', [LoginController::class, 'login']);
+
+
+//Route::get('/login', [LoginController::class, 'create'])->name('login');
+//Route::post('/login', [LoginController::class, 'login']);
+
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
+
+Route::put('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
+
+
+
+Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+
 Auth::routes();
 
 
@@ -97,64 +134,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Inventory Routes
 
 
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Auth\LoginController as AuthLogin;
-use App\Http\Controllers\Auth\UserController as RegUser;
-use App\Http\Controllers\DriverController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Auth\CustomerController;
-use App\Http\Controllers\Auth\PageController;
 
 
-// Public routes
-
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-
-
-Route::get('/login', [LoginController::class, 'create'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-
-
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-
-
-Route::put('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
-
-
-
-Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
-
-
-
-Route::get('/home', function () {
-    return view('homepage');
-})->name('homepage');
-
-
-Route::get('/menu', function () {
-    return view('menu');
-})->name('menu');
-
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
 
 // Auth routes
-Route::get('/login', [AuthLogin::class, 'create'])->name('login');
-Route::post('/login', [AuthLogin::class, 'store']);
-Route::post('/logout', [AuthLogin::class, 'destroy'])->name('logout');
+//Route::get('/login', [AuthLogin::class, 'create'])->name('login');
+//Route::post('/login', [AuthLogin::class, 'store']);
+//Route::post('/logout', [AuthLogin::class, 'destroy'])->name('logout');
 
 Route::get('/register', [RegUser::class, 'create'])->name('register');
 Route::post('/register', [RegUser::class, 'store']);
@@ -163,21 +149,9 @@ Route::post('/register', [RegUser::class, 'store']);
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-
 Route::get('/profile', [ProfileController::class, 'show'])->middleware('auth');
-
-
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
-
-
-//Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
-
-
-Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
-
 Route::put('/profile/update/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
-
 Route::get('/profile/orders', [UserController::class, 'showOrderHistory'])->name('profile.orders');
 
 
@@ -188,20 +162,7 @@ Route::post('/logout', function () {
 })->name('logout')->middleware('auth');
 
 
-//customer adimin panel
-Route::prefix('admin/customer')->group(function () {
-   // Route::get('/overview', function () {
-     //   return view('customer.cusOverview');
-    //})->name('customer.overview');
 
-    Route::get('/loyalty', function () {
-        return view('customer.cusLoyalty');
-    })->name('customer.loyalty');
-
-    Route::get('/email', function () {
-        return view('customer.cusEmailService');
-    })->name('customer.email');
-});
 
 
 
@@ -220,112 +181,79 @@ Route::get('/customer/{user_id}', [CustomerController::class, 'show'])->name('cu
 
 ;
 
-Route::get('/admin/customer/loyalty-program', [CustomerController::class, 'showLoyaltyProgram'])->name('loyalty-program');
-
-//page controller
-// Route for Customer Center
-Route::get('/customer-center', [PageController::class, 'customerCenter'])->name('customer-center');
-
-// Route for Delivery Center
-Route::get('/delivery-center', [PageController::class, 'deliveryCenter'])->name('delivery-center');
-
-
-
-
-//driver
-
-
-// Route to display pending allocation
-Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('driver.pendingAllocation');
-
-
-
-// Route for Driver Allocation Details
-Route::get('/driver-allocation-details', [DriverController::class, 'driverAllocationDetails'])->name('driver.allocationDetails');
-
-
-
-
-
-
-//Route::get('allocate-driver/{order_id}', [DriverController::class, 'allocateDriver'])->name('driver.allocate');
-//Route::post('store-allocation', [DriverController::class, 'storeAllocation'])->name('driver.storeAllocation');
-
-Route::get('/driver/allocate/{order_id}', [DriverController::class, 'allocateDriver'])->name('driver.allocate');
-
-Route::post('/driver/store-allocation', [DriverController::class, 'storeAllocation'])->name('driver.storeAllocation');
-Route::get('/driver/allocate', [DriverController::class, 'allocateDriver'])->name('driver.allocate');
-
-
-
-Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('pending-allocation');
-
-Route::get('/driver/allocate', [DriverController::class, 'allocateDriver'])->name('driver.allocate');
-
-
-
-
-Route::get('/driver/allocation/details', [DriverController::class, 'allocationDetails'])->name('driver.allocation.details');
-
-Route::get('/pending-allocations', [DriverController::class, 'pendingAllocation'])->name('pendingAllocation');
-
-
-
-Route::get('/driver/pending-allocation', [DriverController::class, 'pendingAllocation'])->name('driver.pendingAllocation');
-Route::get('/pending-allocations', [DriverController::class, 'pendingAllocation']);
-
-Route::get('/pending-allocation', [DriverController::class, 'pendingAllocation'])->name('pendingAllocation');
-
-
-//Route::get('/driver/edit/{delivery_id}', [DriverController::class, 'edit'])->name('driver.edit.delivery');
-Route::delete('/driver/delete/delivery/{delivery_id}', [DriverController::class, 'deleteDelivery'])->name('driver.delete.delivery');
-
-
-
-//Route::put('/driver/edit-delivery/{delivery_id}', [DriverController::class, 'updateDelivery'])->name('driver.edit.delivery');
-Route::match(['get', 'put'], '/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('driver.edit.delivery');
-
-
-//Route::get('driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('driver.edit.delivery');
-Route::post('driver/update/delivery/{delivery_id}', [DriverController::class, 'updateDelivery'])->name('driver.update.delivery');
-// Route to show the delivery edit form
-Route::get('/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('driver.edit.delivery');
-
-// Route to update the delivery
-Route::put('/driver/edit/delivery/{delivery_id}', [DriverController::class, 'updateDelivery'])->name('driver.update.delivery');
-
 
 
 //Loyalty program
 Route::get('/customers/{userid}/loyalty', [CustomerController::class, 'loyalty'])->name('customer.loyalty');
 Route::post('/loyalty/redeem', [CustomerController::class, 'redeem'])->name('loyalty.redeem');
-
-
-
 Route::get('/admin/customer/loyalty-program', [CustomerController::class, 'showLoyaltyProgram'])->name('loyalty-program');
+Route::get('/loyalty/insert', [CustomerController::class, 'insertLoyalCustomers'])->name('loyalty.insert');   //add data to loyalty customer table
 
 
-//Display Driver List in Admin Panel
-Route::get('/drivers', [DriverController::class, 'driverListView'])->name('driver.list');
+
+//driver
+
+Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('driver.pendingAllocation');   // Route to display pending allocation
+
+// Route for Driver Allocation Details
+Route::get('/driver-allocation-details', [DriverController::class, 'driverAllocationDetails'])->name('driver.allocationDetails');
+Route::get('/driver/allocate/{order_id}', [DriverController::class, 'allocateDriver'])->name('driver.allocate');
+Route::post('/driver/store-allocation', [DriverController::class, 'storeAllocation'])->name('driver.storeAllocation');
+Route::get('/driver/allocate', [DriverController::class, 'allocateDriver'])->name('driver.allocate');
+Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('pending-allocation');
+Route::get('/driver/allocate', [DriverController::class, 'allocateDriver'])->name('driver.allocate');
+Route::get('/driver/allocation/details', [DriverController::class, 'allocationDetails'])->name('driver.allocation.details');
+Route::get('/pending-allocations', [DriverController::class, 'pendingAllocation'])->name('pendingAllocation');
+Route::get('/driver/pending-allocation', [DriverController::class, 'pendingAllocation'])->name('driver.pendingAllocation');
+Route::get('/pending-allocations', [DriverController::class, 'pendingAllocation']);
+Route::get('/pending-allocation', [DriverController::class, 'pendingAllocation'])->name('pendingAllocation');
+Route::delete('/driver/delete/delivery/{delivery_id}', [DriverController::class, 'deleteDelivery'])->name('driver.delete.delivery');
+Route::match(['get', 'put'], '/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('driver.edit.delivery');
+Route::post('driver/update/delivery/{delivery_id}', [DriverController::class, 'updateDelivery'])->name('driver.update.delivery');
+Route::get('/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('driver.edit.delivery');  // Route to show the delivery edit form
+Route::put('/driver/edit/delivery/{delivery_id}', [DriverController::class, 'updateDelivery'])->name('driver.update.delivery');   // Route to update the delivery
+Route::get('/drivers', [DriverController::class, 'driverListView'])->name('driver.list');  //Display Driver List in Admin Panel
 
 
 //to display drivers on ride
 Route::get('/drivers-on-ride', [DriverController::class, 'showDriversOnRide']);
-
-
 Route::get('/drivers', [DriverController::class, 'driverListView'])->name('driver.list');
 
 //delivery History
-
 Route::get('/delivery-history', [DriverController::class, 'deliveryHistory'])->name('delivery.history');
 
 
-//customer Email Service
 
 
-Route::get('/customer/email-service', [CustomerController::class, 'customerEmail'])->name('customer.email');
-Route::post('/customer/send-emails', [CustomerController::class, 'sendCustomerEmails'])->name('customer.sendEmails');
+//Customer Side Login
+// Show login form
+Route::get('/login', [UserLoginController::class, 'showLoginForm'])->name('login');
+
+// Handle login
+Route::post('/login', [UserLoginController::class, 'login']);
+
+// Handle logout
+Route::post('/logout', [UserLoginController::class, 'logout'])->name('logout');
+
+// Example authenticated route
+Route::get('/homepage', function () {
+    return view('homepage');
+})->middleware('auth')->name('homepage');
 
 
-// Route for email service
-Route::get('/customer/email-service', [CustomerController::class, 'showEmailService'])->name('customer.emailService');
+
+//customer profile change password
+Route::put('/profile/change-password/{user}', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+
+
+
+//customer adimin panel
+//Route::prefix('admin/customer')->group(function () {
+
+
+//    Route::get('/loyalty', function () {
+  //      return view('customer.cusLoyalty');
+    //})->name('customer.loyalty');
+
+
+//});// chnage this

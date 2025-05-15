@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+
 class ProfileController extends Controller
 {
 
@@ -84,6 +85,37 @@ public function update(Request $request, $id)
         'users' => $users,
     ]);
 }
+
+
+//change customer password
+
+public function changePassword(Request $request, $user_id)
+{
+    $request->validate([
+        'current_password' => 'required',
+        'new_password' => ['required', 'confirmed', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#]).+$/'],
+    ]);
+
+    $user = User::findOrFail($user_id);
+
+    if (!Hash::check($request->current_password, $user->password)) {
+        return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+    }
+
+    $user->password = Hash::make($request->new_password);
+    $user->save();
+
+    return back()->with('success', 'Password updated successfully.');
+}
+
+
+
+
+
+
+
+
+
 
 
 

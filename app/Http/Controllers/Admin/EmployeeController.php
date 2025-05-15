@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class EmployeeController extends Controller
 {
@@ -199,4 +202,29 @@ class EmployeeController extends Controller
         return redirect()->route('employees.profile')
             ->with('success', 'Profile updated successfully');
     }
-} 
+
+
+
+
+     use HasFactory;
+
+    protected $table = 'employees'; // Ensure this is the correct table name
+
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'position',
+        'address',
+    ];
+
+    // You can define scopes here if you want
+    public function driver()
+    {
+        return $this->belongsTo(Employee::class, 'driver_id');
+    }
+}
+
+
+
+
