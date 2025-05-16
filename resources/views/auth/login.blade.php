@@ -40,7 +40,7 @@
     </div>
     
     <!-- Remember Me & Forgot Password -->
-    <div class="remember-forgot">
+    <!-- <div class="remember-forgot">
         <div class="remember-me">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="remember" 
@@ -55,7 +55,7 @@
                 <a href="{{ route('password.request') }}">Forgot Password?</a>
             </div>
         @endif
-    </div>
+    </div> -->
     
     <!-- Login Button -->
     <div class="form-group">
@@ -65,15 +65,7 @@
     </div>
     
     <!-- Divider -->
-    <div class="divider">OR</div>
+    <!-- <div class="divider">OR</div> -->
     
-    <!-- Register Link -->
-    @if (Route::has('register'))
-        <div class="form-group">
-            <a href="{{ route('register') }}" class="btn btn-secondary">
-                Create New Account
-            </a>
-        </div>
-    @endif
 </form>
 @endsection

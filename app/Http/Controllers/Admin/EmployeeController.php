@@ -16,9 +16,22 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the employees.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::all();
+        $query = Employee::query();
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('id', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('email', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('phone', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        $employees = $query->orderBy('id')->paginate(10);  // Added pagination for better performance
+
         return view('employees.index', compact('employees'));
     }
 
@@ -28,55 +41,61 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('employees.create');
+        $roles = \DB::table('role')->get();
+        return view('employees.create', compact('roles')); // Pass roles to the view
     }
 
     /**
      * Store a newly created employee in storage.
      */
     public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:employees',
-            'nic' => 'required|string|max:255|unique:employees',
-            'position' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:255',
-            'address_line1' => 'required|string|max:255',
-            'address_line2' => 'nullable|string|max:255',
-            'city' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:255',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => [
+            'required',
+            'email',
+            'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+            'unique:employees,email',
+        ],
+        'nic' => 'required|string|max:255|unique:employees',
+        'position' => 'required|exists:role,role',
+        'phone' => 'nullable|string|max:255',
+        'address_line1' => 'required|string|max:255',
+        'address_line2' => 'nullable|string|max:255',
+        'city' => 'required|string|max:255',
+        'postal_code' => 'required|string|max:255',
+    ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $employee = Employee::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'nic' => $request->nic,
-            'position' => $request->position,
-            'phone' => $request->phone,
-            'address_line1' => $request->address_line1,
-            'address_line2' => $request->address_line2,
-            'city' => $request->city,
-            'postal_code' => $request->postal_code,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('employees.index')
-            ->with('success', 'Employee created successfully.');
+    if ($validator->fails()) {
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
     }
+
+    Employee::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'nic' => $request->nic,
+        'position' => $request->position,
+        'phone' => $request->phone,
+        'address_line1' => $request->address_line1,
+        'address_line2' => $request->address_line2,
+        'city' => $request->city,
+        'postal_code' => $request->postal_code,
+        'password' => Hash::make($request->nic), // default password is NIC
+    ]);
+
+    return redirect()->route('employees.index')
+        ->with('success', 'Employee created successfully. Default password is their NIC.');
+}
 
     /**
      * Display the specified employee.
      */
-    public function show(Employee $employee)
+    public function show($id)
     {
+        $employee = Employee::findOrFail($id);
         return view('employees.show', compact('employee'));
     }
 
@@ -85,7 +104,8 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        return view('employees.edit', compact('employee'));
+        
+        return view('employees.edit', compact('employee')); // Pass roles to the view
     }
 
     /**
@@ -95,9 +115,14 @@ class EmployeeController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:employees,email,' . $employee->id,
+            'email' => [
+                'required',
+                'email',
+                'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+                'unique:employees,email,' . $employee->id,
+            ],
             'nic' => 'required|string|max:255|unique:employees,nic,' . $employee->id,
-            'position' => 'required|string|max:255',
+            'position' => 'required|exists:role,role',
             'phone' => 'nullable|string|max:255',
             'address_line1' => 'required|string|max:255',
             'address_line2' => 'nullable|string|max:255',
@@ -111,7 +136,17 @@ class EmployeeController extends Controller
                 ->withInput();
         }
 
-        $employee->update($request->except('password'));
+$employee->update([
+    'name' => $request->name,
+    'email' => $request->email,
+    'nic' => $request->nic,
+    'position' => $request->position, // Store role name
+    'phone' => $request->phone,
+    'address_line1' => $request->address_line1,
+    'address_line2' => $request->address_line2,
+    'city' => $request->city,
+    'postal_code' => $request->postal_code,
+]);
 
         return redirect()->route('employees.index')
             ->with('success', 'Employee updated successfully.');
@@ -207,11 +242,12 @@ class EmployeeController extends Controller
 
 
 
-     use HasFactory;
 
-    protected $table = 'employees'; // Ensure this is the correct table name
+    // use HasFactory;
 
-    protected $fillable = [
+    //protected $table = 'employees'; // Ensure this is the correct table name
+
+    /*protected $fillable = [
         'name',
         'email',
         'phone',
@@ -225,7 +261,10 @@ class EmployeeController extends Controller
         return $this->belongsTo(Employee::class, 'driver_id');
     }
 }
+*/
 
 
 
+
+}
 

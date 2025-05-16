@@ -120,6 +120,18 @@
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
+                <!-- Notification Button -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;display:none;" id="notificationCount">0</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="min-width: 300px;">
+                        <li class="dropdown-header">Notifications</li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><span class="dropdown-item text-muted">No new notifications</span></li>
+                    </ul>
+                </li>
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
@@ -215,17 +227,17 @@
                 </div>
 
                 <!-- Procurement Center -->
-                <div id="pronav">
-                    <button class="sidebar-btn" onclick="toggleMenu(this)">
-                        <span class="btn-content"><span class="material-icons">business</span> Procurement Center</span>
-                        <span class="material-icons toggle-icon">expand_more</span>
-                    </button>
-                    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
-                        <a href="#" class="submenu-link">Suppliers</a>
-                        <a href="#" class="submenu-link">Purchase Orders</a>
-                        <a href="#" class="submenu-link">Good Received Notes</a>
-                    </div>
-                </div>
+<div id="pronav">
+    <button class="sidebar-btn" onclick="toggleMenu(this)">
+        <span class="btn-content"><span class="material-icons">business</span> Procurement Center</span>
+        <span class="material-icons toggle-icon">expand_more</span>
+    </button>
+    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+        <a href="{{ route('suppliers.index') }}" class="submenu-link {{ request()->routeIs('suppliers.*') ? 'active' : '' }}">Suppliers</a>
+        <a href="{{ route('purchase_orders.index') }}" class="submenu-link {{ request()->routeIs('purchase_orders.*') ? 'active' : '' }}">Purchase Orders</a>
+        <a href="{{ route('grns.index') }}" class="submenu-link {{ request()->routeIs('grns.*') ? 'active' : '' }}">Good Received Notes</a>
+    </div>
+</div>
 
                 <div id="cusnav">
                     <button class="sidebar-btn">
@@ -245,11 +257,16 @@
                     </button>
                 </div>
 
-                <div id="empnav">
-                    <button class="sidebar-btn">
-                        <span class="btn-content"><span class="material-icons">people</span> Employee Center</span>
-                    </button>
-                </div>
+                <!-- Employee Center -->
+<div id="empnav">
+    <button class="sidebar-btn" onclick="toggleMenu(this)">
+        <span class="btn-content"><span class="material-icons">people</span> Employee Center</span>
+        <span class="material-icons toggle-icon">expand_more</span>
+    </button>
+    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+        <a href="{{ route('employees.index') }}" class="submenu-link {{ request()->routeIs('employees.*') ? 'active' : '' }}">Employees</a>
+    </div>
+</div>
 
                 <div id="accnav">
                     <button class="sidebar-btn" onclick="toggleMenu(this)">
@@ -261,7 +278,22 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Contact & Feedback Section -->
+<div id="contact-feedback-nav">
+    <button class="sidebar-btn" onclick="toggleMenu(this)">
+        <span class="btn-content"><span class="material-icons">message</span> Customer Relations Center</span>
+        <span class="material-icons toggle-icon">expand_more</span>
+    </button>
+    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+        <a href="{{ route('contact.index') }}" class="submenu-link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Contact Messages</a>
+        <a href="{{ route('feedback.index') }}" class="submenu-link {{ request()->routeIs('feedback.*') ? 'active' : '' }}">Feedback Messages</a>
+    </div>
+</div>
+
         </aside>
+
+        
         <!-- Material Icons CDN -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style>
