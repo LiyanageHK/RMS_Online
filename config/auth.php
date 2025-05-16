@@ -46,7 +46,6 @@ return [
         ],
     ],
 
-
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -69,10 +68,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-       'employees' => [
+        'employees' => [
             'driver' => 'eloquent',
             'model' => App\Models\Employee::class,
-       ],
+        ],
     ],
 
     /*
