@@ -41,11 +41,6 @@
                 <li><a href="{{ route('about') }}" @if(Request::routeIs('about')) class="active" @endif>ABOUT US</a></li>
                 <li><a href="{{ route('contact') }}" @if(Request::routeIs('contact')) class="active" @endif>CONTACT US</a></li>
                 <li><a href="{{ route('login') }}">LOGIN</a></li>
-                <li>
-                    <a href="{{ route('cart') }}">
-                        <i class="fas fa-shopping-cart" style="color: white; font-size: 1.5rem;"></i>
-                    </a>
-                </li>
             </ul>
         </nav>
     </div>

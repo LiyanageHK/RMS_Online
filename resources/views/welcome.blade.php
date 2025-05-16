@@ -793,40 +793,23 @@
                 <h2 style="font-size: 2.5rem; color: #333; margin-bottom: 20px;">What Our Customers Say</h2>
                 <p style="color: #666; max-width: 800px; margin: 0 auto;">Real reviews from our valued customers</p>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-                <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div style="color: #E7592B; margin-bottom: 15px;">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+            <div class="testimonial-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; justify-content: center;">
+                @forelse($feedbacks as $feedback)
+                <div class="testimonial-card" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;">
+                    <div style="width: 70px; height: 70px; background-color: #E7592B; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <i class="fas fa-user" style="font-size: 2rem; color: white;"></i>
                     </div>
-                    <p style="color: #666; margin-bottom: 20px;">"The best pizza I've ever had! The crust is perfectly crispy and the toppings are always fresh. Highly recommended!"</p>
-                    <div style="color: #333; font-weight: bold;">Sarah M.</div>
-                </div>
-                <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
                     <div style="color: #E7592B; margin-bottom: 15px;">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        @for ($i = 0; $i < $feedback->rating; $i++)
+                            <i class="fas fa-star"></i>
+                        @endfor
                     </div>
-                    <p style="color: #666; margin-bottom: 20px;">"Fast delivery and amazing taste! Their wood-fired pizzas have a unique flavor that keeps me coming back for more."</p>
-                    <div style="color: #333; font-weight: bold;">John D.</div>
+                    <p style="color: #666; margin-bottom: 20px; font-style: italic;">"{{ $feedback->feedback }}"</p>
+                    <div class="customer-name" style="font-weight: bold; color: #333;">- {{ $feedback->name }}</div>
                 </div>
-                <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div style="color: #E7592B; margin-bottom: 15px;">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p style="color: #666; margin-bottom: 20px;">"Great variety of toppings and excellent customer service. The online ordering system is very convenient!"</p>
-                    <div style="color: #333; font-weight: bold;">Michael R.</div>
-                </div>
+                @empty
+                <div style="text-align: center; font-size: 1.2rem; color: #666;">No feedback available at the moment.</div>
+                @endforelse
             </div>
         </div>
     </section>

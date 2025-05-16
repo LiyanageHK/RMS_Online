@@ -29,16 +29,19 @@
         <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
             <thead style="background-color: #f9f9f9;">
                 <tr>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">ID</th>
                     <th style="padding: 12px; text-align: left; font-weight: 600;">Item Name</th>
                     <th style="padding: 12px; text-align: left; font-weight: 600;">Category</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Price (Rs.)</th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">Price of 1kg (Rs.)</th>
                     <th style="padding: 12px; text-align: left; font-weight: 600;">Description</th>
                     <th style="padding: 12px; text-align: right;"></th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($items as $item)
+                @php $sortedItems = collect($items)->sortByDesc('id'); @endphp
+                @forelse($sortedItems as $item)
                     <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <td style="padding: 12px;">{{ $item->id }}</td>
                         <td style="padding: 12px;">{{ $item->name }}</td>
                         <td style="padding: 12px;">{{ $item->category_name }}</td>
                         <td style="padding: 12px;">Rs. {{ number_format($item->price, 2) }}</td>
@@ -61,7 +64,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" style="padding: 12px; text-align: center;">No items found.</td>
+                        <td colspan="6" style="padding: 12px; text-align: center;">No items found.</td>
                     </tr>
                 @endforelse
             </tbody>

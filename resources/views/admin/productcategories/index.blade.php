@@ -33,7 +33,8 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($categories as $cat)
+                @php $sortedCategories = collect($categories)->sortByDesc('id'); @endphp
+                @forelse($sortedCategories as $cat)
                     <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                         <td style="padding: 12px;">{{ $cat->id }}</td>
                         <td style="padding: 12px;">{{ $cat->name }}</td>

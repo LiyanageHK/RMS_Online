@@ -27,6 +27,7 @@
         <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
             <thead style="background-color: #f9f9f9;">
                 <tr>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">ID</th>
                     <th style="padding: 12px; text-align: left; font-weight: 600;">Image</th>
                     <th style="padding: 12px; text-align: left; font-weight: 600;">Name</th>
                     <th style="padding: 12px; text-align: left; font-weight: 600;">Status</th>
@@ -35,8 +36,10 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($products as $p)
+                @php $sortedProducts = collect($products)->sortByDesc('id'); @endphp
+                @forelse($sortedProducts as $p)
                     <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <td style="padding: 12px;">{{ $p->id }}</td>
                         <td style="padding: 12px;">
                             @if($p->thumbnail)
                                 <a href="{{ asset('uploads/products/' . $p->thumbnail) }}" target="_blank" onclick="event.preventDefault(); openImagePopup('{{ asset('uploads/products/' . $p->thumbnail) }}');">
@@ -73,7 +76,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" style="padding: 20px; text-align: center; color: #666;">No products found.</td>
+                        <td colspan="6" style="padding: 20px; text-align: center; color: #666;">No products found.</td>
                     </tr>
                 @endforelse
             </tbody>

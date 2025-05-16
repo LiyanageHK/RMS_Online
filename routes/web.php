@@ -9,9 +9,11 @@ use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Models\Feedback;
 
 Route::get('/', function () {
-    return view('welcome');
+    $feedbacks = Feedback::all();
+    return view('welcome', compact('feedbacks'));
 })->name('welcome');
 
 Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
@@ -101,7 +103,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // Employee Routes
 
-Route::get('/inventory-center', [InventoryController::class, 'index']); 
+Route::get('/inventory-center', [InventoryController::class, 'index']);
 
 
 

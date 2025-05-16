@@ -69,9 +69,13 @@ class ProductionController extends Controller
         // Insert items & quantities
         foreach ($request->item_ids as $index => $itemId) {
             $quantity = $request->quantities[$index];
-            DB::insert("INSERT INTO product_items (product_id, item_id, quantity, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())", [
+            if ($quantity > 0) {
+               DB::insert("INSERT INTO product_items (product_id, item_id, quantity, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())", [
                 $productId, $itemId, $quantity
-            ]);
+                ]);
+            }
+           
+            
         }
 
         // Insert images
@@ -147,9 +151,11 @@ class ProductionController extends Controller
         DB::delete("DELETE FROM product_items WHERE product_id = ?", [$id]);
         foreach ($request->item_ids as $index => $itemId) {
             $quantity = $request->quantities[$index];
+            if ($quantity > 0) {
             DB::insert("INSERT INTO product_items (product_id, item_id, quantity, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())", [
                 $id, $itemId, $quantity
             ]);
+        }
         }
 
         // Add new images
