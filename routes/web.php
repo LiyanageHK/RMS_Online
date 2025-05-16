@@ -32,9 +32,7 @@ Route::get('/about', function () {
 })->name('about');
 
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 
 //Route::get('/contact', function () {
    // return view('contact');
