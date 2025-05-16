@@ -227,17 +227,17 @@
                 </div>
 
                 <!-- Procurement Center -->
-                <div id="pronav">
-                    <button class="sidebar-btn" onclick="toggleMenu(this)">
-                        <span class="btn-content"><span class="material-icons">business</span> Procurement Center</span>
-                        <span class="material-icons toggle-icon">expand_more</span>
-                    </button>
-                    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
-                        <a href="#" class="submenu-link">Suppliers</a>
-                        <a href="#" class="submenu-link">Purchase Orders</a>
-                        <a href="#" class="submenu-link">Good Received Notes</a>
-                    </div>
-                </div>
+<div id="pronav">
+    <button class="sidebar-btn" onclick="toggleMenu(this)">
+        <span class="btn-content"><span class="material-icons">business</span> Procurement Center</span>
+        <span class="material-icons toggle-icon">expand_more</span>
+    </button>
+    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+        <a href="{{ route('suppliers.index') }}" class="submenu-link {{ request()->routeIs('suppliers.*') ? 'active' : '' }}">Suppliers</a>
+        <a href="{{ route('purchase_orders.index') }}" class="submenu-link {{ request()->routeIs('purchase_orders.*') ? 'active' : '' }}">Purchase Orders</a>
+        <a href="{{ route('grns.index') }}" class="submenu-link {{ request()->routeIs('grns.*') ? 'active' : '' }}">Good Received Notes</a>
+    </div>
+</div>
 
                 <div id="cusnav">
                     <button class="sidebar-btn">
@@ -257,11 +257,16 @@
                     </button>
                 </div>
 
-                <div id="empnav">
-                    <button class="sidebar-btn">
-                        <span class="btn-content"><span class="material-icons">people</span> Employee Center</span>
-                    </button>
-                </div>
+                <!-- Employee Center -->
+<div id="empnav">
+    <button class="sidebar-btn" onclick="toggleMenu(this)">
+        <span class="btn-content"><span class="material-icons">people</span> Employee Center</span>
+        <span class="material-icons toggle-icon">expand_more</span>
+    </button>
+    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+        <a href="{{ route('employees.index') }}" class="submenu-link {{ request()->routeIs('employees.*') ? 'active' : '' }}">Employees</a>
+    </div>
+</div>
 
                 <div id="accnav">
                     <button class="sidebar-btn" onclick="toggleMenu(this)">
@@ -273,7 +278,22 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Contact & Feedback Section -->
+<div id="contact-feedback-nav">
+    <button class="sidebar-btn" onclick="toggleMenu(this)">
+        <span class="btn-content"><span class="material-icons">message</span> Customer Relations Center</span>
+        <span class="material-icons toggle-icon">expand_more</span>
+    </button>
+    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+        <a href="{{ route('contact.index') }}" class="submenu-link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Contact Messages</a>
+        <a href="{{ route('feedback.index') }}" class="submenu-link {{ request()->routeIs('feedback.*') ? 'active' : '' }}">Feedback Messages</a>
+    </div>
+</div>
+
         </aside>
+
+        
         <!-- Material Icons CDN -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style>

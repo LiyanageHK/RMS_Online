@@ -3,20 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 use Illuminate\Database\Eloquent\Model;
 
-class Feedback extends Model
-
+class Order extends Model
+{
     use HasFactory;
 
     protected $fillable = [
-        'customer_name',
-        'feedback',
-        'rating',
+        'name',
+        'total',
+        'delivery_date',
+        'order_status',
     ];
-
-    protected $table = 'feedback';
-    protected $fillable = ['name', 'feedback'];
-
 }
+
