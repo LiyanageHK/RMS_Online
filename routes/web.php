@@ -170,7 +170,7 @@ Route::get('/inventory-center', [InventoryController::class, 'index']);
 
 
 
-   
+
 
 // Core resources
 Route::resource('suppliers', SupplierController::class);
@@ -214,7 +214,7 @@ Route::prefix('admin')->group(function () {
 //Route::get('/login', [AuthLogin::class, 'create'])->name('login');
 //Route::post('/login', [AuthLogin::class, 'store']);
 //Route::post('/logout', [AuthLogin::class, 'destroy'])->name('logout');
-Route::get('/admin/register', [RegUser::class, 'create'])->name('register');
+Route::get('/admin/register', [RegUser::class, 'create'])->name('admin.register');
 Route::post('/register', [RegUser::class, 'store']);
 Route::get('/register', [RegUser::class, 'create'])->name('register');
 Route::post('/register', [RegUser::class, 'store']);
@@ -289,7 +289,7 @@ Route::get('/drivers', [DriverController::class, 'driverListView'])->name('admin
 
 Route::get('/driver/allocation/details', [DriverController::class, 'allocationDetails'])->name('admin.driver.allocation.details');
 
-Route::match(['get', 'put'], '/admin/driver/delivery/{delivery_id}/edit', [DriverController::class, 'editDelivery'])->name('admin.driver.edit');
+//Route::match(['get', 'put'], '/admin/driver/delivery/{delivery_id}/edit', [DriverController::class, 'editDelivery'])->name('admin.driver.edit');
 
 
 
@@ -308,7 +308,7 @@ Route::get('/admin/driver/edit/delivery/{delivery_id}', [DriverController::class
 Route::match(['get', 'put'], '/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('admin.driver.edit');
 
 
-
+/*
 
 
 //Customer Side Login
@@ -320,7 +320,7 @@ Route::post('/login', [UserLoginController::class, 'login']);
 
 // Handle logout
 Route::post('/logout', [UserLoginController::class, 'logout'])->name('logout');
-
+*/
 // Example authenticated route
 Route::get('/homepage', function () {
     return view('homepage');

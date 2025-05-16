@@ -23,7 +23,7 @@ class UserLoginController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('/homepage');
         }
@@ -38,7 +38,7 @@ class UserLoginController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login');

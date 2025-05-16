@@ -75,3 +75,11 @@ class UserController extends Controller
         return redirect('/')->with('success', 'Registration successful! Welcome to Flame & Crust!.');
     }
 }
+
+
+
+
+
+
+
+

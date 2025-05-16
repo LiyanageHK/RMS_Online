@@ -41,7 +41,6 @@ class LoginController extends Controller
         ]);
     }
 
-
     protected function authenticated(Request $request, $employee)
     {
         Log::info('LoginController@authenticated called', ['employee_id' => $employee->id ?? null]);
@@ -58,8 +57,3 @@ class LoginController extends Controller
         return redirect('/admin/login');
     }
 }
-
-
-
-
-
