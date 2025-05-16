@@ -3,71 +3,63 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    // Show the login form
+    public function create()
     {
-        $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('logout');
+        Log::info('LoginController@create called');
+        return view('auth.login');
     }
 
-    protected function credentials(Request $request)
+    // Handle the login form submission (for employees/admins)
+    public function store(Request $request)
     {
-        return [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+        Log::info('LoginController@store called', ['request' => $request->all()]);
+
+        // Validate the login data
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'min:8'],
+        ]);
+
+        // Attempt to log the employee in using the 'admin' guard
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $request->session()->regenerate();
+            Log::info('LoginController@store: Login successful', ['email' => $credentials['email']]);
+            return redirect()->intended('/admin/home');  // Redirect to admin dashboard after login
+        }
+
+        // If login fails, return with an error
+        Log::warning('LoginController@store: Login failed', ['email' => $credentials['email']]);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
+
 
     protected function authenticated(Request $request, $employee)
     {
-        // Store employee details in session
-        session(['employee_details' => [
-            'id' => $employee->id,
-            'name' => $employee->name,
-            'email' => $employee->email,
-            'position' => $employee->position,
-            'phone' => $employee->phone,
-            'nic' => $employee->nic,
-        ]]);
-
-        return redirect()->intended($this->redirectPath());
+        Log::info('LoginController@authenticated called', ['employee_id' => $employee->id ?? null]);
+        return redirect('/admin/home');
     }
 
-    public function logout(Request $request)
+    // Logout the employee (admin)
+    public function destroy(Request $request)
     {
-        Auth::logout();
+        Log::info('LoginController@destroy called', ['user_id' => Auth::guard('admin')->id()]);
+        Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login');
+        return redirect('/admin/login');
     }
 }
+
+
+
+
+

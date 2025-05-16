@@ -15,48 +15,48 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- AdminLTE -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"> 
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
     <style>
         .profile-dropdown {
             min-width: 200px;
         }
-        
+
         .profile-dropdown .dropdown-header {
             background: #f8f9fa;
             padding: 10px;
             text-align: center;
         }
-        
+
         .profile-dropdown .user-info {
             padding: 10px;
             border-bottom: 1px solid #dee2e6;
         }
-        
+
         .profile-dropdown .dropdown-item {
             padding: 8px 15px;
             transition: all 0.3s ease;
         }
-        
+
         .profile-dropdown .dropdown-item:hover {
             background-color: #f8f9fa;
             padding-left: 20px;
         }
-        
+
         .profile-dropdown .dropdown-item i {
             width: 20px;
             margin-right: 10px;
             color: #6c757d;
         }
-        
+
         .profile-dropdown .dropdown-divider {
             margin: 5px 0;
         }
-        
+
         .navbar-nav .nav-link {
             padding: 0.5rem 1rem;
         }
-        
+
         .user-avatar {
             width: 32px;
             height: 32px;
@@ -103,7 +103,7 @@
     color: var(--primary-color) !important;
 }
 </style>
-    
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -209,8 +209,8 @@
                 </a>
 
 
-                 
-               
+
+
 
                 <div id="inventorynav">
                     <button class="sidebar-btn" onclick="toggleMenu(this)">
@@ -365,10 +365,10 @@
             function toggleMenu(button) {
                 const submenu = button.nextElementSibling;
                 const icon = button.querySelector('.toggle-icon');
-                
+
                 // Check if any submenu link is active
                 const hasActiveLink = submenu.querySelector('.submenu-link.active') !== null;
-                
+
                 if (hasActiveLink) {
                     submenu.style.display = "block";
                     icon.textContent = "expand_less";
@@ -429,7 +429,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-    
+
     @stack('scripts')
 </body>
 </html>

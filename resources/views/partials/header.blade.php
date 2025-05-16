@@ -36,10 +36,13 @@
         </button>
         <nav id="mainNav">
             <ul>
+
+
                 <li><a href="{{ route('welcome') }}" @if(Request::routeIs('welcome')) class="active" @endif>HOME</a></li>
                 <li><a href="{{ route('menu') }}" @if(Request::routeIs('menu')) class="active" @endif>MENU</a></li>
                 <li><a href="{{ route('about') }}" @if(Request::routeIs('about')) class="active" @endif>ABOUT US</a></li>
                 <li><a href="{{ route('contact') }}" @if(Request::routeIs('contact')) class="active" @endif>CONTACT US</a></li>
+
                 <li><a href="{{ route('login') }}">LOGIN</a></li>
             </ul>
         </nav>

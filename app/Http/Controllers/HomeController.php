@@ -34,10 +34,10 @@ class HomeController extends Controller
 
         // Get monthly sales data for chart
         $monthlySales = DB::select("
-            SELECT 
+            SELECT
                 DATE_FORMAT(created_at, '%b') as month,
                 COUNT(*) as count
-            FROM products 
+            FROM products
             WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
             GROUP BY DATE_FORMAT(created_at, '%b')
             ORDER BY created_at ASC
@@ -45,7 +45,7 @@ class HomeController extends Controller
 
         // Get product status distribution
         $productStatus = DB::select("
-            SELECT 
+            SELECT
                 status,
                 COUNT(*) as count
             FROM products
@@ -63,5 +63,5 @@ class HomeController extends Controller
         ));
     }
 
-    
+
 }
