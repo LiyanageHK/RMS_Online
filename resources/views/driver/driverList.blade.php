@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="allocation-container">
-        <h2>Driver List</h2>
+        <h2>Driver List</h2> <br><br>
 
         @if (session('success'))
             <div class="alert success">{{ session('success') }}</div>
@@ -21,10 +21,13 @@
         @if ($drivers->isEmpty())
             <p>No drivers found.</p>
         @else
-            <table class="driver-table">
+            <!-- Search input for driver list -->
+            <input type="text" id="searchDrivers" placeholder="Search drivers..." class="search-input">
+
+            <table class="driver-table" id="driversTable">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Employee ID</th>
                         <th>Name</th>
                         <th>NIC</th>
                         <th>Email</th>
@@ -52,51 +55,66 @@
         @endif
     </div>
 
+    <div class="allocation-container">
+        <h2>Drivers Currently on Ride</h2>  <br><br>
 
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
-    <div class="container">
-    <h2>Drivers Currently on Ride</h2>
+        @if(isset($driversOnRide) && $driversOnRide->count() > 0)
+            <!-- Search input for drivers on ride -->
+            <input type="text" id="searchDriversOnRide" placeholder="Search drivers on ride..." class="search-input">
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if(isset($driversOnRide) && $driversOnRide->count() > 0)
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Driver Name</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Assigned Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($driversOnRide as $driver)
+            <table class="driver-table" id="driversOnRideTable">
+                <thead>
                     <tr>
-                        <td>{{ $driver->assigned_to }}</td>
-                        <td>{{ $driver->phone }}</td>
-                        <td>{{ $driver->address }}</td>
-                        <td>{{ \Carbon\Carbon::parse($driver->created_at)->format('Y-m-d H:i') }}</td>
+                        <th>Driver Name</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Assigned Date</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p>No drivers are currently on ride.</p>
-    @endif
-</div>
+                </thead>
+                <tbody>
+                    @foreach($driversOnRide as $driver)
+                        <tr>
+                            <td>{{ $driver->name }}</td>
+                            <td>{{ $driver->phone }}</td>
+                            <td>{{ $driver->address_line1 ?? '' }} {{ $driver->address_line2 ?? '' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($driver->order_created_at)->format('Y-m-d H:i') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <p>No drivers are currently on ride.</p>
+        @endif
+    </div>
 
+<script>
+    // Generic function to filter table rows by search input value
+    function setupTableSearch(inputId, tableId) {
+        const input = document.getElementById(inputId);
+        const table = document.getElementById(tableId);
+        if (!input || !table) return;
 
+        input.addEventListener('keyup', function() {
+            const filter = input.value.toLowerCase();
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
 
+            for (let i = 0; i < rows.length; i++) {
+                let rowText = rows[i].textContent.toLowerCase();
+                rows[i].style.display = rowText.indexOf(filter) > -1 ? '' : 'none';
+            }
+        });
+    }
 
-
-
-
+    // Initialize search for both tables
+    setupTableSearch('searchDrivers', 'driversTable');
+    setupTableSearch('searchDriversOnRide', 'driversOnRideTable');
+</script>
 
 @endsection
-
-
 
 <style>
     .allocation-container {
@@ -151,5 +169,15 @@
     .driver-table tr:hover {
         background-color: #f1f1f1;
     }
-</style>
 
+    .search-input {
+        width: 100%;
+        max-width: 1000px;
+        margin: 10px auto 20px auto;
+        display: block;
+        padding: 8px 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+</style>

@@ -10,8 +10,9 @@
         </h1>
     </div>
 
-    <form action="{{ route('driver.update.delivery', ['delivery_id' => $delivery->delivery_id]) }}" method="POST">
+    <form action="{{ route('admin.driver.edit', ['delivery_id' => $delivery->delivery_id]) }}" method="POST">
         @csrf
+         @method('PUT')
         <div style="background-color: #ffffff; padding: 20px 30px; border-bottom: 1px solid #ddd;">
             <div style="margin-bottom: 15px;">
                 <label for="order_id" style="font-weight: bold;">Order ID</label>
@@ -39,9 +40,16 @@
             </div>
 
             <div style="margin-bottom: 15px;">
-                <label for="assigned_to" style="font-weight: bold;">Assigned To</label>
-                <input type="text" id="assigned_to" name="assigned_to" value="{{ $delivery->assigned_to }}" style="width: 100%; padding: 8px; border: 1px solid #ddd;">
+                <label for="driver_id" style="font-weight: bold;">Assign Driver</label>
+                <select id="driver_id" name="driver_id" style="width: 100%; padding: 8px; border: 1px solid #ddd;">
+                    @foreach($drivers as $driver)
+                        <option value="{{ $driver->id }}" {{ $delivery->driver_id == $driver->id ? 'selected' : '' }}>
+                            {{ $driver->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
+
 
             <div style="margin-bottom: 15px;">
                 <button type="submit" style="background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; border: none; cursor: pointer;">
@@ -53,7 +61,7 @@
     </form>
 
     <div style="margin: 20px 0;">
-        <a href="{{ route('driver.allocation.details') }}" style="text-decoration: none; color: #007bff; font-weight: bold; font-size: 16px;">
+        <a href="{{ route('admin.driver.allocation.details') }}" style="text-decoration: none; color: #007bff; font-weight: bold; font-size: 16px;">
             ← Back to Allocation Details
         </a>
     </div>

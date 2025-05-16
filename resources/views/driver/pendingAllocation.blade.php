@@ -31,7 +31,7 @@
                         <td style="padding: 12px; border: 1px solid #ddd;">Rs. {{ number_format($order->total, 2) }}</td>
                         <td style="padding: 12px; border: 1px solid #ddd;">{{ $order->order_status }}</td>
                         <td style="padding: 12px; border: 1px solid #ddd;">
-                            <a href="{{ route('driver.allocate', ['order_id' => $order->id]) }}"
+                            <a href="{{ route('admin.driver.allocate', ['order_id' => $order->id]) }}"
                                style="text-decoration: none; background-color: #E7592B; color: white; padding: 10px 20px; border-radius: 5px; display: inline-block; font-weight: bold;">
                                 Allocate Driver
                             </a>
@@ -48,7 +48,7 @@
         <!-- Action Buttons -->
         <br><br>
         <div style="display: flex; justify-content: space-between; gap: 12px;">
-            <a href="{{ route('driver.allocation.details') }}"
+            <a href="{{ route('admin.driver.allocation.details') }}"
                style="text-decoration: none; background-color: #E7592B; color: white; padding: 12px 20px; border-radius: 5px; text-align: center; font-weight: bold;">
                 Driver Allocation Details
             </a>

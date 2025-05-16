@@ -1,205 +1,89 @@
-    /* Header Styles */
-    header {
-        background-color: var(--text-light);
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        position: fixed;
-        width: 100%;
-        z-index: 1000;
-    }
+/* Profile Page Styles */
 
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 0;
-    }
-
-    .logo {
-        display: flex;
-        align-items: center;
-    }
-
-    .logo h1 {
-        font-size: 28px;
-        color: var(--primary-red);
-        margin-left: 10px;
-    }
-
-    .logo span {
-        display: block;
-        font-size: 14px;
-        font-family: 'Poppins', sans-serif;
-        font-weight: 500;
-        letter-spacing: 2px;
-    }
-
-    nav ul {
-        display: flex;
-        list-style: none;
-    }
-
-    nav ul li {
-        margin-left: 30px;
-    }
-
-    nav ul li a {
-        text-decoration: none;
-        color: var(--text-dark);
-        font-weight: 500;
-        transition: color 0.3s;
-    }
-
-    nav ul li a:hover {
-        color: var(--primary-red);
-    }
-
-    /* Mobile Menu */
-.mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
+:root {
+    --primary-color: #ffa500;
+    --background-light: #f9f9f9;
+    --text-dark: #333;
+    --text-muted: #666;
+    --border-color: #ddd;
 }
 
-
-/* General Header */
-header {
-    background-color: #1f1f1f;
-    padding: 1rem 0;
-    color: white;
-    position: relative;
-    z-index: 1000;
+/* General Layout */
+.profile-container {
+    max-width: 900px;
+    margin: 120px auto 50px;
+    padding: 2rem;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
 }
 
-/* Container */
-.header-container {
+/* Profile Header */
+.profile-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    margin-bottom: 2rem;
 }
 
-
-/* Logo */
-.logo h1 {
-    margin: 0;
-    font-size: 1.5rem;
+.profile-header h2 {
+    font-size: 1.8rem;
+    color: var(--text-dark);
 }
 
-.logo span {
+.profile-header .edit-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
     font-size: 0.9rem;
-    color: #ffa500;
-}
-
-/* Navigation */
-nav ul {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav ul li a.active {
-    border-bottom: 2px solid #ffa500;
-}
-
-.mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-}
-
-/* Dropdown for logged-in user */
-.user-dropdown {
-    position: relative;
-}
-
-.user-dropdown > a {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    cursor: pointer;
-}
-
-.user-menu {
-    display: none;
-    position: absolute;
-    background-color: #333;
-    right: 0;
-    top: 100%;
-    list-style: none;
-    margin: 0;
-    padding: 0.5rem;
     border-radius: 5px;
-    min-width: 150px;
-}
-
-.user-menu li {
-    margin: 0.5rem 0;
-}
-
-.user-menu a, .user-menu button {
-    color: white;
-    background: none;
-    border: none;
     cursor: pointer;
-    text-align: left;
-    width: 100%;
-    padding: 0.3rem 0;
 }
 
-.user-dropdown:hover .user-menu {
-    display: block;
+.profile-header .edit-button:hover {
+    background-color: #e69500;
 }
 
-/* Responsive Menu */
+/* Profile Info Section */
+.profile-info {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    row-gap: 1.2rem;
+    column-gap: 1rem;
+}
+
+.profile-info label {
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.profile-info .value {
+    color: var(--text-dark);
+    font-weight: 500;
+    word-break: break-word;
+}
+
+/* Avatar (if applicable) */
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .mobile-menu-btn {
-        display: block;
+    .profile-info {
+        grid-template-columns: 1fr;
     }
 
-    nav {
-        display: none;
-        width: 100%;
-        background-color: #1f1f1f;
-    }
-
-    nav.active {
-        display: block;
-    }
-
-    nav ul {
+    .profile-header {
         flex-direction: column;
         align-items: flex-start;
-        padding: 1rem;
-    }
-
-    nav ul li {
-        margin-bottom: 1rem;
+        gap: 1rem;
     }
 }
-
-
-
-/* Mobile Menu */
-.mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-}
-

@@ -68,33 +68,10 @@ class UserController extends Controller
             'profile_image' => $profileImagePath,
         ]);
 
-
-
-
-
         // Auto-login the user after successful registration
-        Auth::login($user);
+        Auth::guard('web')->login($user);
 
         // Redirect to home page or dashboard
         return redirect('/')->with('success', 'Registration successful! Welcome to Flame & Crust!.');
     }
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-

@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\InventoryController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController as AuthLogin;
 use App\Http\Controllers\Auth\UserController as RegUser;
-use App\Http\Controllers\DriverController;
+use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 //use App\Http\Controllers\Auth\LoginController;
@@ -43,18 +43,9 @@ Route::get('/contact', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
-//Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-//Route::post('/login', [LoginController::class, 'login']);
-
-
-//Route::get('/login', [LoginController::class, 'create'])->name('login');
-//Route::post('/login', [LoginController::class, 'login']);
 
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-
-
-Route::put('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
 
 
 
@@ -66,7 +57,7 @@ Auth::routes();
 
 
 
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
     // 🔸 Category CRUD
     Route::get('categories', [ItemCategoryController::class, 'index'])->name('admin.categories.index');
@@ -125,9 +116,20 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('/low-stock', [InventoryController::class, 'lowStock'])->name('admin.inventory.low-stock');
     });
 
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+
+
+
+
+
+
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 // Employee Routes
 
@@ -141,14 +143,14 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //Route::get('/login', [AuthLogin::class, 'create'])->name('login');
 //Route::post('/login', [AuthLogin::class, 'store']);
 //Route::post('/logout', [AuthLogin::class, 'destroy'])->name('logout');
-
+Route::get('/admin/register', [RegUser::class, 'create'])->name('register');
+Route::post('/register', [RegUser::class, 'store']);
 Route::get('/register', [RegUser::class, 'create'])->name('register');
 Route::post('/register', [RegUser::class, 'store']);
 
 
 
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/profile', [ProfileController::class, 'show'])->middleware('auth');
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 Route::put('/profile/update/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
@@ -191,36 +193,49 @@ Route::get('/loyalty/insert', [CustomerController::class, 'insertLoyalCustomers'
 
 
 
-//driver
 
-Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('driver.pendingAllocation');   // Route to display pending allocation
+// Driver Routes
 
+
+
+Route::get('/driver/allocate', [DriverController::class, 'allocateDriver'])->name('admin.driver.allocate');
+//Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('admin.driver.pendingAllocation');
+Route::get('/driver/orders/dispatched', [DriverController::class, 'showDispatchedOrders'])->name('admin.driver.orders.dispatched'); //for Delivery Confirmation
+Route::get('/delivery-history', [DriverController::class, 'deliveryHistory'])->name('admin.delivery.history');   //delivery History
 // Route for Driver Allocation Details
-Route::get('/driver-allocation-details', [DriverController::class, 'driverAllocationDetails'])->name('driver.allocationDetails');
-Route::get('/driver/allocate/{order_id}', [DriverController::class, 'allocateDriver'])->name('driver.allocate');
-Route::post('/driver/store-allocation', [DriverController::class, 'storeAllocation'])->name('driver.storeAllocation');
-Route::get('/driver/allocate', [DriverController::class, 'allocateDriver'])->name('driver.allocate');
-Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('pending-allocation');
-Route::get('/driver/allocate', [DriverController::class, 'allocateDriver'])->name('driver.allocate');
-Route::get('/driver/allocation/details', [DriverController::class, 'allocationDetails'])->name('driver.allocation.details');
-Route::get('/pending-allocations', [DriverController::class, 'pendingAllocation'])->name('pendingAllocation');
-Route::get('/driver/pending-allocation', [DriverController::class, 'pendingAllocation'])->name('driver.pendingAllocation');
-Route::get('/pending-allocations', [DriverController::class, 'pendingAllocation']);
-Route::get('/pending-allocation', [DriverController::class, 'pendingAllocation'])->name('pendingAllocation');
-Route::delete('/driver/delete/delivery/{delivery_id}', [DriverController::class, 'deleteDelivery'])->name('driver.delete.delivery');
-Route::match(['get', 'put'], '/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('driver.edit.delivery');
-Route::post('driver/update/delivery/{delivery_id}', [DriverController::class, 'updateDelivery'])->name('driver.update.delivery');
-Route::get('/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('driver.edit.delivery');  // Route to show the delivery edit form
-Route::put('/driver/edit/delivery/{delivery_id}', [DriverController::class, 'updateDelivery'])->name('driver.update.delivery');   // Route to update the delivery
-Route::get('/drivers', [DriverController::class, 'driverListView'])->name('driver.list');  //Display Driver List in Admin Panel
+Route::get('/driver-allocation-details', [DriverController::class, 'driverAllocationDetails'])->name('admin.driver.allocationDetails');
+Route::post('/driver/store-allocation', [DriverController::class, 'storeAllocation'])->name('admin.driver.storeAllocation');
+Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('admin.pending-allocation');
+//Route::get('/driver/allocation/details', [DriverController::class, 'allocationDetails'])->name('admin.driver.allocation.details');
+Route::get('/pending-allocations', [DriverController::class, 'pendingAllocation'])->name('admin.pendingAllocation');
+Route::get('/driver/pending-allocation', [DriverController::class, 'pendingAllocation'])->name('admin.driver.pendingAllocation');
+//Route::get('/pending-allocation', [DriverController::class, 'pendingAllocation'])->name('admin.pendingAllocation');
+Route::delete('/driver/delete/delivery/{delivery_id}', [DriverController::class, 'deleteDelivery'])->name('admin.driver.delete.delivery');
+
+Route::match(['get', 'put'], '/driver/edit/delivery/{delivery_id}', [DriverController::class, 'admin.editDelivery'])->name('admin.driver.edit.delivery');
+
+Route::get('/drivers', [DriverController::class, 'driverListView'])->name('admin.driver.list');  //Display Driver List in Admin Panel
+
+Route::get('/driver/allocation/details', [DriverController::class, 'allocationDetails'])->name('admin.driver.allocation.details');
+
+Route::match(['get', 'put'], '/admin/driver/delivery/{delivery_id}/edit', [DriverController::class, 'editDelivery'])->name('admin.driver.edit');
+
 
 
 //to display drivers on ride
-Route::get('/drivers-on-ride', [DriverController::class, 'showDriversOnRide']);
-Route::get('/drivers', [DriverController::class, 'driverListView'])->name('driver.list');
+Route::get('/drivers-on-ride', [DriverController::class, 'showDriversOnRide'])->name('admin.showDriversOnRide');
 
-//delivery History
-Route::get('/delivery-history', [DriverController::class, 'deliveryHistory'])->name('delivery.history');
+
+Route::get('/admin/driver/download-report/{orderId}', [DriverController::class, 'downloadReport'])
+    ->name('admin.driver.downloadReport');
+
+
+Route::get('/admin/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])
+    ->name('admin.driver.edit.delivery');
+
+
+Route::match(['get', 'put'], '/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('admin.driver.edit');
+
 
 
 
@@ -242,18 +257,35 @@ Route::get('/homepage', function () {
 
 
 
+
+
 //customer profile change password
 Route::put('/profile/change-password/{user}', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
 
+// ===================== ADMIN (EMPLOYEE) LOGIN =====================
+Route::get('/admin/login', [AuthLogin::class, 'create'])->name('admin.login');
+Route::post('/admin/login', [AuthLogin::class, 'store']);
+Route::post('/admin/logout', [AuthLogin::class, 'destroy'])->name('admin.logout');
+
+// ===================== USER (CLIENT) LOGIN =====================
+Route::get('/login', [UserLoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [UserLoginController::class, 'login']);
+Route::post('/logout', [UserLoginController::class, 'logout'])->name('logout');
 
 
-//customer adimin panel
-//Route::prefix('admin/customer')->group(function () {
 
 
-//    Route::get('/loyalty', function () {
-  //      return view('customer.cusLoyalty');
-    //})->name('customer.loyalty');
 
 
-//});// chnage this
+
+
+//Mark order as delivered in order table
+
+Route::patch('/driver/orders/{order}/mark-delivered', [DriverController::class, 'markOrderDelivered'])->name('admin.driver.orders.markDelivered');
+
+
+//Custmer Email Notification
+Route::get('/send-email', function () {
+    $customers = \App\Models\User::paginate(10);
+    return view('customer.emailService', compact('customers'));
+})->name('email.form');

@@ -1,44 +1,47 @@
 /* Container */
 .profile-container {
-    max-width: 800px;
-    margin: 100px auto 50px auto;
-    padding: 20px;
+    max-width: 1200px;   /* wider max-width */
+    margin: 50px auto 50px auto;  /* reduced top margin */
+    padding: 40px 50px;  /* increased padding */
     background-color: #fefefe;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 80vh; /* fill more vertical space */
 }
 
-/* Welcome Title */
+/* Increase font sizes for better fill */
 .profile-container h2 {
-    font-size: 26px;
+    font-size: 32px;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
-/* Date */
 .profile-container p {
     color: #666;
-    font-size: 14px;
+    font-size: 16px;
+    margin-bottom: 20px;
 }
 
 /* Profile Card */
 .profile-card {
     background: #fafafa;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 10px;
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 12px;
     border: 1px solid #ddd;
 }
 
 .profile-card h3 {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     color: #222;
+    font-size: 28px;
 }
 
 .profile-card p {
-    margin: 8px 0;
+    margin: 12px 0;
     color: #555;
+    font-size: 16px;
 }
 
 /* Edit Modal */
@@ -171,39 +174,30 @@ form#profileForm {
     background-color: #21867a;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-    .modal-content {
-        width: 95%;
-    }
-
-    .profile-container {
-        margin-top: 120px;
-        padding: 15px;
-    }
-}
-
-
-
-
-/*Profile sidebar*/
+/* Profile Sidebar */
+/* Profile Layout: use flex with gap to fill more horizontally */
 .profile-layout {
     display: flex;
     flex-direction: row;
-    gap: 30px;
+    gap: 40px;
 }
-
 .profile-main {
     flex: 2;
 }
 
+/* Sidebar larger, with some more padding */
 .profile-sidebar {
     flex: 1;
     background-color: #f7f7f7;
-    border-radius: 10px;
-    padding: 20px;
-    height: fit-content;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    min-height: 300px;
+}
+
+/* Button Group spacing */
+.button-group {
+    margin-top: 40px;
 }
 
 .profile-sidebar h4 {
@@ -213,19 +207,93 @@ form#profileForm {
 
 .profile-sidebar ul {
     list-style: none;
-    padding-left: 0;
+    padding: 0;
 }
 
 .profile-sidebar li {
     margin-bottom: 10px;
+    color: #555;
 }
 
-.profile-sidebar a {
-    color: #2a9d8f;
-    text-decoration: none;
-    font-weight: 500;
+/* Profile Icon Section */
+.profile-sections.icon-only {
+    margin-top: 20px;
+    text-align: center;
 }
 
-.profile-sidebar a:hover {
-    text-decoration: underline;
+.profile-sections .icon-link {
+    margin: 0 10px;
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+.profile-sections .icon-link:hover {
+    color: #000;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 900px) {
+    .profile-container {
+        padding: 30px 25px;
+    }
+
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        padding: 20px;
+        margin-top: 30px;
+    }
+}
+
+.floating-cart {
+    position: fixed;
+    bottom: 30px;   /* Distance from the bottom */
+    right: 30px;    /* Distance from the right */
+    background-color: #ff4500;  /* Choose a visible background color */
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    z-index: 1000;  /* So it floats above other content */
+    transition: background-color 0.3s ease;
+}
+
+.floating-cart:hover {
+    background-color: #e03e00;
+}
+
+
+.loyalty-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-left: 10px;
+}
+
+.loyalty-badge.bronze {
+    background-color: #cd7f32;
+}
+
+.loyalty-badge.silver {
+    background-color: #c0c0c0;
+    color: #000;
+}
+
+.loyalty-badge.gold {
+    background-color: #ffd700;
+    color: #000;
+}
+
+.loyalty-badge.platinum {
+    background: linear-gradient(135deg, #e5e4e2, #b5b5b5);
+    color: #000;
 }

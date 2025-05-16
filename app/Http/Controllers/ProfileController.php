@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\LoyaltyCustomer;
 
 
 class ProfileController extends Controller
@@ -87,31 +88,26 @@ public function update(Request $request, $id)
 }
 
 
-//change customer password
+//disply loyalty  level in customer profile
 
-public function changePassword(Request $request, $user_id)
+
+public function showLoyaltyCustomers($id)
 {
-    $request->validate([
-        'current_password' => 'required',
-        'new_password' => ['required', 'confirmed', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#]).+$/'],
-    ]);
+    $user = User::findOrFail($id);
+    $loyalty = LoyaltyCustomer::where('user_id', $user->user_id)->first();
 
-    $user = User::findOrFail($user_id);
-
-    if (!Hash::check($request->current_password, $user->password)) {
-        return back()->withErrors(['current_password' => 'Current password is incorrect.']);
-    }
-
-    $user->password = Hash::make($request->new_password);
-    $user->save();
-
-    return back()->with('success', 'Password updated successfully.');
+    return view('profile', compact('user', 'loyalty'));
 }
 
 
+//dispalay order history in Custome profile
+public function orderHistory()
+{
+    $userId = Auth::id();
+    $orders = Order::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
 
-
-
+    return view('profile_orderdetails', compact('orders'));
+}
 
 
 

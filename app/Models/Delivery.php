@@ -22,11 +22,10 @@ class Delivery extends Model
 
     use HasFactory;
 
-    protected $table = 'delivery'; // change 'your_table_name' to the actual table name in your DB
-    protected $primaryKey = 'delivery_id'; // Change this to your actual column name
-    public $incrementing = false; // Set to false if it's not auto-incrementing
-    protected $keyType = 'string'; // Use 'int' if your primary key is an integer
-
+    protected $table = 'delivery';
+    protected $primaryKey = 'delivery_id';
+    public $incrementing = 'ture';
+    protected $keyType = 'int';
 
 
 

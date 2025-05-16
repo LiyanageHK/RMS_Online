@@ -7,9 +7,7 @@
             <h1>Allocate Driver for Order #{{ $order->id }}</h1>
         </div>
 
-        @if (session('success'))
-            <div class="alert success">{{ session('success') }}</div>
-        @endif
+
 
         @if ($errors->any())
             <div class="alert error">
@@ -21,7 +19,7 @@
             </div>
         @endif
 
-        <form action="{{ route('driver.storeAllocation') }}" method="POST" class="allocation-form" id="allocationForm">
+        <form action="{{ route('admin.driver.storeAllocation') }}" method="POST" class="allocation-form" id="allocationForm">
             @csrf
 
             <input type="hidden" name="order_id" value="{{ $order->id }}">
@@ -146,7 +144,7 @@
         @if (session('success'))
             window.onload = function() {
                alert('{{ session('success') }}'); // Show the pop-up message
-                window.location.href = '{{ route('driver.pendingAllocation') }}'; // Redirect to the pending allocation page
+                window.location.href = '{{ route('admin.driver.pendingAllocation') }}'; // Redirect to the pending allocation page
             };
         @endif
     </script>
