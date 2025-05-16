@@ -19,20 +19,20 @@ class InventoryController extends Controller
                 'item_categories.name as category_name',
                 'items.price',
                 'items.description',
-                DB::raw('COALESCE(grn.received_qty, 0) as total_received'),
+                DB::raw('COALESCE(grn.quantity, 0) as total_received'),
                 DB::raw('COALESCE(orders.ordered_qty, 0) as total_ordered'),
-                DB::raw('COALESCE(grn.received_qty, 0) - COALESCE(orders.ordered_qty, 0) as current_stock')
+                DB::raw('COALESCE(grn.quantity, 0) - COALESCE(orders.ordered_qty, 0) as current_stock')
             )
-            ->leftJoin(DB::raw('(SELECT item_id, SUM(received_qty) as received_qty 
+            ->leftJoin(DB::raw('(SELECT item_id, SUM(quantity) as quantity 
                                 FROM grn_items 
                                 GROUP BY item_id) as grn'), 
                       'items.id', '=', 'grn.item_id')
-            ->leftJoin(DB::raw('(SELECT item_id, SUM(quantity) as ordered_qty 
+            ->leftJoin(DB::raw('(SELECT product_id, SUM(quantity) as ordered_qty 
                                 FROM order_details 
                                 JOIN orders ON order_details.order_id = orders.id 
                                 WHERE orders.order_status = "Completed" 
-                                GROUP BY item_id) as orders'), 
-                      'items.id', '=', 'orders.item_id')
+                                GROUP BY product_id) as orders'), 
+                      'items.id', '=', 'orders.product_id')
             ->orderBy('item_categories.name')
             ->orderBy('items.name')
             ->get();
@@ -65,14 +65,14 @@ class InventoryController extends Controller
         // Get order history
         $orderHistory = DB::table('order_details')
             ->join('orders', 'order_details.order_id', '=', 'orders.id')
-            ->where('order_details.item_id', $id)
+            ->where('order_details.product_id', $id)
             ->where('orders.order_status', 'Completed')
             ->select('order_details.*', 'orders.created_at as order_date')
             ->orderBy('orders.created_at', 'desc')
             ->get();
 
         // Calculate current stock
-        $totalReceived = $grnHistory->sum('received_qty');
+        $totalReceived = $grnHistory->sum('quantity');
         $totalOrdered = $orderHistory->sum('quantity');
         $currentStock = $totalReceived - $totalOrdered;
 
@@ -89,24 +89,24 @@ class InventoryController extends Controller
                 'items.name as item_name',
                 'item_categories.name as category_name',
                 'items.price',
-                DB::raw('COALESCE(grn.received_qty, 0) as total_received'),
+                DB::raw('COALESCE(grn.quantity, 0) as total_received'),
                 DB::raw('COALESCE(orders.ordered_qty, 0) as total_ordered'),
-                DB::raw('COALESCE(grn.received_qty, 0) - COALESCE(orders.ordered_qty, 0) as current_stock')
+                DB::raw('COALESCE(grn.quantity, 0) - COALESCE(orders.ordered_qty, 0) as current_stock')
             )
-            ->leftJoin(DB::raw('(SELECT item_id, SUM(received_qty) as received_qty 
+            ->leftJoin(DB::raw('(SELECT item_id, SUM(quantity) as quantity 
                                 FROM grn_items 
                                 GROUP BY item_id) as grn'), 
                       'items.id', '=', 'grn.item_id')
-            ->leftJoin(DB::raw('(SELECT item_id, SUM(quantity) as ordered_qty 
+            ->leftJoin(DB::raw('(SELECT product_id, SUM(quantity) as ordered_qty 
                                 FROM order_details 
                                 JOIN orders ON order_details.order_id = orders.id 
                                 WHERE orders.order_status = "Completed" 
-                                GROUP BY item_id) as orders'), 
-                      'items.id', '=', 'orders.item_id')
+                                GROUP BY product_id) as orders'), 
+                      'items.id', '=', 'orders.product_id')
             ->having('current_stock', '<', 10)
             ->orderBy('current_stock')
             ->get();
 
         return view('admin.inventory.low-stock', compact('lowStock'));
     }
-} 
+}
