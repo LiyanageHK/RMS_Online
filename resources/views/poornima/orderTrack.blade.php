@@ -59,23 +59,24 @@
             .then(data => {
                 let itemsHtml = '';
                 data.items.forEach(item => {
-                    itemsHtml += `<li class="list-group-item">${item.product_name} ${item.extra_toppings !== 'N/A' ? 'with extra toppings' : ''} × ${item.quantity}</li>`;
+                    itemsHtml += `<li class="list-group-item">${item.size} ${item.product_name} ${item.extra_toppings !== 'N/A' ? 'with extra toppings' : ''} × ${item.quantity}</li>`;
                 });
 
                 document.getElementById('order-items-' + orderId).innerHTML = `<ul class="list-group mb-3">${itemsHtml}</ul>`;
                 document.getElementById('status-label-' + orderId).innerText = data.order_status;
 
                 const progressMap = {
+                    'Ordered': 0,
                     'Confirmed': 20,
                     'Preparing': 40,
-                    'Prepared': 60,
-                    'Delivering': 80,
+                    'Waiting for Delivery': 60,
+                    'Dispatched ': 80,
                     'Delivered': 100
                 };
                 document.getElementById('status-bar-' + orderId).style.width = progressMap[data.order_status] + '%';
                 document.getElementById('status-bar-' + orderId).innerText = data.order_status;
 
-                if (data.order_status === 'Confirmed') {
+                if (data.order_status === 'Confirmed' || data.order_status === 'Ordered') {
                     document.getElementById('cancel-form-' + orderId).style.display = 'block';
                 } else {
                     document.getElementById('cancel-form-' + orderId).style.display = 'none';

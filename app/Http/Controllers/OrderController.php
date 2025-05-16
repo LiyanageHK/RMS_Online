@@ -51,7 +51,7 @@ class OrderController extends Controller
                 'total' => $total,
                 'u_id' => Auth::id(),
                 'payment_status' => 'Cash on Delivery',
-                'order_status' => 'Confirmed',
+                'order_status' => 'Ordered',
             ]);
 
             foreach ($cartItems as $item) {
@@ -59,6 +59,7 @@ class OrderController extends Controller
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
                     'product_name' => $item->product->name ?? 'Unknown',
+                    'size'=>  $item->size,
                     'quantity' => $item->quantity,
                     'extra_toppings' => $item->extra_toppings ?? 'N/A',
                 ]);
@@ -131,7 +132,7 @@ class OrderController extends Controller
             'total' => $total,
             'u_id' => Auth::id(),
             'payment_status' => 'Paid',
-            'order_status' => 'Confirmed',
+            'order_status' => 'Ordered',
         ]);
 
         foreach ($cartItems as $item) {
@@ -139,6 +140,7 @@ class OrderController extends Controller
                 'order_id' => $order->id,
                 'product_id' => $item->product_id,
                 'product_name' => $item->product->name ?? 'Unknown',
+                'size'=>  $item->size,
                 'quantity' => $item->quantity,
                 'extra_toppings' => $item->extra_toppings ?? 'N/A',
             ]);
@@ -169,7 +171,7 @@ class OrderController extends Controller
     public function getOrderDetails($id)
 {
     $order = Order::where('id', $id)->where('u_id', Auth::id())->firstOrFail();
-    $items = OrderDetail::where('order_id', $order->id)->get(['product_name', 'quantity', 'extra_toppings']);
+    $items = OrderDetail::where('order_id', $order->id)->get(['product_name', 'quantity', 'extra_toppings','size']);
 
     return response()->json([
         'order_status' => $order->order_status,
@@ -182,7 +184,7 @@ class OrderController extends Controller
         {
             $order = Order::where('id', $id)->where('u_id', Auth::id())->firstOrFail();
 
-            if ($order->order_status === 'Confirmed') {
+            if ($order->order_status === 'Confirmed' || $order->order_status === 'Ordered' ) {
                 $order->order_status = 'Cancelled';
                 $order->save();
 
