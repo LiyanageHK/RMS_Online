@@ -1,9 +1,8 @@
-    @extends('layouts.appclient')
+@extends('layouts.appclient')
    
     <style>
         :root {
-            --primary-red: #E7592B;
-            --dark-red: #E7592B;
+            --primary-orange: #E7592B;
             --light-red: #ff6b6b;
             --dark-bg: #1a1a1a;
             --light-bg: #f9f9f9;
@@ -60,7 +59,7 @@
 
         .logo h1 {
             font-size: 28px;
-            color: var(--primary-red);
+            color: var(--primary-orange);
             margin-left: 10px;
         }
 
@@ -89,7 +88,7 @@
         }
 
         nav ul li a:hover {
-            color: var(--primary-red);
+            color: var(--primary-orange);
         }
 
         /* Hero Section */
@@ -133,7 +132,7 @@
         }
 
         .feature-title {
-            color: var(--primary-red);
+            color: var(--primary-orange);
             font-size: 24px;
             margin-bottom: 15px;
             font-family: 'Playfair Display', serif;
@@ -169,7 +168,7 @@
 
         .btn {
             display: inline-block;
-            background-color: var(--primary-red);
+            background-color: var(--primary-orange);
             color: var(--text-light);
             padding: 12px 30px;
             border-radius: 30px;
@@ -179,7 +178,7 @@
         }
 
         .btn:hover {
-            background-color: var(--dark-red);
+            background-color: var(--primary-orange);
         }
 
         /* Pizza Sizes Section */
@@ -208,7 +207,7 @@
         }
 
         .size-title {
-            color: var(--primary-red);
+            color: var(--primary-orange);
             font-size: 32px;
             margin-bottom: 10px;
             font-family: 'Playfair Display', serif;
@@ -294,7 +293,7 @@
 
         .section-title h2 {
             font-size: 36px;
-            color: var(--primary-red);
+            color: var(--primary-orange);
             margin-bottom: 15px;
         }
 
@@ -344,7 +343,7 @@
         .pizza-info h3 {
             font-size: 22px;
             margin-bottom: 10px;
-            color: var(--primary-red);
+            color: var(--primary-orange);
         }
 
         .pizza-info p {
@@ -354,7 +353,7 @@
 
         .price {
             font-weight: 700;
-            color: var(--primary-red);
+            color: var(--primary-orange);
             font-size: 18px;
         }
 
@@ -470,7 +469,7 @@
             background: none;
             border: none;
             font-size: 24px;
-            color: var(--primary-red);
+            color: var(--primary-orange);
             cursor: pointer;
         }
 
@@ -691,7 +690,7 @@
             <!-- Delivery Features -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 50px;">
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <i class="fas fa-map-marker-alt" style="font-size: 2.5rem; color: var(--primary-red); margin-bottom: 20px;"></i>
+                    <i class="fas fa-map-marker-alt" style="font-size: 2.5rem; color: var(--primary-orange); margin-bottom: 20px;"></i>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Delivery Areas</h3>
                     <ul style="list-style: none; padding: 0; color: #666;">
                         <li style="margin-bottom: 10px;">Colombo (All Areas)</li>
@@ -702,7 +701,7 @@
                 </div>
                 
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <i class="fas fa-clock" style="font-size: 2.5rem; color: var(--primary-red); margin-bottom: 20px;"></i>
+                    <i class="fas fa-clock" style="font-size: 2.5rem; color: var(--primary-orange); margin-bottom: 20px;"></i>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Operating Hours</h3>
                     <ul style="list-style: none; padding: 0; color: #666;">
                         <li style="margin-bottom: 10px;">Open Daily</li>
@@ -712,7 +711,7 @@
                 </div>
                 
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--primary-red); margin-bottom: 20px;"></i>
+                    <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--primary-orange); margin-bottom: 20px;"></i>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Our Promise</h3>
                     <ul style="list-style: none; padding: 0; color: #666;">
                         <li style="margin-bottom: 10px;">Fast & Reliable Service</li>
@@ -724,7 +723,7 @@
             </div>
 
             <!-- Service Highlight -->
-            <div style="background: var(--primary-red); padding: 40px; border-radius: 15px; text-align: center; color: white;">
+            <div style="background: var(--primary-orange); padding: 40px; border-radius: 15px; text-align: center; color: white;">
                 <i class="fas fa-award" style="font-size: 3rem; margin-bottom: 20px;"></i>
                 <h3 style="font-size: 2rem; margin-bottom: 15px;">Exceptional Service</h3>
                 <p style="font-size: 1.2rem;">We take pride in delivering not just great food, but also great service to ensure your complete satisfaction.</p>
@@ -744,20 +743,20 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 50px;">
                 <!-- How to Join -->
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div style="width: 70px; height: 70px; background-color: var(--primary-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                    <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                         <i class="fas fa-user-plus" style="font-size: 2rem; color: white;"></i>
                     </div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-red);">How to Join</h3>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">How to Join</h3>
                     <p style="color: #666; margin-bottom: 15px;">Order with us 3 times and automatically become a loyalty member!</p>
                     <p style="color: #666;">Start earning points from your very first order as a member.</p>
                 </div>
 
                 <!-- Earn Points -->
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div style="width: 70px; height: 70px; background-color: var(--primary-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                    <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                         <i class="fas fa-coins" style="font-size: 2rem; color: white;"></i>
                     </div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-red);">Earn Points</h3>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Earn Points</h3>
                     <p style="color: #666; margin-bottom: 15px;">Earn 1 point for every Rs. 100 spent</p>
                     <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
                         <p style="color: #666; font-style: italic;">Example: Rs. 1,500 order = 15 Points</p>
@@ -766,10 +765,10 @@
 
                 <!-- Redeem Points -->
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div style="width: 70px; height: 70px; background-color: var(--primary-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                    <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                         <i class="fas fa-gift" style="font-size: 2rem; color: white;"></i>
                     </div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-red);">Redeem Rewards</h3>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Redeem Rewards</h3>
                     <p style="color: #666; margin-bottom: 15px;">1 Point = Rs. 1 discount on your next order</p>
                     <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
                         <p style="color: #666; font-style: italic;">Example: 50 Points = Rs. 50 discount</p>
@@ -778,11 +777,11 @@
             </div>
 
             <!-- Join Now Banner -->
-            <div style="background: linear-gradient(45deg, var(--primary-red), #ff6b6b); padding: 40px; border-radius: 15px; text-align: center; color: white;">
+            <div style="background: linear-gradient(45deg, var(--primary-orange), #ff6b6b); padding: 40px; border-radius: 15px; text-align: center; color: white;">
                 <i class="fas fa-star" style="font-size: 3rem; margin-bottom: 20px;"></i>
                 <h3 style="font-size: 2rem; margin-bottom: 15px;">Start Earning Today!</h3>
                 <p style="font-size: 1.2rem; margin-bottom: 20px;">Join our loyalty program and turn your pizza passion into rewards.</p>
-                <a href="{{ route('menu') }}" style="display: inline-block; background: white; color: var(--primary-red); padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: transform 0.3s;">Order Now</a>
+                <a href="{{ route('menu') }}" style="display: inline-block; background: white; color: var(--primary-orange); padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: transform 0.3s;">Order Now</a>
             </div>
         </div>
     </section>
@@ -794,44 +793,27 @@
                 <h2 style="font-size: 2.5rem; color: #333; margin-bottom: 20px;">What Our Customers Say</h2>
                 <p style="color: #666; max-width: 800px; margin: 0 auto;">Real reviews from our valued customers</p>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-                <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div style="color: #E7592B; margin-bottom: 15px;">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+            <div class="testimonial-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; justify-content: center;">
+                @forelse($feedbacks as $feedback)
+                <div class="testimonial-card" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;">
+                    <div style="width: 70px; height: 70px; background-color: #E7592B; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <i class="fas fa-user" style="font-size: 2rem; color: white;"></i>
                     </div>
-                    <p style="color: #666; margin-bottom: 20px;">"The best pizza I've ever had! The crust is perfectly crispy and the toppings are always fresh. Highly recommended!"</p>
-                    <div style="color: #333; font-weight: bold;">Sarah M.</div>
-                </div>
-                <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
                     <div style="color: #E7592B; margin-bottom: 15px;">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        @for ($i = 0; $i < $feedback->rating; $i++)
+                            <i class="fas fa-star"></i>
+                        @endfor
                     </div>
-                    <p style="color: #666; margin-bottom: 20px;">"Fast delivery and amazing taste! Their wood-fired pizzas have a unique flavor that keeps me coming back for more."</p>
-                    <div style="color: #333; font-weight: bold;">John D.</div>
+                    <p style="color: #666; margin-bottom: 20px; font-style: italic;">"{{ $feedback->feedback }}"</p>
+                    <div class="customer-name" style="font-weight: bold; color: #333;">- {{ $feedback->name }}</div>
                 </div>
-                <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div style="color: #E7592B; margin-bottom: 15px;">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p style="color: #666; margin-bottom: 20px;">"Great variety of toppings and excellent customer service. The online ordering system is very convenient!"</p>
-                    <div style="color: #333; font-weight: bold;">Michael R.</div>
-                </div>
+                @empty
+                <div style="text-align: center; font-size: 1.2rem; color: #666;">No feedback available at the moment.</div>
+                @endforelse
             </div>
         </div>
     </section>
 
-    @endsection
 
-    
+@endsection
+

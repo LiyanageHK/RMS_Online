@@ -3,7 +3,7 @@
         <div class="footer-container" style="gap: 156px;">
             <div class="footer-about" style="padding-left: -50px;">
                 <div style="text-align: center;" >
-                    <img src="{{ asset('uploads/logo/logo2.png') }}" alt="Flame & Crust Pizzeria Logo" class="logo" style="width: 100px; height: auto;padding-left: 0px;margin-left: 100px;">
+                    <img src="{{ asset('uploads/logo/logo2.png') }}" alt="Flame & Crust Pizzeria Logo" class="logo" style="width: 100px; height: auto;padding-left: 0px;margin-left: 0px;">
                 </div>
                 <div class="footer-logo">
                    

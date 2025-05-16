@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Models\Feedback;
 
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
@@ -20,7 +21,8 @@ use App\Http\Controllers\FeedbackController;
 
 // Homepage
 Route::get('/', function () {
-    return view('welcome');
+    $feedbacks = Feedback::all();
+    return view('welcome', compact('feedbacks'));
 })->name('welcome');
 
 Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
@@ -29,17 +31,27 @@ Route::get('/about', function () {
     return view('client.about');
 })->name('about');
 
-Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
 //Route::get('/contact', function () {
    // return view('contact');
 //})->name('contact');
+
+
+
+
+// Cart route
+Route::get('/cart', function () {
+    return view('cart'); // Ensure you have a 'cart.blade.php' file in the 'resources/views' directory
+})->name('cart');
+
 Auth::routes();
 
-
-
-
-
 Route::middleware(['auth'])->prefix('admin')->group(function () {
+    
     
     // 🔸 Category CRUD
     Route::get('categories', [ItemCategoryController::class, 'index'])->name('admin.categories.index');
@@ -47,7 +59,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('categories/store', [ItemCategoryController::class, 'store'])->name('admin.categories.store');
     Route::get('categories/edit/{id}', [ItemCategoryController::class, 'edit'])->name('admin.categories.edit');
     Route::post('categories/update/{id}', [ItemCategoryController::class, 'update'])->name('admin.categories.update');
-    Route::get('categories/delete/{id}', [ItemCategoryController::class, 'destroy'])->name('admin.categories.destroy');
+    Route::delete('categories/delete/{id}', [ItemCategoryController::class, 'destroy'])->name('admin.categories.destroy');
+    Route::get('admin/categories/report', [ItemCategoryController::class, 'downloadReport'])->name('admin.categories.report');
 
     // 🔸 Item CRUD
     Route::get('items', [ItemController::class, 'index'])->name('admin.items.index');
@@ -55,7 +68,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('items/store', [ItemController::class, 'store'])->name('admin.items.store');
     Route::get('items/edit/{id}', [ItemController::class, 'edit'])->name('admin.items.edit');
     Route::post('items/update/{id}', [ItemController::class, 'update'])->name('admin.items.update');
-    Route::get('items/delete/{id}', [ItemController::class, 'destroy'])->name('admin.items.destroy');
+    Route::delete('admin/items/delete/{id}', [ItemController::class, 'destroy'])->name('admin.items.destroy');
+    Route::get('admin/items/report', [ItemController::class, 'downloadReport'])->name('admin.items.report');
 
     // Production CRUD
     Route::get('production', [ProductionController::class, 'index'])->name('admin.production.index');
@@ -63,8 +77,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('production/store', [ProductionController::class, 'store'])->name('admin.production.store');
     Route::get('production/edit/{id}', [ProductionController::class, 'edit'])->name('admin.production.edit');
     Route::post('production/update/{id}', [ProductionController::class, 'update'])->name('admin.production.update');
-    Route::get('production/delete/{id}', [ProductionController::class, 'destroy'])->name('admin.production.destroy');
+    Route::delete('production/delete/{id}', [ProductionController::class, 'destroy'])->name('admin.production.destroy');
     Route::delete('production/image/delete/{id}', [ProductionController::class, 'deleteImage'])->name('admin.production.image.delete');
+    Route::get('admin/production/report', [ProductionController::class, 'downloadReport'])->name('admin.production.report');
 
     // Role CRUD
     Route::get('role', [RoleController::class, 'index'])->name('admin.role.index');
@@ -81,8 +96,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('/store', [ProductCategoryController::class, 'store'])->name('admin.productcategories.store');
         Route::get('/edit/{id}', [ProductCategoryController::class, 'edit'])->name('admin.productcategories.edit');
         Route::post('/update/{id}', [ProductCategoryController::class, 'update'])->name('admin.productcategories.update');
-        Route::get('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('admin.productcategories.destroy');
+        Route::delete('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('admin.productcategories.destroy');
     });
+    Route::get('admin/productcategories/report', [ProductCategoryController::class, 'downloadReport'])->name('admin.productcategories.report');
     Route::resource('employees', EmployeeController::class);
     Route::get('profile', [EmployeeController::class, 'profile'])->name('employees.profile');
     Route::put('profile', [EmployeeController::class, 'updateProfile'])->name('employees.updateProfile');
@@ -104,7 +120,12 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // Employee Routes
 
-// Inventory Routes
+Route::get('/inventory-center', [InventoryController::class, 'index']);
+
+
+
+
+
 
    
 

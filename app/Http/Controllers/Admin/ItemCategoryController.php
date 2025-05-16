@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ItemCategoryController extends Controller
 {
@@ -46,5 +47,21 @@ class ItemCategoryController extends Controller
     {
         DB::delete("DELETE FROM item_categories WHERE id = ?", [$id]);
         return redirect('/admin/categories')->with('success', 'Category deleted!');
+    }
+
+    public function downloadReport()
+    {
+        $categories = DB::select("SELECT * FROM item_categories ORDER BY id DESC");
+
+        $csvData = "ID,Name,Created At,Updated At\n";
+
+        foreach ($categories as $category) {
+            $csvData .= "{$category->id},{$category->name},{$category->created_at},{$category->updated_at}\n";
+        }
+
+        $fileName = "categories_report_" . date('Y-m-d_H-i-s') . ".csv";
+        Storage::put($fileName, $csvData);
+
+        return response()->download(storage_path("app/" . $fileName))->deleteFileAfterSend(true);
     }
 }
