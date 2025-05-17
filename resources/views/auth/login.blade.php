@@ -39,7 +39,7 @@
         @enderror
     </div>
     
-    <!-- Remember Me & Forgot Password -->
+    <!-- Remember Me & Forgot Password
     <div class="remember-forgot">
         <div class="remember-me">
             <div class="form-check">
@@ -55,7 +55,7 @@
                 <a href="{{ route('password.request') }}">Forgot Password?</a>
             </div>
         @endif
-    </div>
+    </div> -->
     
     <!-- Login Button -->
     <div class="form-group">
@@ -65,7 +65,7 @@
     </div>
     
     <!-- Divider -->
-    <div class="divider">OR</div>
+    <!-- <div class="divider">OR</div> -->
     
 </form>
 @endsection
