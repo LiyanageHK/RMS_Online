@@ -49,14 +49,12 @@ Route::get('/', function () {
 Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
 
 Route::get('/about', function () {
-    return view('client.client.about');
+    return view('client.about');
 })->name('about');
 
 
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 
 
 
@@ -194,7 +192,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
     // Admin Order CRUD
     Route::prefix('/orders')->group(function () {
-    Route::get('/', [AdminOrderController::class, 'index'])->name('AdminOrder');
+    Route::get('/', [AdminOrderController::class, 'index'])->name('admin.orders.index');
     Route::delete('/delete/{id}', [AdminOrderController::class, 'delete']);
     Route::delete('/delete-all', [AdminOrderController::class, 'deleteAll']);
     Route::get('/download/{id}', [AdminOrderController::class, 'downloadPDF']);

@@ -82,7 +82,7 @@
             </div>
         </div>
     </div>
-
+@endsection
     <!-- Modal Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -109,4 +109,4 @@
             });
         });
     </script>
-@endsection
+
