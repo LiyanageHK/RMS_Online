@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @section('content')
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Orders</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   
   <style>
     .order-table thead {
@@ -17,7 +23,8 @@
       overflow-x: auto;
     }
   </style>
-
+</head>
+<body>
 <div class="container mt-5">
 
   <h2 class="mb-4">Orders Management</h2>
@@ -114,10 +121,12 @@
                             <a href="{{ url('admin/orders/download/' . $order->id) }}" class="btn btn-sm btn-outline-primary">PDF</a>
                         </td>
                         <td>
-                            <form method="POST" action="{{ url('admin/orders/delete/' . $order->id) }}" onsubmit="return confirm('Delete this order?')">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            <form id="deleteForm-{{$order->id}}" method="POST" action="{{ url('admin/orders/delete/' . $order->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" onclick="showDeleteModal({{ $order->id }})" class="btn btn-outline-danger btn-delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
                             </form>
                         </td>
                     </tr>
@@ -162,4 +171,40 @@
     <br>
     
 </div>
+<!-- Delete Confirmation Modal -->
+<div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
+  <div style="background-color: #fff; padding: 30px; border-radius: 12px; width: 400px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.15); text-align: center;">
+    <div style="margin-bottom: 15px;">
+      <i class="fas fa-exclamation-triangle fa-2x text-danger"></i>
+    </div>
+    <h4 class="mb-2">Confirm Deletion</h4>
+    <p id="modalMessage">Are you sure you want to delete this?</p>
+    <div class="d-flex justify-content-center gap-3">
+      <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
+      <button id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let formToSubmit = null;
+
+function showDeleteModal(id) {
+  formToSubmit = document.getElementById('deleteForm-' + id);
+  document.getElementById('modalMessage').textContent = `Are you sure you want to delete order #${id}?`;
+  document.getElementById('confirmModal').style.display = 'flex';
+}
+
+document.getElementById('cancelBtn').addEventListener('click', function () {
+  document.getElementById('confirmModal').style.display = 'none';
+  formToSubmit = null;
+});
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+  if (formToSubmit) formToSubmit.submit();
+});
+</script>
+
+</body>
+</html>
   @endsection

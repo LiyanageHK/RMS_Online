@@ -17,6 +17,14 @@ use App\Models\User;
 
 class OrderController extends Controller
 {
+    // Show orders with status confirmed or preparing
+    public function index()
+    {
+        $orders = Order::whereIn('order_status', ['Confirmed', 'Preparing'])->get();
+        return view('orders.index', compact('orders'));
+    }
+
+
     // Handle order confirmation
     public function confirmOrder(Request $request)
     {
@@ -180,7 +188,7 @@ class OrderController extends Controller
 }
 
 
-        public function cancelOrder($id)
+     public function cancelOrder($id)
         {
             $order = Order::where('id', $id)->where('u_id', Auth::id())->firstOrFail();
 
