@@ -149,6 +149,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+  Route::post('/inventory/low-stock/{item}/alert', [InventoryController::class, 'sendLowStockAlert'])
+    ->name('admin.inventory.send-low-stock-alert');
+
 
 
 

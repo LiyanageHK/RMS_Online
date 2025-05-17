@@ -114,7 +114,7 @@ class AuthController extends Controller
             // Get permissions for the role
             $permissions = DB::table('user_per')
                 ->where('role', $role->id)
-                ->select('inv', 'cus', 'order', 'deli', 'emp', 'acc', 'pro')
+                ->select('inv', 'cus', 'order', 'deli', 'emp', 'acc', 'pro','crm')
                 ->first();
 
             return response()->json($permissions);
@@ -130,7 +130,7 @@ class AuthController extends Controller
         $value = $request->input('value');
 
         // Validate the permission field
-        $validPermissions = ['inv', 'cus', 'order', 'deli', 'emp', 'acc', 'pro'];
+        $validPermissions = ['inv', 'cus', 'order', 'deli', 'emp', 'acc', 'pro','crm'];
         if (!in_array($permission, $validPermissions)) {
             return response()->json(['success' => false, 'message' => 'Invalid permission field'], 400);
         }
