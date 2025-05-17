@@ -37,7 +37,9 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CartController;
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminOrderController;
+
 
 // Homepage
 Route::get('/', function () {
@@ -182,6 +184,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
     Route::get('/user_permissions', [AuthController::class, 'getUserPermissions']);
     Route::post('/update_permission', [AuthController::class, 'updatePermission'])->name('admin.update.permission');
+  Route::get('inventory-predictions', [HomeController::class, 'getPredictions'])->name('inventory.predictions');
 
     Route::prefix('inventory')->group(function () {
         Route::get('/', [InventoryController::class, 'index'])->name('admin.inventory.index');
