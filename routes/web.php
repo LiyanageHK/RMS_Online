@@ -149,8 +149,10 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::get('/low-stock', [InventoryController::class, 'lowStock'])->name('admin.inventory.low-stock');
     });
 
-    Route::prefix('orders')->group(function () {
-    Route::get('/', [AdminOrderController::class, 'index']);
+
+    // Admin Order CRUD
+    Route::prefix('/orders')->group(function () {
+    Route::get('/', [AdminOrderController::class, 'index'])->name('AdminOrder');
     Route::delete('/delete/{id}', [AdminOrderController::class, 'delete']);
     Route::delete('/delete-all', [AdminOrderController::class, 'deleteAll']);
     Route::get('/download/{id}', [AdminOrderController::class, 'downloadPDF']);

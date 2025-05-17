@@ -252,7 +252,7 @@
 <div class="container my-5" >
   <div class="row g-5 align-items-center">
     <div class="col-md-6 text-center">
-      <img src="{{asset(uploads/products/.$productimage->image)}}" alt="{{$product->name}}" class="img-fluid rounded shadow-sm" style="width: 450px; height: 450px; object-fit: cover;">
+      <img src="{{asset('uploads/products/'.$productimage->image)}}" alt="{{$product->name}}" class="img-fluid rounded shadow-sm" style="width: 450px; height: 450px; object-fit: cover;">
     </div>
 
     <div class="col-md-6">

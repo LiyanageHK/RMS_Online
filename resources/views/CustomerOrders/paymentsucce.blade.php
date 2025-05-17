@@ -313,7 +313,7 @@
       <p class="mt-3">Thank you for your payment.</p>
 
       <div class="d-flex justify-content-center gap-3 mt-4">
-        <a href="" class="btn btn-success btn-custom">Done</a>
+        <a href="{{ route('menu') }}" class="btn btn-success btn-custom">Done</a>
         <a href="{{ route('user.orders') }}" class="btn btn-outline-primary btn-custom">My Orders</a>
       </div>
 
