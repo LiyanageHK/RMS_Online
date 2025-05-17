@@ -40,10 +40,22 @@
                 <li><a href="{{ route('menu') }}" @if(Request::routeIs('menu')) class="active" @endif>MENU</a></li>
                 <li><a href="{{ route('about') }}" @if(Request::routeIs('about')) class="active" @endif>ABOUT US</a></li>
                 <li><a href="{{ route('contact') }}" @if(Request::routeIs('contact')) class="active" @endif>CONTACT US</a></li>
+                
                 @guest
                     <li><a href="{{ route('login') }}">LOGIN</a></li>
                 @endguest
                 @auth
+                <li>
+                    <a href="{{ route('cartview') }}" style="display: flex; align-items: center;">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span style="margin-left: 6px;">CART</span>
+                        @if(session('cart') && count(session('cart')) > 0)
+                            <span style="background: #E7592B; color: #fff; border-radius: 50%; padding: 2px 8px; font-size: 0.85rem; margin-left: 5px;">
+                                {{ count(session('cart')) }}
+                            </span>
+                        @endif
+                    </a>
+                </li>
                     <li class="user-dropdown" style="position: relative;">
                         <a href="#" id="userMenuBtn" style="display: flex; align-items: center;">{{ Auth::user()->name }} <i class="fas fa-caret-down" style="margin-left: 5px;"></i></a>
                         <ul class="user-menu" id="userMenu" style="display: none; position: absolute; top: 100%; right: 0; background: #222; padding: 10px 0; min-width: 140px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 100;">
