@@ -43,10 +43,10 @@
             <label>Order Status</label>
             <select name="order_status" class="form-select">
                 <option value="">All</option>
+                <option value="Ordered" {{ request('order_status') == 'Ordered' ? 'selected' : '' }}>Ordered</option>
                 <option value="Confirmed" {{ request('order_status') == 'Confirmed' ? 'selected' : '' }}>Confirmed</option>
                 <option value="Preparing" {{ request('order_status') == 'Preparing' ? 'selected' : '' }}>Preparing</option>
-                <option value="Prepared" {{ request('order_status') == 'Prepared' ? 'selected' : '' }}>Prepared</option>
-                <option value="Delivering" {{ request('order_status') == 'Delivering' ? 'selected' : '' }}>Delivering</option>
+                <option value="Waiting for Delivery" {{ request('order_status') == 'Waiting for Delivery' ? 'selected' : '' }}>Waiting for Delivery</option>
                 <option value="Delivered" {{ request('order_status') == 'Delivered' ? 'selected' : '' }}>Delivered</option>
                 <option value="Cancelled" {{ request('order_status') == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
             </select>

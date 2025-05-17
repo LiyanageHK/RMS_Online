@@ -39,7 +39,7 @@ class OrderCancelledMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.orders.canceled',
+            markdown: 'CustomerOrders.emails.orders.canceled',
             with: [
                 'order' => $this->order,
             ],

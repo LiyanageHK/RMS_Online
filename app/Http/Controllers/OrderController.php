@@ -164,7 +164,7 @@ class OrderController extends Controller
     public function userOrders()
     {
         $orders = Order::where('u_id', Auth::id())->orderBy('created_at', 'desc')->get();
-        return view('poornima.orderTrack', compact('orders'));
+        return view('CustomerOrders.orderTrack', compact('orders'));
     }
 
 
@@ -204,7 +204,7 @@ class OrderController extends Controller
   public function paymentcomplete()
         {
             
-            return view('poornima.paymentsucce');
+            return view('CustomerOrders.paymentsucce');
         }
 
 

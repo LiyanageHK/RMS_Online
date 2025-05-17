@@ -39,7 +39,7 @@ class OrderPlacedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.orders.placed',
+            markdown: 'CustomerOrders.emails.orders.placed',
             with: [
                 'order' => $this->order,
             ],

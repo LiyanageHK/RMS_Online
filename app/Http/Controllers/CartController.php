@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\LoyaltyCustomer;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -24,7 +25,7 @@ public function view(Request $request){
         $productimage = ProductImage::where('product_id', $pid)->first();
         $price=0;
 
-        return view('poornima.productdetails',compact('product','productimage'));  
+        return view('CustomerOrders.productdetails',compact('product','productimage'));  
     }
 
 
@@ -40,7 +41,8 @@ public function view(Request $request){
     ]);
 
     $product = Product::find($validated['product_id']);
-    $unitPrice = $product->{$validated['size']}; // dynamic column access: small, medium, or large
+    $sizePriceColumn = $validated['size'] . '_price'; 
+    $unitPrice = $product->{$sizePriceColumn};
     $toppingCharge = $request->has('extra_toppings') && $request->extra_toppings ? 150 : 0;
     $subtotal = ($unitPrice * $validated['quantity']) + ($toppingCharge * $validated['quantity']);
     
@@ -62,27 +64,55 @@ public function view(Request $request){
 public function showCart()
 {
    $cartItems = Cart::with('product.image')->where('u_id', Auth::id())->get();
-
+   $loyaltyCustomer = LoyaltyCustomer::where('user_id', Auth::id())->first();
     
     $subTotal = $cartItems->sum('subtotal');
-    $discount = 40; 
+    if ($loyaltyCustomer) {
+        switch (strtolower($loyaltyCustomer->loyalty_level)) {
+            case 'bronze':
+                $discount = $subTotal * 0.05;
+                break;
+            case 'silver':
+                $discount = $subTotal * 0.10;
+                break;
+            case 'gold':
+                $discount = $subTotal * 0.15;
+                break;
+            default:
+                $discount = 0;
+        }
+    }else{$discount = 0;}
     $delivery = 100;
     $total = $subTotal - $discount + $delivery;
 
-    return view('poornima.cart', compact('cartItems', 'subTotal', 'discount', 'delivery', 'total'));
+    return view('CustomerOrders.cart', compact('cartItems', 'subTotal', 'discount', 'delivery', 'total'));
 }
 
 public function checkout()
 {
     $cartItems = Cart::with('product')->where('u_id', Auth::id())->get();
-
+    $loyaltyCustomer = LoyaltyCustomer::where('user_id', Auth::id())->first();
     
     $subTotal = $cartItems->sum('subtotal');
-    $discount = 40; 
+    if ($loyaltyCustomer) {
+        switch (strtolower($loyaltyCustomer->loyalty_level)) {
+            case 'bronze':
+                $discount = $subTotal * 0.05;
+                break;
+            case 'silver':
+                $discount = $subTotal * 0.10;
+                break;
+            case 'gold':
+                $discount = $subTotal * 0.15;
+                break;
+            default:
+                $discount = 0;
+        }
+    }else{$discount = 0;}
     $delivery = 100;
     $total = $subTotal - $discount + $delivery;
 
-    return view('poornima.checkout', compact('cartItems', 'subTotal', 'discount', 'delivery', 'total'));
+    return view('CustomerOrders.checkout', compact('cartItems', 'subTotal', 'discount', 'delivery', 'total'));
 }
 
 public function removeItem($id)
@@ -97,19 +127,41 @@ public function updateQuantity(Request $request)
 {
     $cartItem = Cart::findOrFail($request->id);
     $cartItem->quantity = $request->quantity;
-    $cartItem->subtotal = $cartItem->price * $request->quantity;
+    if ($cartItem->extra_toppings == 1) {
+        $top = 150;
+    } else {
+        $top = 0;
+    }
+    $cartItem->subtotal = ($cartItem->price * $request->quantity)+($top * $request->quantity);
     $cartItem->save();
 
     // Return updated subtotal and total
     $cartItems = Cart::where('u_id', auth()->id())->get();
+    $loyaltyCustomer = LoyaltyCustomer::where('user_id', Auth::id())->first();
     $subTotal = $cartItems->sum('subtotal');
-    $discount = 0; 
-    $delivery = 200; // Static or based on area
+    
+    if ($loyaltyCustomer) {
+        switch (strtolower($loyaltyCustomer->loyalty_level)) {
+            case 'bronze':
+                $discount = $subTotal * 0.05;
+                break;
+            case 'silver':
+                $discount = $subTotal * 0.10;
+                break;
+            case 'gold':
+                $discount = $subTotal * 0.15;
+                break;
+            default:
+                $discount = 0;
+        }
+    }else{$discount = 0;}
+    $delivery = 100; // Static or based on area
     $total = $subTotal - $discount + $delivery;
 
     return response()->json([
         'itemSubtotal' => number_format($cartItem->subtotal, 2),
         'subTotal' => number_format($subTotal, 2),
+        'discount' => number_format($discount, 2),
         'total' => number_format($total, 2),
     ]);
 }
