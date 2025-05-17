@@ -85,7 +85,7 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 
 
-Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+//Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
 
 Auth::routes();
 
@@ -286,7 +286,7 @@ Route::post('/register', [RegUser::class, 'store']);
 Route::get('/profile', [ProfileController::class, 'show'])->middleware('auth');
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 Route::put('/profile/update/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
-Route::get('/profile/orders', [UserController::class, 'showOrderHistory'])->name('profile.orders');
+//Route::get('/profile/orders', [UserController::class, 'showOrderHistory'])->name('profile.orders');
 
 
 
