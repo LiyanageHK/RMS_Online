@@ -42,9 +42,24 @@ class OrderController extends Controller
         if ($cartItems->isEmpty()) {
             return back()->with('error', 'Cart is empty');
         }
-
+         // calculate discount
+        $loyaltyCustomer = LoyaltyCustomer::where('user_id', Auth::id())->first();
         $subTotal = $cartItems->sum('subtotal');
-        $discount = 40;
+        if ($loyaltyCustomer) {
+            switch (strtolower($loyaltyCustomer->loyalty_level)) {
+                case 'bronze':
+                    $discount = $subTotal * 0.05;
+                    break;
+                case 'silver':
+                    $discount = $subTotal * 0.10;
+                    break;
+                case 'gold':
+                    $discount = $subTotal * 0.15;
+                    break;
+                default:
+                    $discount = 0;
+            }
+        }else{$discount = 0;}
         $delivery = 100;
         $total = $subTotal - $discount + $delivery;
 
