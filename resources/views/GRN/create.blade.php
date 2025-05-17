@@ -23,15 +23,18 @@
                     <input type="date" id="grn_date" name="grn_date" value="{{ date('Y-m-d') }}" readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f3f3f3;">
                 </div>
 
-       <div style="margin-bottom: 20px;">
+      <div style="margin-bottom: 20px;">
     <label for="reference_number" style="font-weight: bold;">Reference PO (optional)</label>
     <select id="reference_number" name="reference_number" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
         <option value="">-- Select PO --</option>
         @foreach($purchaseOrders as $po)
-            <option value="{{ $po->id }}">PO{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}</option>
+            @if($po->status === 'Sent') <!-- Only show POs with 'sent' status -->
+                <option value="{{ $po->id }}">PO{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}</option>
+            @endif
         @endforeach
     </select>
 </div>
+
 
 
 
@@ -168,7 +171,6 @@
         });
         totalAmount.value = `$${total.toFixed(2)}`;
     }
-
     
 </script>
 

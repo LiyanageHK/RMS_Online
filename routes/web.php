@@ -14,7 +14,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 //use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GRNController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FeedbackController;
 
@@ -110,12 +110,14 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // Core resources
 Route::resource('suppliers', SupplierController::class);
+Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadReport'])->name('purchase_orders.report');
 Route::resource('purchase_orders', PurchaseOrderController::class);
+Route::get('grns/report', [GRNController::class, 'downloadReport'])->name('grns.report');
 Route::resource('grns', GRNController::class);
 
 // Order Status Management
-Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-Route::post('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::get('orders', [OrderStatusController::class, 'index'])->name('orders.index');
+Route::post('orders/{order}/update-status', [OrderStatusController::class, 'updateStatus'])->name('orders.updateStatus');
 
 // Static client views
 //Route::view('about', 'client.about')->name('client.about');
@@ -139,5 +141,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
     Route::get('/feedback/{id}', [FeedbackController::class, 'show'])->name('feedback.show');
 });
+
+Route::get('purchase_orders/{id}/data', [PurchaseOrderController::class, 'getPOData'])->name('purchase_orders.data');
+
 
 

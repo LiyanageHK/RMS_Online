@@ -64,8 +64,5 @@
         </button>
     </div>
     
-    <!-- Divider -->
-    <div class="divider">OR</div>
-    
 </form>
 @endsection

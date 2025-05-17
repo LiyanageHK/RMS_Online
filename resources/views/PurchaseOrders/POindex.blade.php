@@ -4,7 +4,18 @@
     <!-- Top Row -->
     <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 30px;">
         <h2 style="font-size: 20px; margin: 0; font-weight: bold;">Purchase Orders</h2>
-        <form method="GET" action="{{ route('purchase_orders.index') }}">
+        
+        <!-- Filter and Search Form -->
+        <form method="GET" action="{{ route('purchase_orders.index') }}" style="display: flex; gap: 15px; align-items: center;">
+            <!-- Status Filter Dropdown -->
+            <select name="status" onchange="this.form.submit();" style="padding: 10px 12px; width: 150px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;">
+                <option value="">All Statuses</option>
+                <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                <option value="sent" {{ request('status') == 'sent' ? 'selected' : '' }}>Sent</option>
+                <option value="received" {{ request('status') == 'received' ? 'selected' : '' }}>Received</option>
+            </select>
+
+            <!-- Search Input -->
             <input type="text" name="search" value="{{ request('search') }}"
                    placeholder="Search purchase orders..." 
                    oninput="if(this.value==='') this.form.submit();"
@@ -16,13 +27,22 @@
     <div style="border: 1px solid #ddd; border-radius: 10px; background-color: #ffffff; padding: 25px 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin: 0 30px 40px 30px;">
 
         <!-- Section Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-            <h3 style="margin: 0; font-size: 18px; color: #333;">Overview</h3>
-            <a href="{{ route('purchase_orders.create') }}"
-               style="padding: 8px 14px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 6px; font-size: 14px; transition: background-color 0.3s;">
-                + Add New PO
-            </a>
-        </div>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+    <h3 style="margin: 0; font-size: 18px; color: #333;">Overview</h3>
+
+    <!-- Button Group Container -->
+    <div style="display: flex; gap: 10px;">
+        <a href="{{ route('purchase_orders.create') }}"
+           style="padding: 8px 14px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 6px; font-size: 14px; transition: background-color 0.3s;">
+            + Add New PO
+        </a>
+        <button id="downloadReport" class="btn"
+                style="padding: 8px 14px; background-color: #E7592B; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">
+            Download Report
+        </button>
+    </div>
+</div>
+
 
         <!-- Purchase Order Table -->
         <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
@@ -112,6 +132,11 @@
 
             document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
                 if (formToSubmit) formToSubmit.submit();
+            });
+
+            document.getElementById('downloadReport').addEventListener('click', function() {
+                const url = '{{ route('purchase_orders.report') }}';
+                window.location.href = url;
             });
         });
     </script>
