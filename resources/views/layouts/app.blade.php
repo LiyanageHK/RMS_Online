@@ -246,14 +246,9 @@
                 </div>
 
                 <div id="ordernav">
-                    <button class="sidebar-btn" onclick="toggleMenu(this)">
+                    <button class="sidebar-btn">
                         <span class="btn-content"><span class="material-icons">shopping_cart</span> Order Center</span>
-                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
-                    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
-                        <a href="{{ route('AdminOrder') }}" class="submenu-link">Order Management</a>
-                        <a href="#" class="submenu-link">Kitchen</a>
-                    </div>
                 </div>
 
                 <div id="delinav">
@@ -284,8 +279,8 @@
                 </div>
             </div>
 
-            <!-- Contact & Feedback Section -->
-<div id="contact-feedback-nav">
+    <div id="crmnav">        <!-- Contact & Feedback Section -->
+
     <button class="sidebar-btn" onclick="toggleMenu(this)">
         <span class="btn-content"><span class="material-icons">message</span> Customer Relations Center</span>
         <span class="material-icons toggle-icon">expand_more</span>
@@ -294,7 +289,8 @@
         <a href="{{ route('contact.index') }}" class="submenu-link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Contact Messages</a>
         <a href="{{ route('feedback.index') }}" class="submenu-link {{ request()->routeIs('feedback.*') ? 'active' : '' }}">Feedback Messages</a>
     </div>
-</div>
+
+    </div>
 
         </aside>
 
@@ -495,6 +491,12 @@
                     $('#pronav').show();
                 } else {
                     $('#pronav').hide();
+                }
+                // Customer Relations Center permissions
+                if (response.crm === 1) {
+                    $('#crmnav').show();
+                } else {
+                    $('#crmnav').hide();
                 }
             },
             error: function(xhr, status, error) {

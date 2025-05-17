@@ -42,19 +42,36 @@ use App\Http\Controllers\AdminOrderController;
 // Homepage
 Route::get('/', function () {
     $feedbacks = Feedback::all();
-    return view('welcome', compact('feedbacks'));
+    $feedbacks = Feedback::all();
+    return view('welcome', compact('feedbacks'), compact('feedbacks'));
 })->name('welcome');
 
 Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
 
 Route::get('/about', function () {
-    return view('client.about');
+    return view('client.client.about');
 })->name('about');
+
 
 
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+
+
+
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
+
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
+
+
+Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+
 
 
 
@@ -88,12 +105,29 @@ Route::get('/cart', function () {
 Auth::routes();
 Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
+//Route::get('/contact', function () {
+   // return view('contact');
+//})->name('contact');
+
+
+
+
+
+Route::get('/cart', function () {
+    return view('cart'); // Ensure you have a 'cart.blade.php' file in the 'resources/views' directory
+})->name('cart');
+
+Auth::routes();
+Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
+
     // 🔸 Category CRUD
     Route::get('categories', [ItemCategoryController::class, 'index'])->name('admin.categories.index');
     Route::get('categories/create', [ItemCategoryController::class, 'create'])->name('admin.categories.create');
     Route::post('categories/store', [ItemCategoryController::class, 'store'])->name('admin.categories.store');
     Route::get('categories/edit/{id}', [ItemCategoryController::class, 'edit'])->name('admin.categories.edit');
     Route::post('categories/update/{id}', [ItemCategoryController::class, 'update'])->name('admin.categories.update');
+    Route::delete('categories/delete/{id}', [ItemCategoryController::class, 'destroy'])->name('admin.categories.destroy');
+    Route::get('admin/categories/report', [ItemCategoryController::class, 'downloadReport'])->name('admin.categories.report');
     Route::delete('categories/delete/{id}', [ItemCategoryController::class, 'destroy'])->name('admin.categories.destroy');
     Route::get('admin/categories/report', [ItemCategoryController::class, 'downloadReport'])->name('admin.categories.report');
 
@@ -105,6 +139,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::post('items/update/{id}', [ItemController::class, 'update'])->name('admin.items.update');
     Route::delete('admin/items/delete/{id}', [ItemController::class, 'destroy'])->name('admin.items.destroy');
     Route::get('admin/items/report', [ItemController::class, 'downloadReport'])->name('admin.items.report');
+    Route::delete('admin/items/delete/{id}', [ItemController::class, 'destroy'])->name('admin.items.destroy');
+    Route::get('admin/items/report', [ItemController::class, 'downloadReport'])->name('admin.items.report');
 
     // Production CRUD
     Route::get('production', [ProductionController::class, 'index'])->name('admin.production.index');
@@ -113,7 +149,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::get('production/edit/{id}', [ProductionController::class, 'edit'])->name('admin.production.edit');
     Route::post('production/update/{id}', [ProductionController::class, 'update'])->name('admin.production.update');
     Route::delete('production/delete/{id}', [ProductionController::class, 'destroy'])->name('admin.production.destroy');
+    Route::delete('production/delete/{id}', [ProductionController::class, 'destroy'])->name('admin.production.destroy');
     Route::delete('production/image/delete/{id}', [ProductionController::class, 'deleteImage'])->name('admin.production.image.delete');
+    Route::get('admin/production/report', [ProductionController::class, 'downloadReport'])->name('admin.production.report');
     Route::get('admin/production/report', [ProductionController::class, 'downloadReport'])->name('admin.production.report');
 
     // Role CRUD
@@ -132,7 +170,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::get('/edit/{id}', [ProductCategoryController::class, 'edit'])->name('admin.productcategories.edit');
         Route::post('/update/{id}', [ProductCategoryController::class, 'update'])->name('admin.productcategories.update');
         Route::delete('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('admin.productcategories.destroy');
+        Route::delete('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('admin.productcategories.destroy');
     });
+    Route::get('admin/productcategories/report', [ProductCategoryController::class, 'downloadReport'])->name('admin.productcategories.report');
     Route::get('admin/productcategories/report', [ProductCategoryController::class, 'downloadReport'])->name('admin.productcategories.report');
     Route::resource('employees', EmployeeController::class);
     Route::get('profile', [EmployeeController::class, 'profile'])->name('employees.profile');
@@ -162,7 +202,10 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
 
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+  Route::post('/inventory/low-stock/{item}/alert', [InventoryController::class, 'sendLowStockAlert'])
+    ->name('admin.inventory.send-low-stock-alert');
 
 
 
@@ -341,19 +384,21 @@ Route::get('/homepage', function () {
     return view('homepage');
 })->middleware('auth')->name('homepage');
 
-
-
-
 Route::controller(ProductController::class)->middleware(['auth', 'verified'])->group(function(){
 Route::get('/productIndex','Index')->name('productindex');
 Route::post('/saveproduct', 'storeproduct');
 Route::get('/plist','list')->name('productlist');
 
+});
 
-
-
-
-
+Route::controller(OrderController::class)->middleware(['auth', 'verified'])->group(function(){  
+Route::post('/confirm-order', 'confirmOrder')->name('confirm.order');
+Route::get('/stripe-success', 'stripeSuccess')->name('stripe.success');
+Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('user.orders');
+Route::get('/order-details/{id}', [OrderController::class, 'getOrderDetails']);
+Route::patch('/cancel-order/{id}', [OrderController::class, 'cancelOrder']);
+Route::get('/successorder', 'stripeSuccess')->name('stripe.success');
+Route::get('/successorder', [OrderController::class, 'paymentcomplete'])->name('ordersuccess');
 });
 
 Route::controller(CartController::class)->middleware(['auth', 'verified'])->group(function(){
@@ -366,22 +411,6 @@ Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])-
     
 });
 
-
-Route::controller(OrderController::class)->middleware(['auth', 'verified'])->group(function(){  
-Route::post('/confirm-order', 'confirmOrder')->name('confirm.order');
-Route::get('/stripe-success', 'stripeSuccess')->name('stripe.success');
-Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('user.orders');
-Route::get('/order-details/{id}', [OrderController::class, 'getOrderDetails']);
-Route::patch('/cancel-order/{id}', [OrderController::class, 'cancelOrder']);
-Route::get('/successorder', 'stripeSuccess')->name('stripe.success');
-Route::get('/successorder', [OrderController::class, 'paymentcomplete'])->name('ordersuccess');
-});
-
-
-
-
-
-
 //customer profile change password
 Route::put('/profile/change-password/{user}', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
 
@@ -392,7 +421,7 @@ Route::post('/admin/logout', [AuthLogin::class, 'destroy'])->name('admin.logout'
 
 // ===================== USER (CLIENT) LOGIN =====================
 Route::get('/login', [UserLoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login1', [UserLoginController::class, 'login'])->name('login1');
+Route::post('/login', [UserLoginController::class, 'login']);
 Route::post('/logout', [UserLoginController::class, 'logout'])->name('logout');
 
 
