@@ -69,7 +69,7 @@ class AdminOrderController extends Controller
     {
         $order = Order::with('details')->findOrFail($id);
 
-        return PDF::loadView('pdf.single-order', compact('order'))
+        return PDF::loadView('CustomerOrders.pdf.single-order', compact('order'))
             ->download('order_' . $order->id . '.pdf');
     }
 
@@ -114,7 +114,7 @@ class AdminOrderController extends Controller
             $monthlyOrders[] = $ordersByMonth[$month] ?? 0;
         }
 
-        return PDF::loadView('pdf.all-orders', compact(
+        return PDF::loadView('CustomerOrders.pdf.all-orders', compact(
             'orders',
             'cancelledCount',
             'otherCount',
