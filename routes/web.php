@@ -325,9 +325,10 @@ Route::post('/login', [UserLoginController::class, 'login']);
 Route::post('/logout', [UserLoginController::class, 'logout'])->name('logout');
 */
 // Example authenticated route
-Route::get('/homepage', function () {
-    return view('homepage');
-})->middleware('auth')->name('homepage');
+
+Route::get('/home', function () {
+    return view('home');
+})->middleware('auth')->name('home');
 
 
 
