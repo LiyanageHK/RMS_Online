@@ -154,9 +154,18 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
 
 
+// Core resources
+Route::resource('/admin/suppliers', SupplierController::class);
+Route::resource('/admin/purchase_orders', PurchaseOrderController::class);
+Route::resource('/admin/grns', GRNController::class);
 
+Route::get('/contacts', [ContactController::class, 'index'])->name('contact.index');
+    Route::get('/contacts/{id}', [ContactController::class, 'showMessage'])->name('contact.show');
+    Route::post('/contacts/{id}/reply', [ContactController::class, 'reply'])->name('contact.reply');
 
-
+    // Feedback Messages
+    Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
+    Route::get('/feedback/{id}', [FeedbackController::class, 'show'])->name('feedback.show');
 
 
 
@@ -175,10 +184,7 @@ Route::get('/inventory-center', [InventoryController::class, 'index']);
 
 
 
-// Core resources
-Route::resource('suppliers', SupplierController::class);
-Route::resource('purchase_orders', PurchaseOrderController::class);
-Route::resource('grns', GRNController::class);
+
 
 // Order Status Management
 Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
@@ -198,13 +204,7 @@ Route::post('/feedback/submit', [FeedbackController::class, 'submit'])->name('cl
 // Admin routes for Contact Us & Feedback Management
 Route::prefix('admin')->group(function () {
     // Contact Messages
-    Route::get('/contacts', [ContactController::class, 'index'])->name('contact.index');
-    Route::get('/contacts/{id}', [ContactController::class, 'showMessage'])->name('contact.show');
-    Route::post('/contacts/{id}/reply', [ContactController::class, 'reply'])->name('contact.reply');
-
-    // Feedback Messages
-    Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
-    Route::get('/feedback/{id}', [FeedbackController::class, 'show'])->name('feedback.show');
+    
 });
 
 
