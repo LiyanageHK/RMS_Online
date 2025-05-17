@@ -123,10 +123,11 @@ class HomeController extends Controller
 
 protected function callAIModel($historicalData)
 {
+    $token = env('GITHUB_AI_TOKEN');
     try {
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer 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'
+            'Authorization' => 'Bearer ' . $token,
         ])->post('https://models.github.ai/inference/chat/completions', [
             'messages' => [
                 [
