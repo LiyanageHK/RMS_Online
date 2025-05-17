@@ -305,6 +305,7 @@
 <body>
 
 <div class="container py-5">
+  
   <h2 class="mb-4 text-center fw-bold">🛒 Your Cart</h2>
   <div class="row">
     <!-- Cart Items -->
@@ -372,7 +373,14 @@
       </div>
     </div>
   </div>
+  <br>
+  <div class="d-flex justify-content-end mb-3">
+    <a href="{{ route('user.orders') }}" class="btn btn-outline-secondary">
+      My Orders  <i class="fas fa-arrow-right me-1"></i>
+    </a>
+  </div>
 </div>
+  
 
 <!-- Delete Confirmation Modal -->
 <div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
@@ -388,6 +396,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
