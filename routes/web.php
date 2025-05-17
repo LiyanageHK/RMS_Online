@@ -117,6 +117,8 @@ Route::get('/cart', function () {
     return view('cart'); // Ensure you have a 'cart.blade.php' file in the 'resources/views' directory
 })->name('cart');
 
+}); // <-- Close the first Route group here
+
 Auth::routes();
 Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
