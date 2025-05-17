@@ -63,6 +63,7 @@ class OrderController extends Controller
         $delivery = 100;
         $total = $subTotal - $discount + $delivery;
 
+        
         if ($request->payment_method === 'cod') {
             // CASH ON DELIVERY
 
