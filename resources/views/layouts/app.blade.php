@@ -15,48 +15,48 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- AdminLTE -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"> 
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
     <style>
         .profile-dropdown {
             min-width: 200px;
         }
-        
+
         .profile-dropdown .dropdown-header {
             background: #f8f9fa;
             padding: 10px;
             text-align: center;
         }
-        
+
         .profile-dropdown .user-info {
             padding: 10px;
             border-bottom: 1px solid #dee2e6;
         }
-        
+
         .profile-dropdown .dropdown-item {
             padding: 8px 15px;
             transition: all 0.3s ease;
         }
-        
+
         .profile-dropdown .dropdown-item:hover {
             background-color: #f8f9fa;
             padding-left: 20px;
         }
-        
+
         .profile-dropdown .dropdown-item i {
             width: 20px;
             margin-right: 10px;
             color: #6c757d;
         }
-        
+
         .profile-dropdown .dropdown-divider {
             margin: 5px 0;
         }
-        
+
         .navbar-nav .nav-link {
             padding: 0.5rem 1rem;
         }
-        
+
         .user-avatar {
             width: 32px;
             height: 32px;
@@ -103,7 +103,7 @@
     color: var(--primary-color) !important;
 }
 </style>
-    
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -120,6 +120,18 @@
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
+                <!-- Notification Button -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;display:none;" id="notificationCount">0</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="min-width: 300px;">
+                        <li class="dropdown-header">Notifications</li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><span class="dropdown-item text-muted">No new notifications</span></li>
+                    </ul>
+                </li>
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
@@ -197,8 +209,8 @@
                 </a>
 
 
-                 
-               
+
+
 
                 <div id="inventorynav">
                     <button class="sidebar-btn" onclick="toggleMenu(this)">
@@ -215,17 +227,17 @@
                 </div>
 
                 <!-- Procurement Center -->
-                <div id="pronav">
-                    <button class="sidebar-btn" onclick="toggleMenu(this)">
-                        <span class="btn-content"><span class="material-icons">business</span> Procurement Center</span>
-                        <span class="material-icons toggle-icon">expand_more</span>
-                    </button>
-                    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
-                        <a href="#" class="submenu-link">Suppliers</a>
-                        <a href="#" class="submenu-link">Purchase Orders</a>
-                        <a href="#" class="submenu-link">Good Received Notes</a>
-                    </div>
-                </div>
+<div id="pronav">
+    <button class="sidebar-btn" onclick="toggleMenu(this)">
+        <span class="btn-content"><span class="material-icons">business</span> Procurement Center</span>
+        <span class="material-icons toggle-icon">expand_more</span>
+    </button>
+    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+        <a href="{{ route('suppliers.index') }}" class="submenu-link {{ request()->routeIs('suppliers.*') ? 'active' : '' }}">Suppliers</a>
+        <a href="{{ route('purchase_orders.index') }}" class="submenu-link {{ request()->routeIs('purchase_orders.*') ? 'active' : '' }}">Purchase Orders</a>
+        <a href="{{ route('grns.index') }}" class="submenu-link {{ request()->routeIs('grns.*') ? 'active' : '' }}">Good Received Notes</a>
+    </div>
+</div>
 
                 <div id="cusnav">
                     <button class="sidebar-btn">
@@ -234,9 +246,14 @@
                 </div>
 
                 <div id="ordernav">
-                    <button class="sidebar-btn">
+                    <button class="sidebar-btn" onclick="toggleMenu(this)">
                         <span class="btn-content"><span class="material-icons">shopping_cart</span> Order Center</span>
+                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
+                    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+                        <a href="{{ route('AdminOrder') }}" class="submenu-link">Order Management</a>
+                        <a href="#" class="submenu-link">Kitchen</a>
+                    </div>
                 </div>
 
                 <div id="delinav">
@@ -245,11 +262,16 @@
                     </button>
                 </div>
 
-                <div id="empnav">
-                    <button class="sidebar-btn">
-                        <span class="btn-content"><span class="material-icons">people</span> Employee Center</span>
-                    </button>
-                </div>
+                <!-- Employee Center -->
+<div id="empnav">
+    <button class="sidebar-btn" onclick="toggleMenu(this)">
+        <span class="btn-content"><span class="material-icons">people</span> Employee Center</span>
+        <span class="material-icons toggle-icon">expand_more</span>
+    </button>
+    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+        <a href="{{ route('employees.index') }}" class="submenu-link {{ request()->routeIs('employees.*') ? 'active' : '' }}">Employees</a>
+    </div>
+</div>
 
                 <div id="accnav">
                     <button class="sidebar-btn" onclick="toggleMenu(this)">
@@ -261,7 +283,22 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Contact & Feedback Section -->
+<div id="contact-feedback-nav">
+    <button class="sidebar-btn" onclick="toggleMenu(this)">
+        <span class="btn-content"><span class="material-icons">message</span> Customer Relations Center</span>
+        <span class="material-icons toggle-icon">expand_more</span>
+    </button>
+    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+        <a href="{{ route('contact.index') }}" class="submenu-link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Contact Messages</a>
+        <a href="{{ route('feedback.index') }}" class="submenu-link {{ request()->routeIs('feedback.*') ? 'active' : '' }}">Feedback Messages</a>
+    </div>
+</div>
+
         </aside>
+
+        
         <!-- Material Icons CDN -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style>
@@ -333,10 +370,10 @@
             function toggleMenu(button) {
                 const submenu = button.nextElementSibling;
                 const icon = button.querySelector('.toggle-icon');
-                
+
                 // Check if any submenu link is active
                 const hasActiveLink = submenu.querySelector('.submenu-link.active') !== null;
-                
+
                 if (hasActiveLink) {
                     submenu.style.display = "block";
                     icon.textContent = "expand_less";
@@ -397,7 +434,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-    
+
     @stack('scripts')
 </body>
 </html>
