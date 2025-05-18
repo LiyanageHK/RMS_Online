@@ -136,7 +136,7 @@ class CustomerController extends Controller
         $user = User::findOrFail($userid);
 
         // Get orders related to the customer
-        $orders = Order::where('user_id', $userid)->get();
+        $orders = Order::where('u_id', $userid)->get();
 
         // Define section value (adjust it to fit your logic)
         $section = 'customer';
@@ -174,7 +174,7 @@ class CustomerController extends Controller
 
 
     $loyalCustomers = DB::table('loyalty_customers')
-        ->leftJoin('orders', 'loyalty_customers.user_id', '=', 'orders.user_id')
+        ->leftJoin('orders', 'loyalty_customers.user_id', '=', 'orders.u_id')
         ->select(
             'loyalty_customers.user_id',
             'loyalty_customers.name',

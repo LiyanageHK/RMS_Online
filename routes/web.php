@@ -246,6 +246,28 @@ Route::get('/driver/allocation/details', [DriverController::class, 'allocationDe
 Route::get('/admin/driver/download-report/{orderId}', [DriverController::class, 'downloadReport'])
     ->name('admin.driver.downloadReport');
 
+
+
+Route::get('/customer/create', [CustomerController::class, 'create'])->name('customer.create');
+Route::get('/customer/overview', [CustomerController::class, 'index'])->name('customer.overview');
+Route::post('/customer', [CustomerController::class, 'store'])->name('customer.store');
+
+Route::get('/customer/{user_id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
+Route::delete('/customer/{user_id}', [CustomerController::class, 'destroy'])->name('customer.destroy');
+
+Route::get('/send-email', function () {
+    $customers = \App\Models\User::paginate(10);
+    return view('customer.emailService', compact('customers'));
+})->name('email.form');
+
+//Customer Email Notification
+Route::post('/send-email', [EmailController::class, 'sendBulkEmail'])->name('send.email');
+
+Route::get('/customers/{userid}/loyalty', [CustomerController::class, 'loyalty'])->name('customer.loyalty');
+Route::post('/loyalty/redeem', [CustomerController::class, 'redeem'])->name('loyalty.redeem');
+Route::get('/customer/loyalty-program', [CustomerController::class, 'showLoyaltyProgram'])->name('loyalty-program');
+Route::get('/loyalty/insert', [CustomerController::class, 'insertLoyalCustomers'])->name('loyalty.insert'); 
+
 });
 
 
@@ -319,12 +341,12 @@ Route::post('/logout', function () {
 
 
 
-Route::get('/admin/customer/create', [CustomerController::class, 'create'])->name('customer.create');
-Route::get('/admin/customer/overview', [CustomerController::class, 'index'])->name('customer.overview');
-Route::post('/admin/customer', [CustomerController::class, 'store'])->name('customer.store');
+// Route::get('/admin/customer/create', [CustomerController::class, 'create'])->name('customer.create');
+// Route::get('/admin/customer/overview', [CustomerController::class, 'index'])->name('customer.overview');
+// Route::post('/admin/customer', [CustomerController::class, 'store'])->name('customer.store');
 
-Route::get('/customer/{user_id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
-Route::delete('/customer/{user_id}', [CustomerController::class, 'destroy'])->name('customer.destroy');
+// Route::get('/customer/{user_id}/edit', [CustomerController::class, 'edit'])->name('customer.edit');
+// Route::delete('/customer/{user_id}', [CustomerController::class, 'destroy'])->name('customer.destroy');
 
 // Define the route for updating a customer
 Route::put('/customer/{user_id}', [CustomerController::class, 'update'])->name('customer.update');
@@ -337,10 +359,10 @@ Route::get('/customer/{user_id}', [CustomerController::class, 'show'])->name('cu
 
 
 //Loyalty program
-Route::get('/customers/{userid}/loyalty', [CustomerController::class, 'loyalty'])->name('customer.loyalty');
-Route::post('/loyalty/redeem', [CustomerController::class, 'redeem'])->name('loyalty.redeem');
-Route::get('/admin/customer/loyalty-program', [CustomerController::class, 'showLoyaltyProgram'])->name('loyalty-program');
-Route::get('/loyalty/insert', [CustomerController::class, 'insertLoyalCustomers'])->name('loyalty.insert');   //add data to loyalty customer table
+// Route::get('/customers/{userid}/loyalty', [CustomerController::class, 'loyalty'])->name('customer.loyalty');
+// Route::post('/loyalty/redeem', [CustomerController::class, 'redeem'])->name('loyalty.redeem');
+// Route::get('/admin/customer/loyalty-program', [CustomerController::class, 'showLoyaltyProgram'])->name('loyalty-program');
+// Route::get('/loyalty/insert', [CustomerController::class, 'insertLoyalCustomers'])->name('loyalty.insert');   //add data to loyalty customer table
 
 
 
@@ -459,10 +481,10 @@ Route::patch('/driver/orders/{order}/mark-delivered', [DriverController::class, 
 
 
 //Custmer Email Notification
-Route::get('/send-email', function () {
-    $customers = \App\Models\User::paginate(10);
-    return view('customer.emailService', compact('customers'));
-})->name('email.form');
+// Route::get('/send-email', function () {
+//     $customers = \App\Models\User::paginate(10);
+//     return view('customer.emailService', compact('customers'));
+// })->name('email.form');
 
-//Customer Email Notification
-Route::post('/send-email', [EmailController::class, 'sendBulkEmail'])->name('send.email');
+// //Customer Email Notification
+// Route::post('/send-email', [EmailController::class, 'sendBulkEmail'])->name('send.email');

@@ -250,7 +250,7 @@
                 <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
                     <a href="{{ route('customer.overview') }}" class="submenu-link {{ request()->routeIs('customer.overview')  ? 'active' : '' }}">Customer Overview</a>
                     <a href="{{ url('/admin/customer/loyalty-program') }}" class="submenu-link {{ request()->is('admin/customer/loyalty-program') ?  'active' : '' }}">Loyalty Program</a>
-                    <a href="{{ url('/send-email') }}" class="submenu-link {{ request()->is('send-email') ?  'active' : '' }}">Email Services</a>
+                    <a href="{{ url('/admin/send-email') }}" class="submenu-link {{ request()->is('send-email') ?  'active' : '' }}">Email Services</a>
                 </div>
             </div>
 
