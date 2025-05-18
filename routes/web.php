@@ -57,6 +57,7 @@ Route::get('/about', function () {
 
 
 
+
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 
 
@@ -99,6 +100,7 @@ Auth::routes();
 
 Auth::routes();
 Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
+
 
 //Route::get('/contact', function () {
    // return view('contact');
