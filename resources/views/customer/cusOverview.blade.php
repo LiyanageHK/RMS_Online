@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="container mx-auto p-4">
+    <div class="bg-white shadow-md rounded p-6">
 <div style="padding: 20px;">
     <h2>Customer Overview</h2>
 
@@ -46,11 +50,31 @@
                     <td>{{ $user->phone }}</td>
                     <td>{{ $user->address }}</td>
                     <td>{{ $user->created_at->format('Y-m-d') }}</td>
+
                     <td>
-                        <a href="{{ route('customer.show', $user->user_id) }}" style="margin-right: 8px; padding: 6px 12px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;"><span class="material-icons" style="font-size: 16px; margin-right: 4px;">visibility</span>View</a>
-                        <a href="{{ route('customer.edit', $user->user_id) }}" style="margin-right: 8px; padding: 6px 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;"><span class="material-icons" style="font-size: 16px; margin-right: 4px;">edit</span>Edit</a>
-                        <button onclick="confirmDelete({{ $user->user_id }})" style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;"> <span class="material-icons" style="font-size: 16px; margin-right: 4px;">delete</span>Delete</button>
+
+                        <!-- View Button -->
+                        <a href="{{ route('customer.show', $user->user_id) }}"
+                        style="margin-right: 8px; padding: 6px 12px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
+                            <span class="material-icons" style="font-size: 16px; margin-right: 4px;">visibility</span>View
+                        </a>
+
+                        <!-- Edit Button -->
+                        <a href="{{ route('customer.edit', $user->user_id) }}"
+                        style="margin-right: 8px; padding: 6px 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
+                            <span class="material-icons" style="font-size: 16px; margin-right: 4px;">edit</span>Edit
+                        </a>
+
+                        <!-- Delete Button -->
+                        <button onclick="confirmDelete({{ $user->user_id }})"
+                                style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; display: inline-flex; align-items: center;">
+                            <span class="material-icons" style="font-size: 16px; margin-right: 4px;">delete</span>Delete
+                        </button>
                     </td>
+
+
+
+
                 </tr>
             @empty
                 <tr>
@@ -109,3 +133,6 @@
         margin-bottom: 0.75rem;
     }
 </style>
+
+
+@endsection

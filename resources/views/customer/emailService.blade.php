@@ -1,93 +1,77 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-custom">
-    <div class="content-wrapper">
-        <h2 class="heading">Send Email to Customers</h2>
-
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-12 offset-lg-0" style="padding-left: 0;">
+            <div class="mx-auto" style="max-width: 1150px; padding: 20px 0px;">
+                <h2 class="heading">Send Email to Customers</h2>
+                @if($customers->count())
+                    <form method="POST" action="{{ route('send.email') }}">
+                        @csrf
+                        <div class="flex-container">
+                            {{-- Left Side: Email Form --}}
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label for="subject" class="label">Subject</label>
+                                    <input type="text" id="subject" name="subject" class="input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="body" class="label">Message</label>
+                                    <textarea id="body" name="body" rows="6" class="textarea" required></textarea>
+                                </div>
+                                <div class="form-actions button-group">
+                                    <button type="submit" class="send-btn">Send Email</button>
+                                </div>
+                            </div>
+                            {{-- Right Side: Customer List --}}
+                            <div class="table-section">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Select</th>
+                                            <th>Customer Number</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($customers as $customer)
+                                            <tr>
+                                                <td><input type="checkbox" name="user_ids[]" value="{{ $customer->user_id }}"></td>
+                                                <td>{{ 'CUS#' . str_pad($customer->user_id, 4, '0', STR_PAD_LEFT) }}</td>
+                                                <td>{{ $customer->name }}</td>
+                                                <td>{{ $customer->email }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="pagination">
+                                    @if ($customers->onFirstPage())
+                                        <span>&laquo; Prev</span>
+                                    @else
+                                        <a href="{{ $customers->previousPageUrl() }}">&laquo; Prev</a>
+                                    @endif
+                                    <span>Page {{ $customers->currentPage() }} of {{ $customers->lastPage() }}</span>
+                                    @if ($customers->hasMorePages())
+                                        <a href="{{ $customers->nextPageUrl() }}">Next &raquo;</a>
+                                    @else
+                                        <span>Next &raquo;</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                @else
+                    <p class="no-customers">No customers found.</p>
+                @endif
             </div>
-        @endif
-
-
-        @if($customers->count())
-            <form method="POST" action="{{ route('send.email') }}">
-                @csrf
-
-                <div class="flex-container">
-                    {{-- Left Side: Email Form --}}
-                    <div class="form-section">
-                        <div class="form-group">
-                            <label for="subject" class="label">Subject</label>
-                            <input type="text" id="subject" name="subject" class="input" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="body" class="label">Message</label>
-                            <textarea id="body" name="body" rows="6" class="textarea" required></textarea>
-                        </div>
-
-                        <div class="form-actions button-group">
-                            <button type="submit" class="send-btn">Send Email</button>
-                            <button type="button" class="prev-btn">Previous Email</button>
-                        </div>
-                    </div>
-
-                    {{-- Right Side: Customer List --}}
-                    <div class="table-section">
-                        <table class="custom-table">
-                            <thead>
-                                <tr>
-                                    <th>Select</th>
-                                    <th>Customer Number</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($customers as $customer)
-                                    <tr>
-                                        <td><input type="checkbox" name="user_ids[]" value="{{ $customer->user_id }}"></td>
-                                        <td>{{ 'CUS#' . str_pad($customer->user_id, 4, '0', STR_PAD_LEFT) }}</td>
-                                        <td>{{ $customer->name }}</td>
-                                        <td>{{ $customer->email }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-
-                        <div class="pagination">
-                            @if ($customers->onFirstPage())
-                                <span>&laquo; Prev</span>
-                            @else
-                                <a href="{{ $customers->previousPageUrl() }}">&laquo; Prev</a>
-                            @endif
-
-                            <span>Page {{ $customers->currentPage() }} of {{ $customers->lastPage() }}</span>
-
-                            @if ($customers->hasMorePages())
-                                <a href="{{ $customers->nextPageUrl() }}">Next &raquo;</a>
-                            @else
-                                <span>Next &raquo;</span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </form>
-        @else
-            <p class="no-customers">No customers found.</p>
-        @endif
+        </div>
     </div>
 </div>
-
 @endsection
 
-
-
 <style>
-
     /* Container */
 .container-custom {
   max-width: 800px;
@@ -121,6 +105,11 @@
 @media (min-width: 1024px) {
   .flex-container {
     flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .form-section, .table-section {
+    flex: 1 1 50%;
   }
 }
 
@@ -191,11 +180,12 @@
   flex: 1;
   max-height: 400px; /* Lower max height */
   overflow-y: auto;
+  max-width: 100%;
 }
 
 /* Table styles */
 .custom-table {
-  width: 80%;
+  width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
   border: 1px solid #e2e8f0;
@@ -297,37 +287,31 @@ input[type="checkbox"] {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.6);
 }
 
-
-
-
-
-/* Flex container for form and table side by side */
+.container-fluid {
+  padding-top: 32px;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
 .flex-container {
   display: flex;
   flex-direction: column;
   gap: 32px;
 }
-
-/* Force left-right layout on wider screens */
 @media (min-width: 1024px) {
   .flex-container {
     flex-direction: row;
     align-items: flex-start;
   }
-
-  .form-section {
-    order: 1; /* form stays on left */
-    flex: 1 1 50%;
-  }
-
-  .table-section {
-    order: 2; /* table stays on right */
+  .form-section, .table-section {
     flex: 1 1 50%;
   }
 }
-
-
-
-
-
+.table-section {
+  max-width: 100%;
+}
+.custom-table {
+  width: 100%;
+}
 </style>
