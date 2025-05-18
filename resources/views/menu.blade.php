@@ -671,7 +671,12 @@
                             </div>
 
                             <div class="menu-item-bottom">
-                                <button class="customize-btn">Customize</button>
+                                <form method="GET" action="{{ route('productdetails.view') }}" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="pid" value="{{ $product->id }}">
+                                <button type="submit" class="customize-btn">Customize</button>
+
+                                </form>
                             </div>
                         </div>
                     </div>

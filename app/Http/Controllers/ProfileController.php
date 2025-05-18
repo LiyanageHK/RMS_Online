@@ -18,7 +18,10 @@ class ProfileController extends Controller
 public function show()
 {
     $user = auth()->user();
-    $orders = Order::where('user_id', $user->id)
+
+
+    $orders = Order::where('u_id', $user->id)
+
                     ->with('items')
                     ->orderBy('created_at', 'desc')
                     ->get();
@@ -31,12 +34,12 @@ public function orders()
 {
     $user = auth()->user();
 
-    $orders = Order::where('user_id', $user->id)
+    $orders = Order::where('u_id', $user->id)
                     ->with('items')
                     ->orderBy('created_at', 'desc')
                     ->get();
 
-    return view('orders', compact('orders'));
+    return view('Orders.index', compact('orders'));
 }
 
 
@@ -102,7 +105,7 @@ public function showLoyaltyCustomers($id)
 public function orderHistory()
 {
     $userId = Auth::id();
-    $orders = Order::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
+    $orders = Order::where('u_id', $userId)->orderBy('created_at', 'desc')->get();
 
     return view('profile_orderdetails', compact('orders'));
 }
