@@ -93,6 +93,25 @@ public function store(Request $request)
     return redirect()->route('grns.index')->with('success', 'GRN created successfully!');
 }
 
+public function getPOData($id)
+    {
+        $po = PurchaseOrder::with(['supplier', 'items.item'])->findOrFail($id);
+
+        return response()->json([
+            'supplier_id' => $po->supplier_id,
+            'supplier_name' => $po->supplier->name,
+            'items' => $po->items->map(function ($item) {
+                return [
+                    'id' => $item->item_id,
+                    'name' => $item->item->name ?? 'Unknown',
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                    'total' => $item->total,
+                ];
+            }),
+        ]);
+    }
+
 
 public function show($id)
 {
