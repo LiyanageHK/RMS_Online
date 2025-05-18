@@ -13,7 +13,7 @@
             </a>
         </div>
 
-        <form action="{{ route('purchase_orders.update', $po->id) }}" method="POST">
+        <form id="poForm" action="{{ route('purchase_orders.update', $po->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -195,5 +195,40 @@
 
     // Run on load to calculate initial total
     updateTotalAmount();
+
+    
+    document.getElementById('poForm').addEventListener('submit', function(e) {
+        const form = this;
+        const action = document.activeElement.value;
+        const supplier = document.getElementById('supplier_id').value;
+        const deliveryDate = document.getElementById('delivery_date').value;
+        let hasItems = false;
+        document.querySelectorAll('#items_table tbody tr').forEach(row => { hasItems = true; });
+
+        if (action === 'send') {
+            let valid = true;
+            let errorMsg = '';
+            if (!supplier) {
+                valid = false;
+                errorMsg = 'Please select a supplier.';
+            } else if (!deliveryDate) {
+                valid = false;
+                errorMsg = 'Please select a delivery date.';
+            } else if (!hasItems) {
+                valid = false;
+                errorMsg = 'Please add at least one item.';
+            }
+            if (!valid) {
+                e.preventDefault();
+                alert(errorMsg);
+            }
+        } else if (action === 'draft') {
+            if (!supplier) {
+                e.preventDefault();
+                alert('Please select a supplier to save as draft.');
+            }
+        }
+    });
+
 </script>
 @endpush
