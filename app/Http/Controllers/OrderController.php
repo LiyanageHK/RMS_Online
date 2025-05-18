@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderPlacedMail;
 use App\Mail\OrderCancelledMail;
 use App\Models\User;
+use App\Models\LoyaltyCustomer;
 
 
 

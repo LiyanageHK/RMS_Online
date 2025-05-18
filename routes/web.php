@@ -85,7 +85,7 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 
 
-//Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+//
 
 Auth::routes();
 
