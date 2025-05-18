@@ -5,8 +5,15 @@
     <div class="content-wrapper">
         <h2 class="heading">Send Email to Customers</h2>
 
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+
         @if($customers->count())
-            <form method="POST" action="#">
+            <form method="POST" action="{{ route('send.email') }}">
                 @csrf
 
                 <div class="flex-container">
@@ -22,16 +29,11 @@
                             <textarea id="body" name="body" rows="6" class="textarea" required></textarea>
                         </div>
 
-                        <div class="form-actions">
+                        <div class="form-actions button-group">
                             <button type="submit" class="send-btn">Send Email</button>
+                            <button type="button" class="prev-btn">Previous Email</button>
                         </div>
                     </div>
-
-                    <div class="form-actions">
-    <button type="button" class="prev-btn">Previous Email</button>
-</div>
-
-
 
                     {{-- Right Side: Customer List --}}
                     <div class="table-section">
@@ -48,7 +50,7 @@
                                 @foreach($customers as $customer)
                                     <tr>
                                         <td><input type="checkbox" name="user_ids[]" value="{{ $customer->user_id }}"></td>
-                                        <td>{{ ($customers->currentPage() - 1) * $customers->perPage() + $loop->iteration }}</td>
+                                        <td>{{ 'CUS#' . str_pad($customer->user_id, 4, '0', STR_PAD_LEFT) }}</td>
                                         <td>{{ $customer->name }}</td>
                                         <td>{{ $customer->email }}</td>
                                     </tr>
@@ -80,12 +82,6 @@
     </div>
 </div>
 
-
-
-
-
-
-
 @endsection
 
 
@@ -94,15 +90,17 @@
 
     /* Container */
 .container-custom {
-  max-width: 1200px;
-  height: auto;
-  margin: 40px auto;
-  padding: 20px 30px;
+  max-width: 800px;
+  height: 9200px;
+  margin: 20px auto;
+  padding: 20px 30px; /* Ensure left/right padding */
   background-color: #fff;
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
               0 4px 6px -4px rgba(0,0,0,0.1);
   border-radius: 16px;
+  overflow: hidden; /* Prevent overflow */
 }
+
 
 /* Heading */
 .heading {
@@ -126,12 +124,17 @@
   }
 }
 
+.content-wrapper {
+  width: 100%;
+}
+
+
 /* Left form section */
 .form-section {
   flex: 1;
   background: #f9fafb;
-  padding: 24px;
-  border-radius: 12px;
+  padding: 16px; /* Reduced padding */
+  border-radius: 10px; /* Slightly smaller radius */
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
 }
 
@@ -186,13 +189,13 @@
 /* Right table section */
 .table-section {
   flex: 1;
-  max-height: 500px;
+  max-height: 400px; /* Lower max height */
   overflow-y: auto;
 }
 
 /* Table styles */
 .custom-table {
-  width: 100%;
+  width: 80%;
   border-collapse: collapse;
   font-size: 0.9rem;
   border: 1px solid #e2e8f0;
@@ -257,8 +260,6 @@ input[type="checkbox"] {
   font-size: 1rem;
 }
 
-
-
 .header-with-button {
   display: flex;
   justify-content: space-between;
@@ -266,6 +267,12 @@ input[type="checkbox"] {
   margin-bottom: 24px;
 }
 
+/* Add spacing between buttons in the form-actions group */
+.button-group {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
 
 .prev-btn {
   background-color: #2563eb;       /* Blue-600 */
@@ -289,6 +296,37 @@ input[type="checkbox"] {
   outline: none;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.6);
 }
+
+
+
+
+
+/* Flex container for form and table side by side */
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Force left-right layout on wider screens */
+@media (min-width: 1024px) {
+  .flex-container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .form-section {
+    order: 1; /* form stays on left */
+    flex: 1 1 50%;
+  }
+
+  .table-section {
+    order: 2; /* table stays on right */
+    flex: 1 1 50%;
+  }
+}
+
+
 
 
 

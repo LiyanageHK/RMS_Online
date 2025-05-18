@@ -18,7 +18,7 @@
                 <th>Order Number</th>
                 <th>Delivered Address</th>
                 <th>Delivered Address Landmark</th>
-                <th>Bill Amount</th>
+                <th>Bill Amount (Rs.)</th>
                 <th>Payment Method</th>
                 <th>Order Date</th>
             </tr>

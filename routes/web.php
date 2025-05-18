@@ -23,6 +23,7 @@ use App\Http\Controllers\Auth\CustomerController;
 use App\Http\Controllers\Auth\PageController;
 use App\Models\Order;
 use App\Http\Controllers\Auth\UserLoginController;
+use App\Http\Controllers\EmailController;
 
 
 use App\Models\Feedback;
@@ -377,9 +378,11 @@ Route::post('/login', [UserLoginController::class, 'login']);
 Route::post('/logout', [UserLoginController::class, 'logout'])->name('logout');
 */
 // Example authenticated route
+
+
 Route::get('/homepage', function () {
-    return view('homepage');
-})->middleware('auth')->name('homepage');
+    return view('home');
+})->middleware('auth')->name('home');
 
 Route::controller(ProductController::class)->middleware(['auth', 'verified'])->group(function(){
 Route::get('/productIndex','Index')->name('productindex');
@@ -434,8 +437,12 @@ Route::patch('/driver/orders/{order}/mark-delivered', [DriverController::class, 
 
 
 //Custmer Email Notification
-Route::get('/send-email', function () {
-    $customers = \App\Models\User::paginate(10);
-    return view('customer.emailService', compact('customers'));
-})->name('email.form');
+//Route::get('/send-email', function () {
+   // $customers = \App\Models\User::paginate(10);
+ //   return view('customer.emailService', compact('customers'));
+//})->name('email.form');
 
+
+//Customer Email Notification
+
+Route::post('/send-email', [EmailController::class, 'sendBulkEmail'])->name('send.email');

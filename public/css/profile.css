@@ -71,11 +71,11 @@
     float: right;
     font-size: 24px;
     cursor: pointer;
-    color: #444;
+    color: #fff;
 }
 
 .close-btn:hover {
-    color: #000;
+    color: #fff;
 }
 
 /* Form Styles */
@@ -109,8 +109,8 @@ form#profileForm {
 }
 
 .form-group button {
-    background-color: #e63946;
-    color: white;
+    background-color: #ffa500; /* Orange */
+    color: var(--text-light);
     border: none;
     padding: 12px;
     font-size: 16px;
@@ -120,7 +120,7 @@ form#profileForm {
 }
 
 .form-group button:hover {
-    background-color: #d62828;
+    background-color: #e59400; /* Slightly darker orange */
 }
 
 /* Error & Success Messages */
@@ -139,19 +139,33 @@ form#profileForm {
 }
 
 /* Edit Button */
-.btn-edit {
+.btn-edit, .button-group .btn {
     display: inline-block;
     margin-top: 20px;
     padding: 10px 18px;
-    background-color: #457b9d;
+    background-color: #007BFF;
     color: white;
     text-decoration: none;
     border-radius: 6px;
     transition: background-color 0.3s ease;
+    font-weight: 600;
 }
 
-.btn-edit:hover {
-    background-color: #1d3557;
+.btn-edit:hover, .button-group .btn:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+.button-group .btn {
+    background-color: #007BFF;
+    color: #fff !important;
+    border: 2px solid #007BFF;
+}
+
+.button-group .btn:hover {
+    background-color: #0056b3;
+    color: #fff !important;
+    border: 2px solid #0056b3;
 }
 
 /* Button Group */
@@ -162,8 +176,8 @@ form#profileForm {
 .button-group .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #2a9d8f;
-    color: white;
+    background-color: #007BFF;
+    color: var(--text-light);
     text-decoration: none;
     border-radius: 6px;
     margin-right: 10px;
@@ -171,7 +185,7 @@ form#profileForm {
 }
 
 .button-group .btn:hover {
-    background-color: #21867a;
+    background-color: #0056b3; 
 }
 
 /* Profile Sidebar */
@@ -266,7 +280,7 @@ form#profileForm {
 }
 
 .floating-cart:hover {
-    background-color: #e03e00;
+    background-color: #ff4500;
 }
 
 

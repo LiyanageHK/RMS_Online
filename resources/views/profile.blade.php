@@ -543,7 +543,12 @@
                         {{ $loyalty->loyalty_level }}
                     </span>
                 </p>
-@endif
+            @else
+                <div class="loyalty-info">
+                    <p><strong>Not a loyalty customer yet?</strong></p>
+                    <p>Join our loyalty program to earn rewards and exclusive benefits!</p>
+                </div>
+            @endif
 
         </div>
     </div>
@@ -725,9 +730,7 @@
         </div>
     @endif
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+
 
       <div class="button-group">
 
