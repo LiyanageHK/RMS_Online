@@ -163,8 +163,9 @@ public function destroy($id)
             }),
 
         ]);
+      
     }
 
-    return redirect()->route('purchase_orders.index')->with('success', 'Purchase Order updated successfully.');
+    
 }
-}
+

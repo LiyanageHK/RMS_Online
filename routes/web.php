@@ -269,6 +269,9 @@ Route::get('/customers/{userid}/loyalty', [CustomerController::class, 'loyalty']
 Route::post('/loyalty/redeem', [CustomerController::class, 'redeem'])->name('loyalty.redeem');
 Route::get('/customer/loyalty-program', [CustomerController::class, 'showLoyaltyProgram'])->name('loyalty-program');
 Route::get('/loyalty/insert', [CustomerController::class, 'insertLoyalCustomers'])->name('loyalty.insert'); 
+Route::get('orders/index', [OrderController::class, 'index'])->name('orders.index');
+Route::post('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
 
 });
 
@@ -288,8 +291,8 @@ Route::get('/inventory-center', [InventoryController::class, 'index']);
 
 
 // Order Status Management
-Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-Route::post('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+// Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+// Route::post('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 
 // Static client views
 //Route::view('about', 'client.about')->name('client.about');
