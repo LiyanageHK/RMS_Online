@@ -74,6 +74,47 @@ class UserController extends Controller
         // Redirect to home page or dashboard
         return redirect('/')->with('success', 'Registration successful! Welcome to Flame & Crust!.');
     }
+
+    /**
+     * Update the user profile.
+     */
+    public function updateProfile(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'phone' => ['nullable', 'digits:10'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->phone = $data['phone'] ?? $user->phone;
+        $user->address = $data['address'] ?? $user->address;
+
+        if (!empty($data['password'])) {
+            $user->password = Hash::make($data['password']);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully.');
+    }
+
+    /**
+     * Show the user's order history.
+     */
+    public function showOrderHistory()
+    {
+        $user = auth()->user();
+        $orders = \App\Models\Order::where('user_id', $user->user_id ?? $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('profile_orderdetails', compact('orders'));
+    }
 }
 
 

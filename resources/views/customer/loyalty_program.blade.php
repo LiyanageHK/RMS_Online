@@ -75,7 +75,7 @@
 
 <style>
     .container {
-        max-width: 1200px;
+        max-width: 90vw;
     }
     .table-auto th,
     .table-auto td {

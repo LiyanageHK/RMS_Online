@@ -19,13 +19,14 @@ public function show()
 {
     $user = auth()->user();
 
+
     $orders = Order::where('u_id', $user->id)
+
                     ->with('items')
                     ->orderBy('created_at', 'desc')
                     ->get();
-
-
-    return view('profile', compact('user', 'orders'));
+    $loyalty = \App\Models\LoyaltyCustomer::where('user_id', $user->user_id ?? $user->id)->first();
+    return view('profile', compact('user', 'orders', 'loyalty'));
 }
 
 
