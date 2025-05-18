@@ -34,7 +34,7 @@
 
                 <div style="margin-bottom: 20px;">
                     <label for="delivery_date" style="font-weight: bold;">Delivery Date</label>
-                    <input type="date" id="delivery_date" name="delivery_date" style="width: 98%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                    <input type="date" id="delivery_date" name="delivery_date" min="{{ date('Y-m-d') }}" style="width: 98%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                 </div>
             </div>
 
@@ -79,12 +79,26 @@
                     <button type="submit" name="action" value="draft" style="background-color: #6c757d; color: white; font-size: 14px; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer;">
                         Save as Draft
                     </button>
-                    <button type="submit" id="sendEmailBtn" name="action" value="send" style="background-color: #0070FF; color: white; font-size: 14px; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer;">
+                    <button type="submit" id="sendEmailBtn" name="action" value="send" class="btn btn-success" style="background-color: #0070FF; color: white; font-size: 14px; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer;">
                         Send as Email
                     </button>
                 </div>
             </div>
         </form>
+    </div>
+</div>
+
+<div id="sendEmailModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
+    <div style="background-color: #fff; padding: 30px; border-radius: 12px; width: 400px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.15); text-align: center;">
+        <div style="margin-bottom: 15px;">
+            <span class="material-icons" style="font-size: 40px; color: #0070FF;">email</span>
+        </div>
+        <h4 style="margin-bottom: 10px; font-size: 18px; color: #333;">Send Purchase Order as Email?</h4>
+        <p style="font-size: 15px; margin-bottom: 25px;">Are you sure you want to send this purchase order as an email to the supplier?</p>
+        <div style="display: flex; justify-content: center; gap: 15px;">
+            <button id="cancelSendEmailBtn" style="padding: 10px 20px; background-color: #6c757d; border: none; color: #fff; border-radius: 5px; font-weight: bold; font-size: 14px; cursor: pointer;">Cancel</button>
+            <button id="confirmSendEmailBtn" style="padding: 10px 20px; background-color: #0070FF; border: none; color: #fff; border-radius: 5px; font-weight: bold; font-size: 14px; cursor: pointer;">Send</button>
+        </div>
     </div>
 </div>
 @endsection
@@ -187,6 +201,18 @@
             if (!valid) {
                 e.preventDefault();
                 alert(errorMsg);
+            } else {
+                // Show custom confirmation modal
+                e.preventDefault();
+                document.getElementById('sendEmailModal').style.display = 'flex';
+                // Only submit if user confirms
+                document.getElementById('confirmSendEmailBtn').onclick = function() {
+                    document.getElementById('sendEmailModal').style.display = 'none';
+                    form.submit();
+                };
+                document.getElementById('cancelSendEmailBtn').onclick = function() {
+                    document.getElementById('sendEmailModal').style.display = 'none';
+                };
             }
         } else if (action === 'draft') {
             if (!supplier) {

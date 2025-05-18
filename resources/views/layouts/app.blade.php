@@ -242,7 +242,7 @@
                         <span class="material-icons toggle-icon">expand_more</span>
                     </button>
                     <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
-                        <a href="{{ route('orders.index') }}" class="submenu-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">Order Status Management</a>
+                        <a href="{{ route('orders.index') }}" class="submenu-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">Order Updates</a>
                     </div>
                 </div>
 

@@ -21,7 +21,7 @@
 
     <!-- Button Group Container -->
     <div style="display: flex; gap: 10px;">
-        <a href="{{ route('purchase_orders.create') }}"
+        <a href="{{ route('grns.create') }}"
            style="padding: 8px 14px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 6px; font-size: 14px; transition: background-color 0.3s;">
             + Add New GRN
         </a>
