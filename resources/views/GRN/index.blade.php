@@ -15,22 +15,14 @@
     <!-- Table Section -->
     <div style="border: 1px solid #ddd; border-radius: 10px; background-color: #ffffff; padding: 25px 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin: 0 30px 40px 30px;">
         
-         <!-- Section Header -->
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-    <h3 style="margin: 0; font-size: 18px; color: #333;">Overview</h3>
-
-    <!-- Button Group Container -->
-    <div style="display: flex; gap: 10px;">
-        <a href="{{ route('purchase_orders.create') }}"
-           style="padding: 8px 14px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 6px; font-size: 14px; transition: background-color 0.3s;">
-            + Add New GRN
-        </a>
-        <button id="downloadReport" class="btn"
-                style="padding: 8px 14px; background-color: #E7592B; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">
-            Download Report
-        </button>
-    </div>
-</div>
+        <!-- Section Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h3 style="margin: 0; font-size: 18px; color: #333;">Overview</h3>
+            <a href="{{ route('grns.create') }}"
+               style="padding: 8px 14px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 6px; font-size: 14px; transition: background-color 0.3s;">
+                + Add New GRN
+            </a>
+        </div>
 
         <!-- GRN Table -->
         <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
@@ -114,11 +106,6 @@
 
             document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
                 if (formToSubmit) formToSubmit.submit();
-            });
-
-            document.getElementById('downloadReport').addEventListener('click', function() {
-                const url = '{{ route('grns.report') }}';
-                window.location.href = url;
             });
         });
     </script>

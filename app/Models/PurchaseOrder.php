@@ -24,6 +24,5 @@ class PurchaseOrder extends Model
     public function grns() {
         return $this->hasMany(Grn::class);
     }
+    
 }
-
-
