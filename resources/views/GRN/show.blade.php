@@ -44,7 +44,7 @@
                     <tbody>
                         @foreach($grn->items as $grnItem)
                         <tr>
-                            <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ $grnItem->item->name ?? '-' }}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ $grnItem->item->item_name ?? '-' }}</td>
                             <td style="padding: 10px; border-bottom: 1px solid #eee;">Rs. {{ number_format($grnItem->item->price ?? 0, 2) }}</td>
                             <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ $grnItem->quantity }}</td>
                             <td style="padding: 10px; border-bottom: 1px solid #eee;">Rs. {{ number_format(($grnItem->item->price ?? 0) * $grnItem->quantity, 2) }}</td>

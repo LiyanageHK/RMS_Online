@@ -41,7 +41,7 @@
                     <tbody>
                     @foreach($po->items as $poItem)
                     <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ $poItem->item->name ?? 'N/A' }}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ $poItem->item->item_name ?? 'N/A' }}</td>
                         <td style="padding: 10px; border-bottom: 1px solid #eee;">Rs. {{ number_format($poItem->price, 2) }}</td>
                         <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ $poItem->quantity }}</td>
                         <td style="padding: 10px; border-bottom: 1px solid #eee;">Rs. {{ number_format($poItem->price * $poItem->quantity, 2) }}</td>
