@@ -285,10 +285,13 @@
                     </div>
                 </div>
 
-                <form method="POST" id="cancel-form-{{ $order->id }}" action="/cancel-order/{{ $order->id }}" style="display: none;">
+
+                <form id="cancel-form-{{ $order->id }}" method="POST" action="/cancel-order/{{ $order->id }}">
                     @csrf
                     @method('PATCH')
-                    <button type="submit" class="btn btn-danger w-100">Cancel Order</button>
+                    <button type="submit" onclick="showDeleteModal()" class="btn btn-danger w-100">
+                        Cancel Order
+                    </button>
                 </form>
             </div>
         </div>
@@ -296,6 +299,20 @@
     </div>
 </div>
 <br><br>
+<!-- Delete Confirmation Modal -->
+<div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
+  <div style="background-color: #fff; padding: 30px; border-radius: 12px; width: 400px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.15); text-align: center;">
+    <div style="margin-bottom: 15px;">
+      <i class="fas fa-exclamation-triangle fa-2x text-danger"></i>
+    </div>
+    <h4 class="mb-2">order cancellation</h4>
+    <p id="modalMessage">Are you sure you want to Cancel this order ?</p>
+    <div class="d-flex justify-content-center gap-3">
+      <button id="cancelBtn" class="btn btn-secondary">No</button>
+      <button id="confirmDeleteBtn" class="btn btn-danger">Yes</button>
+    </div>
+  </div>
+</div>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -330,5 +347,24 @@
                 }
             });
     }
+</script>
+
+<script>
+let formToSubmit = null;
+
+function showDeleteModal() {
+  formToSubmit = document.getElementById('deleteForm-');
+  document.getElementById('modalMessage').textContent = `Are you sure you want to cancel?`;
+  document.getElementById('confirmModal').style.display = 'flex';
+}
+
+document.getElementById('cancelBtn').addEventListener('click', function () {
+  document.getElementById('confirmModal').style.display = 'none';
+  formToSubmit = null;
+});
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+  if (formToSubmit) formToSubmit.submit();
+});
 </script>
 @endsection

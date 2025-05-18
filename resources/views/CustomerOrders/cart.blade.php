@@ -314,7 +314,7 @@
         @foreach ($cartItems as $item)
         <div class="cart-item d-flex align-items-center justify-content-between" data-id="{{ $item->id }}">
           <div class="d-flex align-items-center">
-            <img src="{{ asset('storage/' . $item->product->image->image) }}" class="product-img me-3" alt="Pizza">
+            <img src="{{ asset('uploads/products/' . $item->product->image->image) }}" class="product-img me-3" alt="Pizza">
             <div>
               <h5 class="mb-1">{{ $item->product->name }} <span class="badge bg-secondary">{{ ucfirst($item->size) }}</span></h5>
               <p class="mb-0 text-muted">LKR <span class="item-price">{{ number_format($item->price, 2) }}</span></p>
