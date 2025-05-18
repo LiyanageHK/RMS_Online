@@ -12,7 +12,7 @@ class MenuController extends Controller
     {
         $categories = DB::table('product_categories')
             ->select('id', 'name')
-            ->orderBy('name', 'asc')
+            ->orderBy('id', 'asc')
             ->get();
     
         $products = DB::table('products')

@@ -27,6 +27,10 @@
             <label>Description</label>
             <textarea name="description" class="form-control">{{ $item->description }}</textarea>
         </div>
+        <div class="mb-3">
+            <label>Alert Level</label>
+            <input type="number" name="alert_level" value="{{ $item->alert_level ?? '' }}" class="form-control" min="5" required>
+        </div>
         <button class="btn btn-primary">Update</button>
     </form>
 </div>

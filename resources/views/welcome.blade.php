@@ -748,31 +748,33 @@
                     </div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">How to Join</h3>
                     <p style="color: #666; margin-bottom: 15px;">Order with us 3 times and automatically become a loyalty member!</p>
-                    <p style="color: #666;">Start earning points from your very first order as a member.</p>
+                    <p style="color: #666;">Unlock higher levels and more rewards as you order more.</p>
                 </div>
 
-                <!-- Earn Points -->
+                <!-- Loyalty Levels -->
+                <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <i class="fas fa-trophy" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Loyalty Levels</h3>
+                    <ul style="list-style: none; padding: 0; color: #666; margin-bottom: 0;">
+                        <li style="margin-bottom: 10px;"><strong>Silver:</strong> 3–4 Orders</li>
+                        <li style="margin-bottom: 10px;"><strong>Gold:</strong> 5–9 Orders</li>
+                        <li><strong>Platinum:</strong> 10+ Orders</li>
+                    </ul>
+                    <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="color: #666; font-style: italic;">Higher levels mean more exclusive rewards!</p>
+                    </div>
+                </div>
+
+                <!-- Loyalty Points Opportunity -->
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
                     <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                         <i class="fas fa-coins" style="font-size: 2rem; color: white;"></i>
                     </div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Earn Points</h3>
-                    <p style="color: #666; margin-bottom: 15px;">Earn 1 point for every Rs. 100 spent</p>
-                    <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
-                        <p style="color: #666; font-style: italic;">Example: Rs. 1,500 order = 15 Points</p>
-                    </div>
-                </div>
-
-                <!-- Redeem Points -->
-                <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                        <i class="fas fa-gift" style="font-size: 2rem; color: white;"></i>
-                    </div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Redeem Rewards</h3>
-                    <p style="color: #666; margin-bottom: 15px;">1 Point = Rs. 1 discount on your next order</p>
-                    <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
-                        <p style="color: #666; font-style: italic;">Example: 50 Points = Rs. 50 discount</p>
-                    </div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Your Chance to Save</h3>
+                    <p style="color: #666; margin-bottom: 15px;">Every order earns you loyalty points! Join Now!</p>
+                    <p style="color: #666;">It's a great opportunity to save on future pizzas and enjoy exclusive perks.</p>
                 </div>
             </div>
 
