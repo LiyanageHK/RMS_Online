@@ -15,6 +15,7 @@
 
         <form id="poForm" action="{{ route('purchase_orders.store') }}" method="POST">
             @csrf
+            <input type="hidden" id="po_action" name="action" value="draft">
 
             <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #F9F9F9; margin-bottom: 30px;">
                 <div style="margin-bottom: 20px;">
@@ -179,13 +180,16 @@
 
     document.getElementById('poForm').addEventListener('submit', function(e) {
         const form = this;
-        const action = document.activeElement.value;
         const supplier = document.getElementById('supplier_id').value;
         const deliveryDate = document.getElementById('delivery_date').value;
         let hasItems = false;
         document.querySelectorAll('#items_table tbody tr').forEach(row => { hasItems = true; });
 
-        if (action === 'send') {
+        // Use hidden input for action
+        const poAction = document.getElementById('po_action');
+        // Check which button was clicked
+        if (document.activeElement.id === 'sendEmailBtn') {
+            poAction.value = 'send';
             let valid = true;
             let errorMsg = '';
             if (!supplier) {
@@ -207,6 +211,7 @@
                 document.getElementById('sendEmailModal').style.display = 'flex';
                 // Only submit if user confirms
                 document.getElementById('confirmSendEmailBtn').onclick = function() {
+                    poAction.value = 'send';
                     document.getElementById('sendEmailModal').style.display = 'none';
                     form.submit();
                 };
@@ -214,7 +219,8 @@
                     document.getElementById('sendEmailModal').style.display = 'none';
                 };
             }
-        } else if (action === 'draft') {
+        } else {
+            poAction.value = 'draft';
             if (!supplier) {
                 e.preventDefault();
                 alert('Please select a supplier to save as draft.');

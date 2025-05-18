@@ -192,15 +192,20 @@
         if (itemsJson) {
             try {
                 const items = JSON.parse(itemsJson.replace(/&quot;/g, '"'));
+                if (items.length > 0) {
+                    console.log('First PO item object:', items[0]);
+                }
                 items.forEach(function(item) {
+                    // Use item.item_id for item ID and item.name for item name
                     addedItemIds.add(String(item.item_id));
+                    const itemName = item.name || '';
                     const row = document.createElement('tr');
                     row.setAttribute('data-id', item.item_id);
                     row.innerHTML = `
                         <td>
-                            ${item.name}
+                            ${itemName}
                             <input type="hidden" name="items[${item.item_id}][item_id]" value="${item.item_id}">
-                            <input type="hidden" name="items[${item.item_id}][name]" value="${item.name}">
+                            <input type="hidden" name="items[${item.item_id}][name]" value="${itemName}">
                         </td>
                         <td>
                             $${parseFloat(item.price).toFixed(2)}

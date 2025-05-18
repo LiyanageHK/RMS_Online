@@ -39,6 +39,13 @@ class GRNController extends Controller
     $suppliers = Supplier::all();
     $items = Items::all();
     $purchaseOrders = PurchaseOrder::where('status', 'Sent')->get();
+    // Ensure each PO item has a name property from the related Item
+    foreach ($purchaseOrders as $po) {
+        foreach ($po->items as $item) {
+            // If $item->item is the related Item model
+            $item->name = $item->item->name ?? '';
+        }
+    }
     return view('GRN.create', compact('suppliers','items','purchaseOrders'));
 }
 
