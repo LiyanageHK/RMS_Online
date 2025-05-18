@@ -1,4 +1,3 @@
-@extends('layouts.appclient')
    
     <style>
         :root {
@@ -518,9 +517,9 @@
 
 
 
-@section('title', 'Home')
+<?php $__env->startSection('title', 'Home'); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -529,7 +528,7 @@
                 <h2>EXPERIENCE ITALIAN CULINARY EXCELLENCE</h2>
                 <p>Discover the Art of Authentic Italian Pizza!</p>
                 <p>Indulge in our handcrafted pizzas, made with the finest ingredients and perfected through generations of Italian tradition. Every slice is a celebration of authentic flavors and culinary craftsmanship.</p>
-                <a href="{{ route('menu') }}" class="btn">ORDER NOW</a>
+                <a href="<?php echo e(route('menu')); ?>" class="btn">ORDER NOW</a>
             </div>
         </div>
     </section>
@@ -575,13 +574,13 @@
 
                 <!-- Pizza Item with Menu Button -->
                 <div class="featured-item" style="position: relative; overflow: hidden; border-radius: 10px;">
-                    <img src="{{ asset('uploads/products/Pizza Napoletana.png') }}" 
+                    <img src="<?php echo e(asset('uploads/products/Pizza Napoletana.png')); ?>" 
                          alt="Pizza" 
                          style="width: 100%; height: 400px; object-fit: cover;">
                     <div class="overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);">
                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 100%;">
                             <h2 style="color: white; font-size: 2.5rem; margin-bottom: 20px;">CHECK MENU</h2>
-                            <a href="{{ route('menu') }}" class="menu-btn" style="
+                            <a href="<?php echo e(route('menu')); ?>" class="menu-btn" style="
                                 display: inline-block;
                                 padding: 12px 30px;
                                 background-color: #E7592B;
@@ -618,21 +617,21 @@
                     <h3 class="size-title">LARGE PIZZA</h3>
                     <p class="size-subtitle">13 Inches Diameter</p>
                     <div class="pizza-image large">
-                        <img src="{{ asset('uploads/products/Pizza Napoletana.png') }}" alt="Large Pizza">
+                        <img src="<?php echo e(asset('uploads/products/Pizza Napoletana.png')); ?>" alt="Large Pizza">
                     </div>
                 </div>
                 <div class="size-item">
                     <h3 class="size-title">MEDIUM PIZZA</h3>
                     <p class="size-subtitle">10 Inches Diameter</p>
                     <div class="pizza-image medium">
-                        <img src="{{ asset('uploads/products/Pizza Napoletana.png') }}" alt="Medium Pizza">
+                        <img src="<?php echo e(asset('uploads/products/Pizza Napoletana.png')); ?>" alt="Medium Pizza">
                     </div>
                 </div>
                 <div class="size-item">
                     <h3 class="size-title">SMALL PIZZA</h3>
                     <p class="size-subtitle">7 Inches Diameter</p>
                     <div class="pizza-image small">
-                        <img src="{{ asset('uploads/products/Pizza Napoletana.png') }}" alt="Small Pizza">
+                        <img src="<?php echo e(asset('uploads/products/Pizza Napoletana.png')); ?>" alt="Small Pizza">
                     </div>
                 </div>
             </div>
@@ -748,33 +747,31 @@
                     </div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">How to Join</h3>
                     <p style="color: #666; margin-bottom: 15px;">Order with us 3 times and automatically become a loyalty member!</p>
-                    <p style="color: #666;">Unlock higher levels and more rewards as you order more.</p>
+                    <p style="color: #666;">Start earning points from your very first order as a member.</p>
                 </div>
 
-                <!-- Loyalty Levels -->
-                <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                        <i class="fas fa-trophy" style="font-size: 2rem; color: white;"></i>
-                    </div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Loyalty Levels</h3>
-                    <ul style="list-style: none; padding: 0; color: #666; margin-bottom: 0;">
-                        <li style="margin-bottom: 10px;"><strong>Silver:</strong> 3–4 Orders</li>
-                        <li style="margin-bottom: 10px;"><strong>Gold:</strong> 5–9 Orders</li>
-                        <li><strong>Platinum:</strong> 10+ Orders</li>
-                    </ul>
-                    <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
-                        <p style="color: #666; font-style: italic;">Higher levels mean more exclusive rewards!</p>
-                    </div>
-                </div>
-
-                <!-- Loyalty Points Opportunity -->
+                <!-- Earn Points -->
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
                     <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                         <i class="fas fa-coins" style="font-size: 2rem; color: white;"></i>
                     </div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Your Chance to Save</h3>
-                    <p style="color: #666; margin-bottom: 15px;">Every order earns you loyalty points! Join Now!</p>
-                    <p style="color: #666;">It's a great opportunity to save on future pizzas and enjoy exclusive perks.</p>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Earn Points</h3>
+                    <p style="color: #666; margin-bottom: 15px;">Earn 1 point for every Rs. 100 spent</p>
+                    <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="color: #666; font-style: italic;">Example: Rs. 1,500 order = 15 Points</p>
+                    </div>
+                </div>
+
+                <!-- Redeem Points -->
+                <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <i class="fas fa-gift" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Redeem Rewards</h3>
+                    <p style="color: #666; margin-bottom: 15px;">1 Point = Rs. 1 discount on your next order</p>
+                    <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="color: #666; font-style: italic;">Example: 50 Points = Rs. 50 discount</p>
+                    </div>
                 </div>
             </div>
 
@@ -783,7 +780,7 @@
                 <i class="fas fa-star" style="font-size: 3rem; margin-bottom: 20px;"></i>
                 <h3 style="font-size: 2rem; margin-bottom: 15px;">Start Earning Today!</h3>
                 <p style="font-size: 1.2rem; margin-bottom: 20px;">Join our loyalty program and turn your pizza passion into rewards.</p>
-                <a href="{{ route('menu') }}" style="display: inline-block; background: white; color: var(--primary-orange); padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: transform 0.3s;">Order Now</a>
+                <a href="<?php echo e(route('menu')); ?>" style="display: inline-block; background: white; color: var(--primary-orange); padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: transform 0.3s;">Order Now</a>
             </div>
         </div>
     </section>
@@ -796,26 +793,28 @@
                 <p style="color: #666; max-width: 800px; margin: 0 auto;">Real reviews from our valued customers</p>
             </div>
             <div class="testimonial-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; justify-content: center;">
-                @forelse($feedbacks as $feedback)
+                <?php $__empty_1 = true; $__currentLoopData = $feedbacks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $feedback): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <div class="testimonial-card" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;">
                     <div style="width: 70px; height: 70px; background-color: #E7592B; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                         <i class="fas fa-user" style="font-size: 2rem; color: white;"></i>
                     </div>
                     <div style="color: #E7592B; margin-bottom: 15px;">
-                        @for ($i = 0; $i < $feedback->rating; $i++)
+                        <?php for($i = 0; $i < $feedback->rating; $i++): ?>
                             <i class="fas fa-star"></i>
-                        @endfor
+                        <?php endfor; ?>
                     </div>
-                    <p style="color: #666; margin-bottom: 20px; font-style: italic;">"{{ $feedback->feedback }}"</p>
-                    <div class="customer-name" style="font-weight: bold; color: #333;">- {{ $feedback->name }}</div>
+                    <p style="color: #666; margin-bottom: 20px; font-style: italic;">"<?php echo e($feedback->feedback); ?>"</p>
+                    <div class="customer-name" style="font-weight: bold; color: #333;">- <?php echo e($feedback->name); ?></div>
                 </div>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <div style="text-align: center; font-size: 1.2rem; color: #666;">No feedback available at the moment.</div>
-                @endforelse
+                <?php endif; ?>
             </div>
         </div>
     </section>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.appclient', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\HIRUNI LIYANAGE\SLIIT\Y3\S2\IE3011 - IS Project Management\ASSIGNMENT\RMS v2\RMS_Online\resources\views/welcome.blade.php ENDPATH**/ ?>
