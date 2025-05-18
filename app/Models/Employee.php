@@ -1,9 +1,15 @@
 <?php
 
 namespace App\Models;
+//namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 
 class Employee extends Authenticatable
 {
@@ -33,6 +39,7 @@ class Employee extends Authenticatable
         'password' => 'hashed',
     ];
 
+
     /**
      * Relationship: Each employee belongs to a role.
      */
@@ -48,4 +55,5 @@ class Employee extends Authenticatable
     {
         return $this->role?->name ?? 'N/A';
     }
+
 }

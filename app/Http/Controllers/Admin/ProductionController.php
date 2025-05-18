@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductionController extends Controller
 {
@@ -68,9 +69,13 @@ class ProductionController extends Controller
         // Insert items & quantities
         foreach ($request->item_ids as $index => $itemId) {
             $quantity = $request->quantities[$index];
-            DB::insert("INSERT INTO product_items (product_id, item_id, quantity, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())", [
+            if ($quantity > 0) {
+               DB::insert("INSERT INTO product_items (product_id, item_id, quantity, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())", [
                 $productId, $itemId, $quantity
-            ]);
+                ]);
+            }
+           
+            
         }
 
         // Insert images
@@ -146,9 +151,11 @@ class ProductionController extends Controller
         DB::delete("DELETE FROM product_items WHERE product_id = ?", [$id]);
         foreach ($request->item_ids as $index => $itemId) {
             $quantity = $request->quantities[$index];
+            if ($quantity > 0) {
             DB::insert("INSERT INTO product_items (product_id, item_id, quantity, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())", [
                 $id, $itemId, $quantity
             ]);
+        }
         }
 
         // Add new images
@@ -206,5 +213,24 @@ class ProductionController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => 'Image not found.'], 404);
+    }
+
+    public function downloadReport()
+    {
+        $products = DB::select("SELECT products.*, 
+            (SELECT image FROM product_images WHERE product_images.product_id = products.id LIMIT 1) as thumbnail 
+            FROM products");
+
+        $csvData = "ID,Name,Status,Created At,Updated At\n";
+
+        foreach ($products as $product) {
+            $status = $product->status ? 'For Sale' : 'Not for Sale';
+            $csvData .= "{$product->id},{$product->name},{$status},{$product->created_at},{$product->updated_at}\n";
+        }
+
+        $fileName = "production_report_" . date('Y-m-d_H-i-s') . ".csv";
+        Storage::put($fileName, $csvData);
+
+        return response()->download(storage_path("app/" . $fileName))->deleteFileAfterSend(true);
     }
 }

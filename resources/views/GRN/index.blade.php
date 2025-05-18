@@ -15,6 +15,7 @@
     <!-- Table Section -->
     <div style="border: 1px solid #ddd; border-radius: 10px; background-color: #ffffff; padding: 25px 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin: 0 30px 40px 30px;">
         
+
          <!-- Section Header -->
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
     <h3 style="margin: 0; font-size: 18px; color: #333;">Overview</h3>
@@ -31,6 +32,7 @@
         </button>
     </div>
 </div>
+
 
         <!-- GRN Table -->
         <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
@@ -90,7 +92,7 @@
             </div>
         </div>
     </div>
-
+@endsection
     <!-- Modal Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -115,11 +117,6 @@
             document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
                 if (formToSubmit) formToSubmit.submit();
             });
-
-            document.getElementById('downloadReport').addEventListener('click', function() {
-                const url = '{{ route('grns.report') }}';
-                window.location.href = url;
-            });
         });
     </script>
-@endsection
+

@@ -1,8 +1,7 @@
 @extends('layouts.appclient')
     <style>
         :root {
-            --primary-red: #E7592B;
-            --dark-red: #E7592B;
+            --primary-orange: #E7592B;
             --light-red: #ff6b6b;
             --dark-bg: #1a1a1a;
             --light-bg: #f9f9f9;
@@ -30,9 +29,9 @@
 
         .container {
             width: 100%;
-            max-width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 60px;
+            padding: 0 20px;
         }
 
         /* Header Styles */
@@ -58,7 +57,7 @@
 
         .logo h1 {
             font-size: 28px;
-            color: var(--primary-red);
+            color: var(--primary-orange);
             margin-left: 10px;
         }
 
@@ -87,7 +86,7 @@
         }
 
         nav ul li a:hover {
-            color: var(--primary-red);
+            color: var(--primary-orange);
         }
 
         /* Page Banner */
@@ -120,7 +119,7 @@
 
         .section-title h2 {
             font-size: 42px;
-            color: var(--primary-red);
+            color: var(--primary-orange);
             margin-bottom: 20px;
         }
 
@@ -177,12 +176,30 @@
         }
 
         .filter-select:hover {
-            border-color: var(--primary-red);
+            border-color: var(--primary-orange);
         }
 
         .filter-select:focus {
             outline: none;
-            border-color: var(--primary-red);
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 2px rgba(231, 89, 43, 0.1);
+        }
+
+        .filter-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            color: var(--text-dark);
+            font-size: 14px;
+            width: 100%;
+            max-width: 300px;
+            transition: all 0.3s;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--primary-orange);
             box-shadow: 0 0 0 2px rgba(231, 89, 43, 0.1);
         }
 
@@ -196,7 +213,7 @@
         .filter-checkbox input[type="checkbox"] {
             width: 18px;
             height: 18px;
-            accent-color: var(--primary-red);
+            accent-color: var(--primary-orange);
             cursor: pointer;
         }
 
@@ -207,7 +224,7 @@
 
         .category-btn {
             background: none;
-            border: 2px solid var(--primary-red);
+            border: 2px solid var(--primary-orange);
             padding: 12px 25px;
             margin: 0 5px;
             font-size: 16px;
@@ -219,12 +236,12 @@
         }
 
         .category-btn.active {
-            background-color: var(--primary-red);
+            background-color: var(--primary-orange);
             color: var(--text-light);
         }
 
         .category-btn:hover {
-            background-color: var(--primary-red);
+            background-color: var(--primary-orange);
             color: var(--text-light);
         }
 
@@ -361,66 +378,6 @@
         }
 
         .size-button {
-            flex: 1;
-            background-color: white;
-            border: 1px solid #E7592B;
-            border-radius: 8px;
-            padding: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .size-button:hover, .size-button.active {
-            background-color: #E7592B;
-        }
-
-        .size-label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #E7592B;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .size-button:hover .size-label,
-        .size-button.active .size-label,
-        .size-button:hover .size-price,
-        .size-button.active .size-price,
-        .size-button:hover i,
-        .size-button.active i {
-            color: white;
-        }
-
-        .size-label i {
-            color: #E7592B;
-            font-size: 14px;
-        }
-
-        .size-price {
-            font-weight: 600;
-            color: #E7592B;
-            font-size: 15px;
-        }
-
-        .menu-item-bottom {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-top: 15px;
-            gap: 15px;
-        }
-
-        .buttons-container {
-            display: flex;
-            gap: 10px;
-        }
-
-        .customize-btn {
             background-color: transparent;
             color: #E7592B;
             border: 1px solid #E7592B;
@@ -430,14 +387,38 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
         }
 
-        .customize-btn:hover {
+        .size-button:hover {
             background-color: #E7592B;
             color: white;
         }
 
-        .add-to-cart-btn {
+        .size-label {
+            display: block;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .size-price {
+            font-weight: 600;
+            font-size: 15px;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .menu-item-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .customize-btn {
             background-color: #E7592B;
             color: white;
             border: none;
@@ -447,17 +428,12 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            text-align: center;
+            width: 100%;
         }
 
-        .add-to-cart-btn:hover {
+        .customize-btn:hover {
             background-color: #d64d1f;
-        }
-
-        .add-to-cart-btn i {
-            font-size: 16px;
         }
 
         /* Footer */
@@ -532,7 +508,7 @@
             background: none;
             border: none;
             font-size: 24px;
-            color: var(--primary-red);
+            color: var(--primary-orange);
             cursor: pointer;
         }
 
@@ -632,131 +608,149 @@
                 <p>Discover our artisanal pizzas made with the finest ingredients</p>
             </div>
 
-            <!-- New Filter Section -->
-           <!--  <div class="menu-filters">
+            <!-- Filter Section -->
+            <div class="menu-filters">
+                <!-- Search Bar -->
                 <div class="filter-group">
-                    <label>Dietary:</label>
-                    <div class="filter-checkbox">
-                        <input type="checkbox" id="veg" name="dietary" value="veg">
-                        <span>Vegetarian</span>
-                    </div>
-                    <div class="filter-checkbox">
-                        <input type="checkbox" id="non-veg" name="dietary" value="non-veg">
-                        <span>Non-Vegetarian</span>
-                    </div>
+                    <label for="search">Search:</label>
+                    <input type="text" id="search" class="filter-input" placeholder="Search here...">
                 </div>
-
                 <div class="filter-group">
-                    <label>Sort by:</label>
+                    <label for="price-sort">Sort by Price:</label>
                     <select class="filter-select" id="price-sort">
-                        <option value="">Price</option>
+                        <option value="">Select</option>
                         <option value="low-high">Price: Low to High</option>
                         <option value="high-low">Price: High to Low</option>
                     </select>
                 </div>
-
-                <div class="filter-group">
-                    <label>Spice Level:</label>
-                    <select class="filter-select" id="spice-level">
-                        <option value="">All</option>
-                        <option value="mild">Mild</option>
-                        <option value="medium">Medium</option>
-                        <option value="spicy">Spicy</option>
-                    </select>
-                </div>
-            </div>-->
-<!-- 
-            <div class="menu-categories">
-                <button class="category-btn active" data-category="all">All Items</button>
-                <button class="category-btn" data-category="classic">Classic Range</button>
-                <button class="category-btn" data-category="signature">Signature Range</button>
-                <button class="category-btn" data-category="premium">Premium Range</button>
-            </div> -->
+            </div>
 
             <!-- Category Buttons -->
-<div class="menu-categories">
-    <button class="category-btn active" data-category="all">All Items</button>
-    @foreach($categories as $category)
-        <button class="category-btn" data-category="{{ strtolower($category->name) }}">
-            {{ $category->name }}
-        </button>
-    @endforeach
-</div>
-
-<div class="menu-grid">
-    @foreach($products as $product)
-        <div class="menu-item" 
-             data-category="{{ strtolower($product->category_name) }}"
-             data-price="{{ $product->small_price }}"
-             data-dietary="{{ $product->name ? 'veg' : 'non-veg' }}"
-             data-spice-level="{{ strtolower($product->spice_level ?? '') }}">
-            <div class="menu-item-img">
-                @if($product->image)
-                    <img src="{{ asset('uploads/products/' . $product->image) }}" alt="{{ $product->name }}">
-                @else
-                    <img src="{{ asset('images/default-product.jpg') }}" alt="{{ $product->name }}">
-                @endif
+            <div class="menu-categories">
+                <button class="category-btn active" data-category="all">All Items</button>
+                @foreach($categories as $category)
+                    <button class="category-btn" data-category="{{ strtolower($category->name) }}">
+                        {{ $category->name }}
+                    </button>
+                @endforeach
             </div>
-            <div class="menu-item-info">
-                <h3>{{ $product->name }}</h3>
-                <p>{{ $product->description }}</p>
 
-                
-                <div class="pizza-sizes">
-                    <button class="size-button active" data-size="small" data-price="{{ $product->small_price }}">
-                        <div class="size-label"><i class="fas fa-pizza-slice"></i> <span>Small</span></div>
-                        <div class="size-price">Rs. {{ number_format($product->small_price, 2) }}</div>
-                    </button>
-                    <button class="size-button" data-size="medium" data-price="{{ $product->medium_price }}">
-                        <div class="size-label"><i class="fas fa-pizza-slice"></i> <span>Medium</span></div>
-                        <div class="size-price">Rs. {{ number_format($product->medium_price, 2) }}</div>
-                    </button>
-                    <button class="size-button" data-size="large" data-price="{{ $product->large_price }}">
-                        <div class="size-label"><i class="fas fa-pizza-slice"></i> <span>Large</span></div>
-                        <div class="size-price">Rs. {{ number_format($product->large_price, 2) }}</div>
-                    </button>
-                </div>
-                <div class="menu-item-bottom">
-                            <div class="buttons-container">
-                                <button class="customize-btn">Customize</button>
-                                <button class="add-to-cart-btn">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    Add to Cart
+            <div class="menu-grid">
+                @foreach($products as $product)
+                    <div class="menu-item" 
+                         data-category="{{ strtolower($product->category_name) }}"
+                         data-price="{{ $product->small_price }}"
+                         data-dietary="{{ $product->name ? 'veg' : 'non-veg' }}"
+                         data-spice-level="{{ strtolower($product->spice_level ?? '') }}"
+                         data-name="{{ strtolower($product->name) }}"
+                         data-description="{{ strtolower($product->description) }}">
+                        <div class="menu-item-img">
+                            @if($product->image)
+                                <img src="{{ asset('uploads/products/' . $product->image) }}" alt="{{ $product->name }}">
+                            @else
+                                <img src="{{ asset('images/default-product.jpg') }}" alt="{{ $product->name }}">
+                            @endif
+                        </div>
+                        <div class="menu-item-info">
+                            <h3>{{ $product->name }}</h3>
+                            <p>{{ $product->description }}</p>
+
+                            <div class="pizza-sizes">
+                                <button class="size-button" data-size="small" data-price="{{ $product->small_price }}">
+                                    <div class="size-label">Small</div>
+                                    <div class="size-price">Rs.<br>{{ number_format($product->small_price, 2) }}</div>
+                                </button>
+                                <button class="size-button" data-size="medium" data-price="{{ $product->medium_price }}">
+                                    <div class="size-label">Medium</div>
+                                    <div class="size-price">Rs.<br>{{ number_format($product->medium_price, 2) }}</div>
+                                </button>
+                                <button class="size-button" data-size="large" data-price="{{ $product->large_price }}">
+                                    <div class="size-label">Large</div>
+                                    <div class="size-price">Rs.<br>{{ number_format($product->large_price, 2) }}</div>
                                 </button>
                             </div>
+
+                            <div class="menu-item-bottom">
+                                <form method="GET" action="{{ route('productdetails.view') }}" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="pid" value="{{ $product->id }}">
+                                <button type="submit" class="customize-btn">Customize</button>
+
+                                </form>
+                            </div>
                         </div>
-                <!-- Add dietary/spice indicators if you have those fields -->
+                    </div>
+                @endforeach
             </div>
         </div>
-    @endforeach
-</div>
-
-           
-        </div>
     </section>
-    @endsection
-    @section('scripts')
+@endsection
+
+@section('scripts')
     <script>
-        // Menu Category Filter
+        // Menu Category Filter with Search
         const categoryBtns = document.querySelectorAll('.category-btn');
         const menuItems = document.querySelectorAll('.menu-item');
+        const searchInput = document.getElementById('search');
 
+        let activeCategory = 'all'; // Default category
+
+        // Category Filter Logic
         categoryBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 categoryBtns.forEach(btn => btn.classList.remove('active'));
                 btn.classList.add('active');
-                
-                const category = btn.dataset.category;
-                
-                menuItems.forEach(item => {
-                    if (category === 'all' || item.dataset.category === category) {
-                        item.style.display = 'flex';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
+
+                activeCategory = btn.dataset.category; // Update active category
+                filterMenuItems();
             });
         });
+
+        // Search Functionality
+        searchInput.addEventListener('input', () => {
+            filterMenuItems();
+        });
+
+        // Filter Menu Items Based on Category and Search
+        function filterMenuItems() {
+            const searchValue = searchInput.value.toLowerCase();
+            let itemsFound = false; // Track if any items match the filters
+
+            menuItems.forEach(item => {
+                const itemCategory = item.dataset.category;
+                const itemName = item.dataset.name;
+                const itemDescription = item.dataset.description;
+
+                const matchesCategory = activeCategory === 'all' || itemCategory === activeCategory;
+                const matchesSearch = itemName.includes(searchValue) || itemDescription.includes(searchValue);
+
+                if (matchesCategory && matchesSearch) {
+                    item.style.display = 'flex';
+                    itemsFound = true; // At least one item matches
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Display 'No items found' message if no items match
+            const noItemsMessage = document.getElementById('no-items-message');
+            if (!itemsFound) {
+                if (!noItemsMessage) {
+                    const message = document.createElement('div');
+                    message.id = 'no-items-message';
+                    message.textContent = 'No items found';
+                    message.style.textAlign = 'center';
+                    message.style.marginTop = '20px';
+                    message.style.color = '#666';
+                    message.style.fontSize = '18px';
+                    document.querySelector('.menu-grid').appendChild(message);
+                }
+            } else {
+                if (noItemsMessage) {
+                    noItemsMessage.remove();
+                }
+            }
+        }
 
         // Size Selection
         const sizeButtons = document.querySelectorAll('.size-button');
@@ -774,105 +768,27 @@
             });
         });
 
-        // Add to Cart functionality
-        const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
-        
-        addToCartBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const menuItem = e.target.closest('.menu-item');
-                const itemName = menuItem.querySelector('h3').textContent;
-                const activeSize = menuItem.querySelector('.size-button.active');
-                const selectedSize = activeSize.dataset.size;
-                const price = activeSize.querySelector('.size-price').textContent;
-                
-                alert(`Added ${itemName} (${selectedSize}) to your cart! ${price}`);
-            });
-        });
-
-        // Customize functionality
-        const customizeBtns = document.querySelectorAll('.customize-btn');
-        
-        customizeBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const menuItem = e.target.closest('.menu-item');
-                const itemName = menuItem.querySelector('h3').textContent;
-                const selectedSize = menuItem.querySelector('.size-button.active').dataset.size;
-                
-                // Here you would typically open a customization modal
-                alert(`Customizing ${itemName} (${selectedSize})`);
-                
-                // For a real implementation, you would:
-                // 1. Open a modal with customization options
-                // 2. Allow selection of toppings, crust type, etc.
-                // 3. Update price based on selections
-            });
-        });
-
-        // Filter Functionality
-        const dietaryCheckboxes = document.querySelectorAll('input[name="dietary"]');
+        // Price Sorting
         const priceSortSelect = document.getElementById('price-sort');
-        const spiceLevelSelect = document.getElementById('spice-level');
 
-        function applyFilters() {
-            const selectedDietary = Array.from(dietaryCheckboxes)
-                .filter(checkbox => checkbox.checked)
-                .map(checkbox => checkbox.value);
-            
-            const selectedSpiceLevel = spiceLevelSelect.value;
-            const priceSort = priceSortSelect.value;
+        priceSortSelect.addEventListener('change', () => {
+            const sortOrder = priceSortSelect.value;
+            const menuGrid = document.querySelector('.menu-grid');
+            const menuItemsArray = Array.from(menuItems);
 
-            menuItems.forEach(item => {
-                const itemDietary = item.dataset.dietary;
-                const itemSpiceLevel = item.dataset.spiceLevel;
-                const itemPrice = parseFloat(item.dataset.price);
-
-                let shouldShow = true;
-
-                // Apply dietary filter
-                if (selectedDietary.length > 0 && !selectedDietary.includes(itemDietary)) {
-                    shouldShow = false;
-                }
-
-                // Apply spice level filter
-                if (selectedSpiceLevel && itemSpiceLevel !== selectedSpiceLevel) {
-                    shouldShow = false;
-                }
-
-                // Apply category filter
-                const activeCategory = document.querySelector('.category-btn.active');
-                if (activeCategory && activeCategory.dataset.category !== 'all' && 
-                    item.dataset.category !== activeCategory.dataset.category) {
-                    shouldShow = false;
-                }
-
-                item.style.display = shouldShow ? 'flex' : 'none';
-            });
-
-            // Apply price sorting
-            if (priceSort) {
-                const visibleItems = Array.from(menuItems)
-                    .filter(item => item.style.display !== 'none');
-                
-                const sortedItems = visibleItems.sort((a, b) => {
+            if (sortOrder) {
+                const sortedItems = menuItemsArray.sort((a, b) => {
                     const priceA = parseFloat(a.dataset.price);
                     const priceB = parseFloat(b.dataset.price);
-                    return priceSort === 'low-high' ? priceA - priceB : priceB - priceA;
+
+                    return sortOrder === 'low-high' ? priceA - priceB : priceB - priceA;
                 });
 
-                const menuGrid = document.querySelector('.menu-grid');
                 sortedItems.forEach(item => menuGrid.appendChild(item));
+            } else {
+                // Reset to original order if no sorting is selected
+                menuItemsArray.forEach(item => menuGrid.appendChild(item));
             }
-        }
-
-        // Add event listeners for filters
-        dietaryCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', applyFilters);
         });
-
-        priceSortSelect.addEventListener('change', applyFilters);
-        spiceLevelSelect.addEventListener('change', applyFilters);
-
-        // Initialize filters
-        applyFilters();
     </script>
 @endsection

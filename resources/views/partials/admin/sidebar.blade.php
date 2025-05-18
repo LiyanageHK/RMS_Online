@@ -34,9 +34,45 @@
             </div>
         </div>
 
-        <button class="sidebar-btn {{ request()->is('customers*') ? 'active' : '' }}">
-            <span class="btn-content"><span class="material-icons">group</span> Customer Center</span>
-        </button>
+
+        <!-- Customer Center -->
+        @php
+            $customerExpanded = request()->is('customers*') || request()->is('admin/customer/*') || request()->routeIs('email.form');
+        @endphp
+        <div>
+            <button class="sidebar-btn" onclick="toggleMenu(this)">
+                <span class="btn-content"><span class="material-icons">group</span> Customer Center</span>
+                <span class="material-icons toggle-icon">{{ $customerExpanded ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            <div class="submenu" style="display: {{ $customerExpanded ? 'block' : 'none' }}; margin-left: 20px; margin-top: 6px; text-align: left;">
+                <a href="{{ url('/admin/customer/overview') }}" class="submenu-link {{ request()->is('admin/customer/overview') ? 'active' : '' }}">Customer Overview</a>
+                <a href="{{ url('/admin/customer/loyalty-program') }}" class="submenu-link {{ request()->is('admin/customer/loyalty-program') ? 'active' : '' }}">Loyalty Program</a>
+                <a href="{{ route('email.form') }}" class="submenu-link {{ request()->routeIs('email.form') ? 'active' : '' }}">Email Service</a>
+            </div>
+        </div>
+
+
+
+        <!-- Delivery Center -->
+        @php
+            $deliveryExpanded = request()->is('delivery-history') || request()->is('drivers') ||
+                                request()->is('driver/pending-allocation') || request()->is('driver/orders/dispatched');
+        @endphp
+        <div>
+            <button class="sidebar-btn" onclick="toggleMenu(this)">
+                <span class="btn-content"><span class="material-icons">local_shipping</span> Delivery Center</span>
+                <span class="material-icons toggle-icon">{{ $deliveryExpanded ? 'expand_less' : 'expand_more' }}</span>
+            </button>
+            <div class="submenu" style="display: {{ $deliveryExpanded ? 'block' : 'none' }}; margin-left: 20px; margin-top: 6px; text-align: left;">
+                <a href="{{ url('/delivery-history') }}" class="submenu-link {{ request()->is('delivery-history') ? 'active' : '' }}">Delivery History</a>
+                <a href="{{ url('/drivers') }}" class="submenu-link {{ request()->is('drivers') ? 'active' : '' }}">Driver Details</a>
+                <a href="{{ url('/driver/pending-allocation') }}" class="submenu-link {{ request()->is('driver/pending-allocation') ? 'active' : '' }}">Driver Allocation</a>
+                <a href="{{ url('/driver/orders/dispatched') }}" class="submenu-link {{ request()->is('driver/orders/dispatched') ? 'active' : '' }}">Delivery Confirmation</a>
+            </div>
+        </div>
+
+
+
 
         <button class="sidebar-btn {{ request()->is('orders*') ? 'active' : '' }}">
             <span class="btn-content"><span class="material-icons">shopping_cart</span> Order Center</span>

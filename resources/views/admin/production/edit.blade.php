@@ -127,6 +127,32 @@
             </div>
         </div>
 
+        <script>
+                function removeExistingImage(imageId) {
+        if (confirm('Are you sure you want to delete this image?')) {
+            $.ajax({
+                url: `/admin/production/image/delete/${imageId}`,
+                type: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    if (data.success) {
+                        alert('Image deleted successfully.');
+                        location.reload();
+                    } else {
+                        alert('Failed to delete the image.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the image.');
+                }
+            });
+        }
+    }
+        </script>
+
         <div class="mb-3">
             <label>Add New Images</label>
             <input type="file" name="images[]" class="form-control @error('images') is-invalid @enderror" multiple onchange="previewImages(event)">
@@ -170,8 +196,11 @@
     </form>
 </div>
 @endsection
-@section('scripts')
+
 <script>
+   
+
+
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('productForm');
         const checkboxes = document.querySelectorAll('.item-checkbox');
@@ -260,32 +289,5 @@
             };
             reader.readAsDataURL(file);
         });
-    }
-
-    function removeExistingImage(imageId) {
-        if (confirm('Are you sure you want to delete this image?')) {
-            $.ajax({
-                url: `/admin/production/image/delete/${imageId}`,
-                type: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data) {
-                    if (data.success) {
-                        alert('Image deleted successfully.');
-                        location.reload();
-                    } else {
-                        alert('Failed to delete the image.');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                    alert('An error occurred while deleting the image.');
-                }
-            });
-        }
-    }
+    }
 </script>
-@endsection
-
-

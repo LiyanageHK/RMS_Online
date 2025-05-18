@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -20,25 +21,26 @@ class AuthController extends Controller
 
     public function loginUser(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $request->email)->first();
-
-        if ($user && Hash::check($request->password, $user->pw) && $user->systemrole == 'user') {
-            Auth::login($user);
+        // Attempt to log in using the 'admin' guard and Employee model
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $request->session()->regenerate();
             return redirect()->route('admin.dashboard')->with('status', 'Login successful!');
         } else {
             return redirect()->back()->withErrors(['email' => 'The provided credentials do not match our records.']);
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
-        return redirect('/login');
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/admin/login');
     }
 
     public function showRegisterForm()
@@ -75,8 +77,8 @@ class AuthController extends Controller
         DB::insert('INSERT INTO role (role, description) values (?, ?, )', ['owner', 'owner']);
         $roleId = DB::getPdo()->lastInsertId();
 
-       
-       
+
+
 
         $user = User::create([
             'username' => $request->username,
@@ -95,32 +97,29 @@ class AuthController extends Controller
     public function getUserPermissions()
     {
         try {
-            $user = Auth::user();
-           
-           
+            $user = Auth::guard('admin')->user();
 
-            
-         
+            if (!$user) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
             $role = DB::table('role')
                 ->where('role', $user->position)
                 ->first();
-           
-                    
-                    
-           
+
+            if (!$role) {
+                return response()->json(['error' => 'Role not found'], 404);
+            }
 
             // Get permissions for the role
             $permissions = DB::table('user_per')
                 ->where('role', $role->id)
-                ->select('inv', 'cus', 'order', 'deli', 'emp', 'acc', 'pro')
+                ->select('inv', 'cus', 'order', 'deli', 'emp', 'acc', 'pro','crm')
                 ->first();
-                
-         
 
             return response()->json($permissions);
-            
         } catch (\Exception $e) {
-            
+            return response()->json(['error' => 'Server error'], 500);
         }
     }
 
@@ -131,7 +130,7 @@ class AuthController extends Controller
         $value = $request->input('value');
 
         // Validate the permission field
-        $validPermissions = ['inv', 'cus', 'order', 'deli', 'emp', 'acc', 'pro'];
+        $validPermissions = ['inv', 'cus', 'order', 'deli', 'emp', 'acc', 'pro','crm'];
         if (!in_array($permission, $validPermissions)) {
             return response()->json(['success' => false, 'message' => 'Invalid permission field'], 400);
         }

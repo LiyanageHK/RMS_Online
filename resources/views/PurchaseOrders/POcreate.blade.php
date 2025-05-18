@@ -13,7 +13,7 @@
             </a>
         </div>
 
-        <form id="poForm" action="{{ route('purchase_orders.store') }}" method="POST">
+        <form action="{{ route('purchase_orders.store') }}" method="POST">
             @csrf
 
             <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #F9F9F9; margin-bottom: 30px;">
@@ -79,7 +79,9 @@
                     <button type="submit" name="action" value="draft" style="background-color: #6c757d; color: white; font-size: 14px; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer;">
                         Save as Draft
                     </button>
+
                     <button type="submit" id="sendEmailBtn" name="action" value="send" class="btn btn-success" style="background-color: #0070FF; color: white; font-size: 14px; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer;">
+
                         Send as Email
                     </button>
                 </div>
@@ -177,6 +179,7 @@
         totalAmount.value = `$${total.toFixed(2)}`;
     }
 
+
     document.getElementById('poForm').addEventListener('submit', function(e) {
         const form = this;
         const action = document.activeElement.value;
@@ -221,6 +224,7 @@
             }
         }
     });
+
 </script>
 
 <style>

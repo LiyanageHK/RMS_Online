@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade as PDF;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ItemsExport;
 
 class ItemController extends Controller
 {
@@ -58,5 +62,22 @@ class ItemController extends Controller
     {
         DB::delete("DELETE FROM items WHERE id = ?", [$id]);
         return redirect('/admin/items')->with('success', 'Item Deleted!');
+    }
+
+    public function downloadReport()
+    {
+        $items = DB::select("SELECT items.*, item_categories.name AS category_name FROM items 
+                             LEFT JOIN item_categories ON items.category_id = item_categories.id");
+
+        $csvData = "ID,Name,Category,Price,Description\n";
+
+        foreach ($items as $item) {
+            $csvData .= "{$item->id},{$item->name},{$item->category_name},{$item->price},{$item->description}\n";
+        }
+
+        $fileName = "items_report_" . date('Y-m-d_H-i-s') . ".csv";
+        Storage::put($fileName, $csvData);
+
+        return response()->download(storage_path("app/" . $fileName))->deleteFileAfterSend(true);
     }
 }

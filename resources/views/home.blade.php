@@ -123,46 +123,46 @@
         </div>
     </div>
 
-    <!-- Charts Row -->
-    <!--<div class="row g-4 mb-4">
-        <div class="col-md-8">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="mb-0">Products Overview</h5>
-                        <p class="text-muted small mb-0">Last 6 months activity</p>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" id="exportChart">
-                            <i class="fas fa-download me-1"></i> Export
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" data-period="week">Last Week</a></li>
-                            <li><a class="dropdown-item" href="#" data-period="month">Last Month</a></li>
-                            <li><a class="dropdown-item" href="#" data-period="year">Last Year</a></li>
-                        </ul>
-                    </div>
+ <div class="row g-4 mb-4">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-0">Next Week's Most Selling Items (Prediction)</h5>
+                    <p class="text-muted small mb-0">AI-based forecast</p>
                 </div>
-                <div class="card-body">
-                    <canvas id="salesChart" height="300"></canvas>
+                <button id="refreshPredictions" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="predictionLoading" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Generating predictions...</p>
+                </div>
+                <canvas id="nextWeekPredictionChart" height="300" style="display: none;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0">
+                <h5 class="mb-0">Top 5 Predicted Items</h5>
+                <p class="text-muted small mb-0">Expected sales count</p>
+            </div>
+            <div class="card-body" id="topPredictionsList">
+                <div class="text-center py-4">
+                    <p>Predictions will appear here</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-transparent border-0">
-                    <h5 class="mb-0">Product Status</h5>
-                    <p class="text-muted small mb-0">Active vs Inactive products</p>
-                </div>
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <canvas id="orderStatusChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>-->
+    </div>
+</div>
+ 
+
+    
 
     <!-- Quick Actions -->
     <div class="row g-4 mb-4">
@@ -310,7 +310,7 @@
 </style>
 
 @endsection
-
+{{-- 
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -484,4 +484,5 @@
         });
     });
 </script>
-@endsection
+@endsection --}}
+
