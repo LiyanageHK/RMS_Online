@@ -10,6 +10,7 @@
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Bootstrap CSS -->
@@ -246,9 +247,14 @@
                 </div>
 
                 <div id="ordernav">
-                    <button class="sidebar-btn">
-                        <span class="btn-content"><span class="material-icons">shopping_cart</span> Order Center</span>
+                    <button class="sidebar-btn" onclick="toggleMenu(this)">
+                        <span class="btn-content"><span class="material-icons">people</span> Order Center</span>
+                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
+                    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+                        {{-- <a href="{{ route('AdminOrder') }}" class="submenu-link">Order Management</a> --}}
+                        <a href="{{ route('admin.orders.index') }}" class="submenu-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">Kitchen</a>
+                    </div>
                 </div>
 
                 <div id="delinav">
@@ -289,6 +295,7 @@
         <a href="{{ route('contact.index') }}" class="submenu-link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Contact Messages</a>
         <a href="{{ route('feedback.index') }}" class="submenu-link {{ request()->routeIs('feedback.*') ? 'active' : '' }}">Feedback Messages</a>
     </div>
+
 
     </div>
 
@@ -503,5 +510,113 @@
                 console.error("Error fetching permissions:", error);
             }
         });
+ // Call prediction function only on admin.home route
+    
+            pradiction();
+  
+        console.log('Dashboard predictions initialized');
     });
+</script>
+<script>
+function pradiction() {
+    let predictionChart = null;
+    loadPredictions();
+    $('#refreshPredictions').click(function(e) {
+        e.preventDefault();
+        loadPredictions();
+    });
+    function loadPredictions() {
+        showLoadingState();
+        $.get('{{ route("inventory.predictions") }}', function(response) {
+            if (response.predictions && response.predictions.length) {
+                renderPredictions(response.predictions);
+            } else {
+                showErrorState('No predictions available');
+            }
+        }).fail(function() {
+            showErrorState('Failed to load predictions');
+        });
+    }
+    function showLoadingState() {
+        $('#predictionLoading').show();
+        $('#nextWeekPredictionChart').hide();
+        $('#topPredictionsList').html(
+            `<div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Loading predictions...</p>
+            </div>`
+        );
+    }
+    function showErrorState(msg) {
+        $('#predictionLoading').hide();
+        $('#nextWeekPredictionChart').hide();
+        $('#topPredictionsList').html(`<div class="alert alert-danger">${msg}</div>`);
+    }
+    function renderPredictions(predictions) {
+        predictions.sort((a, b) => b.predicted_restock - a.predicted_restock);
+        updateTopPredictionsList(predictions);
+        updatePredictionChart(predictions);
+        $('#predictionLoading').hide();
+        $('#nextWeekPredictionChart').show();
+    }
+    function updateTopPredictionsList(predictions) {
+        let html = '<ol class="mb-0">';
+        predictions.slice(0, 5).forEach(item => {
+            let badge = 'bg-primary';
+            if (item.urgency === 'high') badge = 'bg-danger';
+            if (item.urgency === 'medium') badge = 'bg-warning text-dark';
+            html += `<li class="mb-2"><strong>${item.name}</strong>
+                <span class="badge ${badge} float-end">${item.predicted_restock} (${item.urgency})</span></li>`;
+        });
+        html += '</ol>';
+        $('#topPredictionsList').html(html);
+    }
+    function updatePredictionChart(predictions) {
+        const top = predictions.slice(0, 5);
+        const labels = top.map(i => i.name);
+        const data = top.map(i => i.predicted_restock);
+        const bg = top.map(i => i.urgency === 'high' ? 'rgba(220,53,69,0.5)' : i.urgency === 'medium' ? 'rgba(255,193,7,0.5)' : 'rgba(13,110,253,0.5)');
+        const border = top.map(i => i.urgency === 'high' ? 'rgba(220,53,69,1)' : i.urgency === 'medium' ? 'rgba(255,193,7,1)' : 'rgba(13,110,253,1)');
+        const ctx = document.getElementById('nextWeekPredictionChart').getContext('2d');
+        if (predictionChart) {
+            predictionChart.data.labels = labels;
+            predictionChart.data.datasets[0].data = data;
+            predictionChart.data.datasets[0].backgroundColor = bg;
+            predictionChart.data.datasets[0].borderColor = border;
+            predictionChart.update();
+        } else {
+            predictionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Predicted Restock Needed',
+                        data: data,
+                        backgroundColor: bg,
+                        borderColor: border,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    const item = top[ctx.dataIndex];
+                                    return [`Item: ${item.name}`, `Restock Needed: ${ctx.raw}`, `Urgency: ${item.urgency}`];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Quantity Needed' } },
+                        x: { title: { display: true, text: 'Items' } }
+                    }
+                }
+            });
+        }
+    }
+}
 </script>
