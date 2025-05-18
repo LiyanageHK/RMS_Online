@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 <div style="padding: 30px; background-color: #f5f5f5;">
@@ -27,27 +27,61 @@
                     <td style="padding: 10px;">{{ $order->name }}</td>
                     <td style="padding: 10px;">{{ ucwords($order->order_status) }}</td>
                     <td style="padding: 10px;">
-                        @if($order->order_status === 'Confirmed' || $order->order_status === 'Preparing')
-                            <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" style="display: inline;" onsubmit="return confirmStatusChange('{{ $order->order_status }}', this);">
-                                @csrf
-                                @if($order->order_status === 'Confirmed')
-                                    <button type="submit" style="padding: 10px 20px; background-color: #cccccc; color: black; min-width: 165px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.3s ease;">
-                                        <i class="fas fa-cogs" style="margin-right: 8px;"></i>Start Preparation
-                                    </button>
-                                @elseif($order->order_status === 'Preparing')
-                                    <button type="submit" style="padding: 10px 20px; background-color: #E7592B; color: white; min-width: 165px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.3s ease;">
-                                        <i class="fas fa-truck" style="margin-right: 8px;"></i>Ready for Delivery
-                                    </button>
-                                @endif
-                            </form>
-                        @else
-                            <span style="color: gray;">No further action</span>
-                        @endif
+
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <!-- Confirm Order -->
+@if($order->order_status === 'Ordered')
+    <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" onsubmit="return confirmStatusChange('{{ $order->order_status }}', 'confirm', this);">
+        @csrf
+        <input type="hidden" name="action" value="confirm">
+        <button type="submit" style="padding: 10px 20px; background-color: #FFA500; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 200px;">
+            <i class="fas fa-check-circle" style="margin-right: 8px;"></i>Confirm Order
+        </button>
+    </form>
+@elseif($order->order_status === 'Confirmed')
+    <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" onsubmit="return confirmStatusChange('{{ $order->order_status }}', 'advance', this);">
+        @csrf
+        <button type="submit" style="padding: 10px 20px; background-color: #FF8C00; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 200px;">
+            <i class="fas fa-utensils" style="margin-right: 8px;"></i>Start Preparation
+        </button>
+    </form>
+@elseif($order->order_status === 'Preparing')
+    <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" onsubmit="return confirmStatusChange('{{ $order->order_status }}', 'advance', this);">
+        @csrf
+        <button type="submit" style="padding: 10px 20px; background-color: #28A745; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 200px;">
+            <i class="fas fa-truck" style="margin-right: 8px;"></i>Ready for Delivery
+        </button>
+    </form>
+@endif
+    <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" onsubmit="return confirmStatusChange('{{ $order->order_status }}', 'cancel', this);">
+        @csrf
+        <input type="hidden" name="action" value="cancel">
+        <button type="submit" style="padding: 10px 20px; background-color: #DC3545; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 200px;">
+            <i class="fas fa-times-circle" style="margin-right: 8px;"></i>Cancel Order
+        </button>
+    </form>
+</div>
+                        </div>
+
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+    </div>
+
+    <div id="orderStatusModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
+        <div style="background-color: #fff; padding: 30px; border-radius: 12px; width: 400px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.15); text-align: center;">
+            <div style="margin-bottom: 15px;">
+                <span class="material-icons" style="font-size: 40px; color: #E7592B;">help_outline</span>
+            </div>
+            <h4 id="orderStatusModalTitle" style="margin-bottom: 10px; font-size: 18px; color: #333;">Are you sure?</h4>
+            <p id="orderStatusModalMsg" style="font-size: 15px; margin-bottom: 25px;">Are you sure you want to perform this action?</p>
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <button id="cancelOrderStatusBtn" type="button" style="padding: 10px 20px; background-color: #6c757d; border: none; color: #fff; border-radius: 5px; font-weight: bold; font-size: 14px; cursor: pointer;">Cancel</button>
+                <button id="confirmOrderStatusBtn" type="button" style="padding: 10px 20px; background-color: #E7592B; border: none; color: #fff; border-radius: 5px; font-weight: bold; font-size: 14px; cursor: pointer;">Yes, proceed!</button>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
@@ -63,43 +97,99 @@
             cursor: not-allowed;
         }
 
-        .swal2-popup.swal2-rounded {
-            border-radius: 16px !important;
-        }
-    </style>
+
+    .swal2-popup.swal2-rounded {
+        border-radius: 16px !important;
+    }
+
+    /* Custom modal styles */
+    #orderStatusModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    #orderStatusModal .modal-content {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        width: 400px;
+        max-width: 90%;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        text-align: center;
+    }
+
+    #orderStatusModal h4 {
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #333;
+    }
+
+    #orderStatusModal p {
+        font-size: 15px;
+        margin-bottom: 25px;
+    }
+
+    #orderStatusModal button {
+        padding: 10px 20px;
+        border: none;
+        color: #fff;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    #orderStatusModal #confirmOrderStatusBtn {
+        background-color: #E7592B;
+    }
+
+    #orderStatusModal #cancelOrderStatusBtn {
+        background-color: #6c757d;
+    }
+</style>
 @endpush
 
 @push('scripts')
-<!-- SweetAlert2 CDN -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
-    function confirmStatusChange(currentStatus, form) {
-        let nextStatus = '';
-        if (currentStatus === 'Confirmed') {
-            nextStatus = 'Preparing';
+    // Custom modal confirmation for order status changes
+    let pendingOrderStatusForm = null;
+    function confirmStatusChange(currentStatus, action, form) {
+        let message = '';
+        if (action === 'cancel') {
+            message = 'Do you want to cancel this order?';
+        } else if (currentStatus === 'Confirmed') {
+            message = "Do you want to mark this order as 'Preparing'?";
         } else if (currentStatus === 'Preparing') {
-            nextStatus = 'Waiting for Delivery';
+            message = "Do you want to mark this order as 'Waiting for Delivery'?";
+        } else if (action === 'confirm') {
+            message = "Do you want to confirm this order?";
+        } else {
+            message = 'Are you sure you want to perform this action?';
         }
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: `Do you want to mark this order as '${nextStatus}'?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#E7592B',
-            cancelButtonColor: '#aaa',
-            confirmButtonText: 'Yes, change it!',
-            customClass: {
-                popup: 'swal2-rounded'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
-            }
-        });
+        document.getElementById('orderStatusModalMsg').textContent = message;
+        document.getElementById('orderStatusModal').style.display = 'flex';
+        pendingOrderStatusForm = form;
 
         return false;
     }
+    document.getElementById('confirmOrderStatusBtn').onclick = function() {
+        document.getElementById('orderStatusModal').style.display = 'none';
+        if (pendingOrderStatusForm) {
+            pendingOrderStatusForm.submit();
+            pendingOrderStatusForm = null;
+        }
+    };
+    document.getElementById('cancelOrderStatusBtn').onclick = function() {
+        document.getElementById('orderStatusModal').style.display = 'none';
+        pendingOrderStatusForm = null;
+    };
 </script>
 @endpush

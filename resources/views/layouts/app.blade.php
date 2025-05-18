@@ -10,53 +10,54 @@
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- AdminLTE -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"> 
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
     <style>
         .profile-dropdown {
             min-width: 200px;
         }
-        
+
         .profile-dropdown .dropdown-header {
             background: #f8f9fa;
             padding: 10px;
             text-align: center;
         }
-        
+
         .profile-dropdown .user-info {
             padding: 10px;
             border-bottom: 1px solid #dee2e6;
         }
-        
+
         .profile-dropdown .dropdown-item {
             padding: 8px 15px;
             transition: all 0.3s ease;
         }
-        
+
         .profile-dropdown .dropdown-item:hover {
             background-color: #f8f9fa;
             padding-left: 20px;
         }
-        
+
         .profile-dropdown .dropdown-item i {
             width: 20px;
             margin-right: 10px;
             color: #6c757d;
         }
-        
+
         .profile-dropdown .dropdown-divider {
             margin: 5px 0;
         }
-        
+
         .navbar-nav .nav-link {
             padding: 0.5rem 1rem;
         }
-        
+
         .user-avatar {
             width: 32px;
             height: 32px;
@@ -103,7 +104,7 @@
     color: var(--primary-color) !important;
 }
 </style>
-    
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -209,8 +210,8 @@
                 </a>
 
 
-                 
-               
+
+
 
                 <div id="inventorynav">
                     <button class="sidebar-btn" onclick="toggleMenu(this)">
@@ -239,22 +240,52 @@
     </div>
 </div>
 
+            <!-- Customer Center -->
                 <div id="cusnav">
-                    <button class="sidebar-btn">
+                    <button class="sidebar-btn" onclick="toggleMenu(this)">
                         <span class="btn-content"><span class="material-icons">group</span> Customer Center</span>
+                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
+
+                <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+                    <a href="{{ route('customer.overview') }}" class="submenu-link {{ request()->routeIs('customer.overview')  ? 'active' : '' }}">Customer Overview</a>
+                    <a href="{{ url('/admin/customer/loyalty-program') }}" class="submenu-link {{ request()->is('admin/customer/loyalty-program') ?  'active' : '' }}">Loyalty Program</a>
+                    <a href="{{ url('/admin/send-email') }}" class="submenu-link {{ request()->is('send-email') ?  'active' : '' }}">Email Services</a>
                 </div>
+            </div>
+
+
 
                 <div id="ordernav">
-                    <button class="sidebar-btn">
-                        <span class="btn-content"><span class="material-icons">shopping_cart</span> Order Center</span>
+                    <button class="sidebar-btn" onclick="toggleMenu(this)">
+                        <span class="btn-content"><span class="material-icons">people</span> Order Center</span>
+                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
+                    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+
+                        <a href="{{ route('orders.index') }}" class="submenu-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">Order Updates</a>
+
+                        {{-- <a href="{{ route('AdminOrder') }}" class="submenu-link">Order Management</a> --}}
+                        <a href="{{ route('admin.orders.index') }}" class="submenu-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">Kitchen</a>
+
+                    </div>
                 </div>
 
+                <!-- Delivery Center -->
+
                 <div id="delinav">
-                    <button class="sidebar-btn">
+                    <button class="sidebar-btn" onclick="toggleMenu(this)">
                         <span class="btn-content"><span class="material-icons">local_shipping</span> Delivery Center</span>
+                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
+
+                <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+                    <a href="{{ url('admin/delivery-history') }}" class="submenu-link {{ request()->is('delivery-history') ?  'active' : '' }}">Delivery History</a>
+                    <a href="{{ url('admin/drivers') }}" class="submenu-link {{ request()->is('drivers') ?  'active' : '' }}">Driver List</a>
+                    <a href="{{ url('admin/driver/pending-allocation') }}" class="submenu-link {{ request()->is('admin/driver/pending-allocation') ?  'active' : '' }}">Driver Allocation</a>
+                    <a href="{{ url('admin/driver/orders/dispatched') }}" class="submenu-link {{ request()->is('driver/orders/dispatched') ?  'active' : '' }}">Delivery Confirmation </a>
+                </div>
+
                 </div>
 
                 <!-- Employee Center -->
@@ -279,8 +310,8 @@
                 </div>
             </div>
 
-            <!-- Contact & Feedback Section -->
-<div id="contact-feedback-nav">
+    <div id="crmnav">        <!-- Contact & Feedback Section -->
+
     <button class="sidebar-btn" onclick="toggleMenu(this)">
         <span class="btn-content"><span class="material-icons">message</span> Customer Relations Center</span>
         <span class="material-icons toggle-icon">expand_more</span>
@@ -289,11 +320,13 @@
         <a href="{{ route('contact.index') }}" class="submenu-link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Contact Messages</a>
         <a href="{{ route('feedback.index') }}" class="submenu-link {{ request()->routeIs('feedback.*') ? 'active' : '' }}">Feedback Messages</a>
     </div>
-</div>
+
+
+    </div>
 
         </aside>
 
-        
+
         <!-- Material Icons CDN -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style>
@@ -365,10 +398,10 @@
             function toggleMenu(button) {
                 const submenu = button.nextElementSibling;
                 const icon = button.querySelector('.toggle-icon');
-                
+
                 // Check if any submenu link is active
                 const hasActiveLink = submenu.querySelector('.submenu-link.active') !== null;
-                
+
                 if (hasActiveLink) {
                     submenu.style.display = "block";
                     icon.textContent = "expand_less";
@@ -429,7 +462,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-    
+
     @stack('scripts')
 </body>
 </html>
@@ -491,10 +524,124 @@
                 } else {
                     $('#pronav').hide();
                 }
+                // Customer Relations Center permissions
+                if (response.crm === 1) {
+                    $('#crmnav').show();
+                } else {
+                    $('#crmnav').hide();
+                }
             },
             error: function(xhr, status, error) {
                 console.error("Error fetching permissions:", error);
             }
         });
+ // Call prediction function only on admin.home route
+    
+            pradiction();
+  
+        console.log('Dashboard predictions initialized');
     });
+</script>
+<script>
+function pradiction() {
+    let predictionChart = null;
+    loadPredictions();
+    $('#refreshPredictions').click(function(e) {
+        e.preventDefault();
+        loadPredictions();
+    });
+    function loadPredictions() {
+        showLoadingState();
+        $.get('{{ route("inventory.predictions") }}', function(response) {
+            if (response.predictions && response.predictions.length) {
+                renderPredictions(response.predictions);
+            } else {
+                showErrorState('No predictions available');
+            }
+        }).fail(function() {
+            showErrorState('Failed to load predictions');
+        });
+    }
+    function showLoadingState() {
+        $('#predictionLoading').show();
+        $('#nextWeekPredictionChart').hide();
+        $('#topPredictionsList').html(
+            `<div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Loading predictions...</p>
+            </div>`
+        );
+    }
+    function showErrorState(msg) {
+        $('#predictionLoading').hide();
+        $('#nextWeekPredictionChart').hide();
+        $('#topPredictionsList').html(`<div class="alert alert-danger">${msg}</div>`);
+    }
+    function renderPredictions(predictions) {
+        predictions.sort((a, b) => b.predicted_restock - a.predicted_restock);
+        updateTopPredictionsList(predictions);
+        updatePredictionChart(predictions);
+        $('#predictionLoading').hide();
+        $('#nextWeekPredictionChart').show();
+    }
+    function updateTopPredictionsList(predictions) {
+        let html = '<ol class="mb-0">';
+        predictions.slice(0, 5).forEach(item => {
+            let badge = 'bg-primary';
+            if (item.urgency === 'high') badge = 'bg-danger';
+            if (item.urgency === 'medium') badge = 'bg-warning text-dark';
+            html += `<li class="mb-2"><strong>${item.name}</strong>
+                <span class="badge ${badge} float-end">${item.predicted_restock} (${item.urgency})</span></li>`;
+        });
+        html += '</ol>';
+        $('#topPredictionsList').html(html);
+    }
+    function updatePredictionChart(predictions) {
+        const top = predictions.slice(0, 5);
+        const labels = top.map(i => i.name);
+        const data = top.map(i => i.predicted_restock);
+        const bg = top.map(i => i.urgency === 'high' ? 'rgba(220,53,69,0.5)' : i.urgency === 'medium' ? 'rgba(255,193,7,0.5)' : 'rgba(13,110,253,0.5)');
+        const border = top.map(i => i.urgency === 'high' ? 'rgba(220,53,69,1)' : i.urgency === 'medium' ? 'rgba(255,193,7,1)' : 'rgba(13,110,253,1)');
+        const ctx = document.getElementById('nextWeekPredictionChart').getContext('2d');
+        if (predictionChart) {
+            predictionChart.data.labels = labels;
+            predictionChart.data.datasets[0].data = data;
+            predictionChart.data.datasets[0].backgroundColor = bg;
+            predictionChart.data.datasets[0].borderColor = border;
+            predictionChart.update();
+        } else {
+            predictionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Predicted Restock Needed',
+                        data: data,
+                        backgroundColor: bg,
+                        borderColor: border,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    const item = top[ctx.dataIndex];
+                                    return [`Item: ${item.name}`, `Restock Needed: ${ctx.raw}`, `Urgency: ${item.urgency}`];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Quantity Needed' } },
+                        x: { title: { display: true, text: 'Items' } }
+                    }
+                }
+            });
+        }
+    }
+}
 </script>

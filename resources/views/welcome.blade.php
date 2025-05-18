@@ -1,5 +1,5 @@
 @extends('layouts.appclient')
-   
+
     <style>
         :root {
             --primary-orange: #E7592B;
@@ -567,16 +567,16 @@
             <div class="featured-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
                 <!-- Pizza Item 1 -->
                 <div class="featured-item" style="position: relative; overflow: hidden; border-radius: 10px;">
-                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-                         alt="Pizza Margherita" 
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                         alt="Pizza Margherita"
                          style="width: 100%; height: 400px; object-fit: cover;">
                     <div class="overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);"></div>
                 </div>
 
                 <!-- Pizza Item with Menu Button -->
                 <div class="featured-item" style="position: relative; overflow: hidden; border-radius: 10px;">
-                    <img src="{{ asset('uploads/products/Pizza Napoletana.png') }}" 
-                         alt="Pizza" 
+                    <img src="{{ asset('uploads/products/Pizza Napoletana.png') }}"
+                         alt="Pizza"
                          style="width: 100%; height: 400px; object-fit: cover;">
                     <div class="overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);">
                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 100%;">
@@ -597,8 +597,8 @@
 
                 <!-- Pizza Item 2 -->
                 <div class="featured-item" style="position: relative; overflow: hidden; border-radius: 10px;">
-                    <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-                         alt="Pepperoni Pizza" 
+                    <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                         alt="Pepperoni Pizza"
                          style="width: 100%; height: 400px; object-fit: cover;">
                     <div class="overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);"></div>
                 </div>
@@ -686,7 +686,7 @@
                 <h2 style="font-size: 2.5rem; color: #333; margin-bottom: 20px;">Delivery Service</h2>
                 <p style="color: #666; max-width: 800px; margin: 0 auto;">Serving you with excellence and care</p>
             </div>
-            
+
             <!-- Delivery Features -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 50px;">
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
@@ -699,7 +699,7 @@
                         <li style="margin-bottom: 10px;">Nugegoda</li>
                     </ul>
                 </div>
-                
+
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
                     <i class="fas fa-clock" style="font-size: 2.5rem; color: var(--primary-orange); margin-bottom: 20px;"></i>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Operating Hours</h3>
@@ -709,7 +709,7 @@
                         <li>7 Days a Week</li>
                     </ul>
                 </div>
-                
+
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
                     <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--primary-orange); margin-bottom: 20px;"></i>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Our Promise</h3>
