@@ -10,7 +10,7 @@
         </h1>
     </div>
 
-    <form action="{{ route('admin.driver.edit', ['delivery_id' => $delivery->delivery_id]) }}" method="POST">
+    <form action="{{ route('admin.driver.edit.delivery', ['delivery_id' => $delivery->delivery_id]) }}" method="POST">
         @csrf
          @method('PUT')
         <div style="background-color: #ffffff; padding: 20px 30px; border-bottom: 1px solid #ddd;">

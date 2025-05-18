@@ -239,11 +239,21 @@
     </div>
 </div>
 
+            <!-- Customer Center -->
                 <div id="cusnav">
-                    <button class="sidebar-btn">
+                    <button class="sidebar-btn" onclick="toggleMenu(this)">
                         <span class="btn-content"><span class="material-icons">group</span> Customer Center</span>
+                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
+
+                <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+                    <a href="{{ route('customer.overview') }}" class="submenu-link {{ request()->routeIs('customer.overview')  ? 'active' : '' }}">Customer Overview</a>
+                    <a href="{{ url('/admin/customer/loyalty-program') }}" class="submenu-link {{ request()->is('admin/customer/loyalty-program') ?  'active' : '' }}">Loyalty Program</a>
+                    <a href="{{ url('/send-email') }}" class="submenu-link {{ request()->is('send-email') ?  'active' : '' }}">Email Services</a>
                 </div>
+            </div>
+
+
 
                 <div id="ordernav">
                     <button class="sidebar-btn">
@@ -251,10 +261,21 @@
                     </button>
                 </div>
 
+                <!-- Delivery Center -->
+
                 <div id="delinav">
-                    <button class="sidebar-btn">
+                    <button class="sidebar-btn" onclick="toggleMenu(this)">
                         <span class="btn-content"><span class="material-icons">local_shipping</span> Delivery Center</span>
+                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
+
+                <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+                    <a href="{{ url('admin/delivery-history') }}" class="submenu-link {{ request()->is('delivery-history') ?  'active' : '' }}">Delivery History</a>
+                    <a href="{{ url('admin/drivers') }}" class="submenu-link {{ request()->is('drivers') ?  'active' : '' }}">Driver List</a>
+                    <a href="{{ url('admin/driver/pending-allocation') }}" class="submenu-link {{ request()->is('admin/driver/pending-allocation') ?  'active' : '' }}">Driver Allocation</a>
+                    <a href="{{ url('admin/driver/orders/dispatched') }}" class="submenu-link {{ request()->is('driver/orders/dispatched') ?  'active' : '' }}">Delivery Confirmation </a>
+                </div>
+
                 </div>
 
                 <!-- Employee Center -->
@@ -294,7 +315,7 @@
 
         </aside>
 
-        
+
         <!-- Material Icons CDN -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style>

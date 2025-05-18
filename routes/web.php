@@ -158,8 +158,31 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
 
 
+Route::get('/driver/allocate', [DriverController::class, 'allocateDriver'])->name('admin.driver.allocate');
+//Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('admin.driver.pendingAllocation');
+Route::get('/driver/orders/dispatched', [DriverController::class, 'showDispatchedOrders'])->name('admin.driver.orders.dispatched'); //for Delivery Confirmation
+Route::get('/delivery-history', [DriverController::class, 'deliveryHistory'])->name('admin.delivery.history');   //delivery History
+// Route for Driver Allocation Details
+Route::get('/driver-allocation-details', [DriverController::class, 'driverAllocationDetails'])->name('admin.driver.allocationDetails');
+Route::post('/driver/store-allocation', [DriverController::class, 'storeAllocation'])->name('admin.driver.storeAllocation');
+Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('admin.pending-allocation');
+//Route::get('/driver/allocation/details', [DriverController::class, 'allocationDetails'])->name('admin.driver.allocation.details');
+Route::get('/pending-allocations', [DriverController::class, 'pendingAllocation'])->name('admin.pendingAllocation');
+Route::get('/driver/pending-allocation', [DriverController::class, 'pendingAllocation'])->name('admin.driver.pendingAllocation');
+//Route::get('/pending-allocation', [DriverController::class, 'pendingAllocation'])->name('admin.pendingAllocation');
+Route::delete('/driver/delete/delivery/{delivery_id}', [DriverController::class, 'deleteDelivery'])->name('admin.driver.delete.delivery');
+
+Route::match(['get', 'put'], '/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('admin.driver.edit.delivery');
+
+Route::get('/drivers', [DriverController::class, 'driverListView'])->name('admin.driver.list');  //Display Driver List in Admin Panel
+
+Route::get('/driver/allocation/details', [DriverController::class, 'allocationDetails'])->name('admin.driver.allocation.details');
+
+//Route::match(['get', 'put'], '/admin/driver/delivery/{delivery_id}/edit', [DriverController::class, 'editDelivery'])->name('admin.driver.edit');
 
 
+Route::get('/admin/driver/download-report/{orderId}', [DriverController::class, 'downloadReport'])
+    ->name('admin.driver.downloadReport');
 
 });
 
@@ -271,7 +294,7 @@ Route::get('/loyalty/insert', [CustomerController::class, 'insertLoyalCustomers'
 
 // Driver Routes
 
-
+/*
 
 Route::get('/driver/allocate', [DriverController::class, 'allocateDriver'])->name('admin.driver.allocate');
 //Route::get('/driver-allocation', [DriverController::class, 'pendingAllocation'])->name('admin.driver.pendingAllocation');
@@ -301,8 +324,6 @@ Route::get('/driver/allocation/details', [DriverController::class, 'allocationDe
 Route::get('/drivers-on-ride', [DriverController::class, 'showDriversOnRide'])->name('admin.showDriversOnRide');
 
 
-Route::get('/admin/driver/download-report/{orderId}', [DriverController::class, 'downloadReport'])
-    ->name('admin.driver.downloadReport');
 
 
 Route::get('/admin/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])
@@ -310,7 +331,7 @@ Route::get('/admin/driver/edit/delivery/{delivery_id}', [DriverController::class
 
 
 Route::match(['get', 'put'], '/driver/edit/delivery/{delivery_id}', [DriverController::class, 'editDelivery'])->name('admin.driver.edit');
-
+*/
 
 /*
 
@@ -362,12 +383,10 @@ Route::patch('/driver/orders/{order}/mark-delivered', [DriverController::class, 
 
 
 //Custmer Email Notification
-//Route::get('/send-email', function () {
-   // $customers = \App\Models\User::paginate(10);
- //   return view('customer.emailService', compact('customers'));
-//})->name('email.form');
-
+Route::get('/send-email', function () {
+    $customers = \App\Models\User::paginate(10);
+    return view('customer.emailService', compact('customers'));
+})->name('email.form');
 
 //Customer Email Notification
-
 Route::post('/send-email', [EmailController::class, 'sendBulkEmail'])->name('send.email');
