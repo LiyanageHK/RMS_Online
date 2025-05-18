@@ -7,6 +7,8 @@ use App\Models\PurchaseOrderItem;
 use App\Models\Supplier;
 use App\Models\Items;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PurchaseOrderSent;
 
 class PurchaseOrderController extends Controller
 {
@@ -23,11 +25,19 @@ class PurchaseOrderController extends Controller
 
     $query = PurchaseOrder::with('supplier');
 
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        } else {
+            $query->whereIn('status', ['Draft', 'Sent', 'Received']);
+        }
+
     if ($search) {
         $query->whereHas('supplier', function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%");
         })->orWhere('id', 'like', "%{$search}%");
     }
+
 
     $purchaseOrders = $query->latest()->get();
 
@@ -61,7 +71,6 @@ public function destroy($id)
 
     public function store(Request $request)
     {
-        // Store Purchase Order
         $purchaseOrder = new PurchaseOrder();
         $purchaseOrder->supplier_id = $request->supplier_id;
         $purchaseOrder->order_date = $request->order_date;
@@ -69,49 +78,90 @@ public function destroy($id)
         $purchaseOrder->total_amount = str_replace(['$', ','], '', $request->total_amount);
 ;
 
-        if ($request->action == 'send') {
-            $purchaseOrder->status = 'Sent'; // Mark as sent when 'Send' button clicked
+
+        if (in_array($request->action, ['send', 'send'])) {
+            $purchaseOrder->status = 'Sent'; 
+
         } else {
             $purchaseOrder->status = 'Draft'; // Draft when 'Save as Draft' button clicked
         }
 
         $purchaseOrder->save();
 
-        // Store the items in the pivot table (many-to-many)
-        foreach ($request->items as $itemId => $itemData) {
-            PurchaseOrderItem::create([
-                'purchase_order_id' => $purchaseOrder->id,
-                'item_id' => $itemId,
-                'quantity' => $itemData['quantity'],
-                'price' => $itemData['price'],
-                'total' => $itemData['quantity'] * $itemData['price'],
-            ]);
+
+        if (is_array($request->items)) {
+            foreach ($request->items as $itemId => $itemData) {
+                PurchaseOrderItem::create([
+                    'purchase_order_id' => $purchaseOrder->id,
+                    'item_id' => $itemId,
+                    'quantity' => (float) $itemData['quantity'],
+                    'price' => (float) $itemData['price'],
+                    'total' => $itemData['quantity'] * $itemData['price'],
+                ]);
+            }
+        }
+
+        if ($request->action === 'send') {
+            $purchaseOrder->load(['supplier', 'items.item']);
+            Mail::to($purchaseOrder->supplier->email)->send(new PurchaseOrderSent($purchaseOrder));
+
         }
 
         return redirect()->route('purchase_orders.index')->with('success', 'Purchase Order saved successfully');
     }
 
     public function update(Request $request, $id)
-{
-    $po = PurchaseOrder::findOrFail($id);
-    $po->supplier_id = $request->supplier_id;
-    $po->delivery_date = $request->delivery_date;
-    $po->total_amount = str_replace(['$', ','], '', $request->total_amount);
 
-    $po->status = $request->action === 'send' ? 'Sent' : 'Draft';
-    $po->save();
+    {
+        $po = PurchaseOrder::findOrFail($id);
+        $po->supplier_id = $request->supplier_id;
+        $po->delivery_date = $request->delivery_date;
+        $po->total_amount = $request->filled('total_amount') 
+            ? (float) str_replace(['$', ','], '', $request->total_amount) 
+            : 0;
 
-    // Delete existing items first to avoid duplicates
-    PurchaseOrderItem::where('purchase_order_id', $po->id)->delete();
+        $po->status = in_array($request->action, ['send', 'send']) ? 'Sent' : 'Draft';
+        $po->save();
 
-    // Re-insert updated items
-    foreach ($request->items as $itemId => $itemData) {
-        PurchaseOrderItem::create([
-            'purchase_order_id' => $po->id,
-            'item_id' => $itemId,
-            'quantity' => $itemData['quantity'],
-            'price' => $itemData['price'],
-            'total' => $itemData['quantity'] * $itemData['price'],
+        PurchaseOrderItem::where('purchase_order_id', $po->id)->delete();
+
+        if (is_array($request->items)) {
+            foreach ($request->items as $itemId => $itemData) {
+                PurchaseOrderItem::create([
+                    'purchase_order_id' => $po->id,
+                    'item_id' => $itemId,
+                    'quantity' => (float) $itemData['quantity'],
+                    'price' => (float) $itemData['price'],
+                    'total' => $itemData['quantity'] * $itemData['price'],
+                ]);
+            }
+        }
+
+        if ($request->action === 'send') {
+            $po->load(['supplier', 'items.item']);
+            \Mail::to($po->supplier->email)->send(new \App\Mail\PurchaseOrderSent($po));
+        }
+
+        return redirect()->route('purchase_orders.index')->with('success', 'Purchase Order updated successfully.');
+    }
+
+    public function getPOData($id)
+    {
+        $po = PurchaseOrder::with(['supplier', 'items.item'])->findOrFail($id);
+
+        return response()->json([
+            'supplier_id' => $po->supplier_id,
+            'supplier_name' => $po->supplier->name,
+            'items' => $po->items->map(function ($item) {
+                return [
+                    'id' => $item->item_id,
+                    'name' => $item->item->name ?? 'Unknown',
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                    'total' => $item->total,
+                ];
+            }),
+
         ]);
     }
 
