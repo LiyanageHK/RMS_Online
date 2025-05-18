@@ -57,14 +57,6 @@ Route::get('/about', function () {
 
 
 
-Route::controller(ProductController::class)->middleware(['auth', 'verified'])->group(function(){
-Route::get('/productIndex','Index')->name('productindex');
-Route::post('/saveproduct', 'storeproduct');
-Route::get('/plist','list')->name('productlist');
-
-});
-
-
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 
 
