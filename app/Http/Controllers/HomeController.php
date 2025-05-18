@@ -123,7 +123,7 @@ class HomeController extends Controller
 
 protected function callAIModel($historicalData)
 {
-    $token = env('GITHUB_AI_TOKEN');
+    // $token = env('GITHUB_AI_TOKEN');
     try {
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
