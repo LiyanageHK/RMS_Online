@@ -382,7 +382,7 @@ Route::post('/logout', [UserLoginController::class, 'logout'])->name('logout');
 
 Route::get('/homepage', function () {
     return view('home');
-})->middleware('auth')->name('home');
+})->middleware('auth')->name('homepage');
 
 Route::controller(ProductController::class)->middleware(['auth', 'verified'])->group(function(){
 Route::get('/productIndex','Index')->name('productindex');
