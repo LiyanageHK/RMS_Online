@@ -52,7 +52,8 @@ public function allocateDriver(Request $request)
     public function allocationDetails()
     {
         $deliveries = Delivery::all();
-        $section = 'delivery';
+        $section = 'delivery'; 
+
 
         return view('driver.allocation_details', compact('deliveries', 'section'));
     }

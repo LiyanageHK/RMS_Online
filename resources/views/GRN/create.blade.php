@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Create GRN')
+
 
 @section('content')
 <div style="display: flex; justify-content: center; width: 100%; margin-top: 40px;">

@@ -36,11 +36,17 @@ use App\Http\Controllers\GRNController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\CartController;
+
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AdminOrderController;
+
 
 // Homepage
 Route::get('/', function () {
     $feedbacks = Feedback::all();
-    return view('welcome', compact('feedbacks'));
+    $feedbacks = Feedback::all();
+    return view('welcome', compact('feedbacks'), compact('feedbacks'));
 })->name('welcome');
 
 Route::get('/menu', [App\Http\Controllers\MenuController::class, 'index'])->name('menu');
@@ -50,9 +56,8 @@ Route::get('/about', function () {
 })->name('about');
 
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 
 
 
@@ -68,8 +73,32 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
 
+
+
+
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
+
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+
+
+
+//Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+
 Auth::routes();
 
+
+//Route::get('/contact', function () {
+   // return view('contact');
+//})->name('contact');
+
+
+
+Auth::routes();
+Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
 //Route::get('/contact', function () {
    // return view('contact');
@@ -83,6 +112,8 @@ Route::get('/cart', function () {
     return view('cart'); // Ensure you have a 'cart.blade.php' file in the 'resources/views' directory
 })->name('cart');
 
+}); // <-- Close the first Route group here
+
 Auth::routes();
 Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
@@ -94,6 +125,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::post('categories/update/{id}', [ItemCategoryController::class, 'update'])->name('admin.categories.update');
     Route::delete('categories/delete/{id}', [ItemCategoryController::class, 'destroy'])->name('admin.categories.destroy');
     Route::get('admin/categories/report', [ItemCategoryController::class, 'downloadReport'])->name('admin.categories.report');
+    Route::delete('categories/delete/{id}', [ItemCategoryController::class, 'destroy'])->name('admin.categories.destroy');
+    Route::get('admin/categories/report', [ItemCategoryController::class, 'downloadReport'])->name('admin.categories.report');
 
     // 🔸 Item CRUD
     Route::get('items', [ItemController::class, 'index'])->name('admin.items.index');
@@ -101,6 +134,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::post('items/store', [ItemController::class, 'store'])->name('admin.items.store');
     Route::get('items/edit/{id}', [ItemController::class, 'edit'])->name('admin.items.edit');
     Route::post('items/update/{id}', [ItemController::class, 'update'])->name('admin.items.update');
+    Route::delete('admin/items/delete/{id}', [ItemController::class, 'destroy'])->name('admin.items.destroy');
+    Route::get('admin/items/report', [ItemController::class, 'downloadReport'])->name('admin.items.report');
     Route::delete('admin/items/delete/{id}', [ItemController::class, 'destroy'])->name('admin.items.destroy');
     Route::get('admin/items/report', [ItemController::class, 'downloadReport'])->name('admin.items.report');
 
@@ -111,7 +146,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::get('production/edit/{id}', [ProductionController::class, 'edit'])->name('admin.production.edit');
     Route::post('production/update/{id}', [ProductionController::class, 'update'])->name('admin.production.update');
     Route::delete('production/delete/{id}', [ProductionController::class, 'destroy'])->name('admin.production.destroy');
+    Route::delete('production/delete/{id}', [ProductionController::class, 'destroy'])->name('admin.production.destroy');
     Route::delete('production/image/delete/{id}', [ProductionController::class, 'deleteImage'])->name('admin.production.image.delete');
+    Route::get('admin/production/report', [ProductionController::class, 'downloadReport'])->name('admin.production.report');
     Route::get('admin/production/report', [ProductionController::class, 'downloadReport'])->name('admin.production.report');
 
     // Role CRUD
@@ -130,7 +167,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
         Route::get('/edit/{id}', [ProductCategoryController::class, 'edit'])->name('admin.productcategories.edit');
         Route::post('/update/{id}', [ProductCategoryController::class, 'update'])->name('admin.productcategories.update');
         Route::delete('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('admin.productcategories.destroy');
+        Route::delete('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('admin.productcategories.destroy');
     });
+    Route::get('admin/productcategories/report', [ProductCategoryController::class, 'downloadReport'])->name('admin.productcategories.report');
     Route::get('admin/productcategories/report', [ProductCategoryController::class, 'downloadReport'])->name('admin.productcategories.report');
     Route::resource('employees', EmployeeController::class);
     Route::get('profile', [EmployeeController::class, 'profile'])->name('employees.profile');
@@ -140,6 +179,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
     Route::get('/user_permissions', [AuthController::class, 'getUserPermissions']);
     Route::post('/update_permission', [AuthController::class, 'updatePermission'])->name('admin.update.permission');
+  Route::get('inventory-predictions', [HomeController::class, 'getPredictions'])->name('inventory.predictions');
 
     Route::prefix('inventory')->group(function () {
         Route::get('/', [InventoryController::class, 'index'])->name('admin.inventory.index');
@@ -148,14 +188,33 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     });
 
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    // Admin Order CRUD
+    Route::prefix('/orders')->group(function () {
+    Route::get('/', [AdminOrderController::class, 'index'])->name('admin.orders.index');
+    Route::delete('/delete/{id}', [AdminOrderController::class, 'delete']);
+    Route::delete('/delete-all', [AdminOrderController::class, 'deleteAll']);
+    Route::get('/download/{id}', [AdminOrderController::class, 'downloadPDF']);
+    Route::get('/download-all', [AdminOrderController::class, 'downloadAllPDF']);
+    });
+
+
+
+
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
   Route::post('/inventory/low-stock/{item}/alert', [InventoryController::class, 'sendLowStockAlert'])
     ->name('admin.inventory.send-low-stock-alert');
 
 
 
+// Core resources
+Route::resource('/admin/suppliers', SupplierController::class);
+Route::resource('/admin/purchase_orders', PurchaseOrderController::class);
+Route::resource('/admin/grns', GRNController::class);
 
+Route::get('/contacts', [ContactController::class, 'index'])->name('contact.index');
+    Route::get('/contacts/{id}', [ContactController::class, 'showMessage'])->name('contact.show');
+    Route::post('/contacts/{id}/reply', [ContactController::class, 'reply'])->name('contact.reply');
 
 
 Route::get('/driver/allocate', [DriverController::class, 'allocateDriver'])->name('admin.driver.allocate');
@@ -179,6 +238,9 @@ Route::get('/drivers', [DriverController::class, 'driverListView'])->name('admin
 Route::get('/driver/allocation/details', [DriverController::class, 'allocationDetails'])->name('admin.driver.allocation.details');
 
 //Route::match(['get', 'put'], '/admin/driver/delivery/{delivery_id}/edit', [DriverController::class, 'editDelivery'])->name('admin.driver.edit');
+    // Feedback Messages
+    Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
+    Route::get('/feedback/{id}', [FeedbackController::class, 'show'])->name('feedback.show');
 
 
 Route::get('/admin/driver/download-report/{orderId}', [DriverController::class, 'downloadReport'])
@@ -199,10 +261,7 @@ Route::get('/inventory-center', [InventoryController::class, 'index']);
 
 
 
-// Core resources
-Route::resource('suppliers', SupplierController::class);
-Route::resource('purchase_orders', PurchaseOrderController::class);
-Route::resource('grns', GRNController::class);
+
 
 // Order Status Management
 Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
@@ -222,13 +281,7 @@ Route::post('/feedback/submit', [FeedbackController::class, 'submit'])->name('cl
 // Admin routes for Contact Us & Feedback Management
 Route::prefix('admin')->group(function () {
     // Contact Messages
-    Route::get('/contacts', [ContactController::class, 'index'])->name('contact.index');
-    Route::get('/contacts/{id}', [ContactController::class, 'showMessage'])->name('contact.show');
-    Route::post('/contacts/{id}/reply', [ContactController::class, 'reply'])->name('contact.reply');
 
-    // Feedback Messages
-    Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
-    Route::get('/feedback/{id}', [FeedbackController::class, 'show'])->name('feedback.show');
 });
 
 
@@ -252,7 +305,7 @@ Route::post('/register', [RegUser::class, 'store']);
 Route::get('/profile', [ProfileController::class, 'show'])->middleware('auth');
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 Route::put('/profile/update/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
-Route::get('/profile/orders', [UserController::class, 'showOrderHistory'])->name('profile.orders');
+//Route::get('/profile/orders', [UserController::class, 'showOrderHistory'])->name('profile.orders');
 
 
 
@@ -353,9 +406,32 @@ Route::get('/homepage', function () {
     return view('home');
 })->middleware('auth')->name('home');
 
+Route::controller(ProductController::class)->middleware(['auth', 'verified'])->group(function(){
+Route::get('/productIndex','Index')->name('productindex');
+Route::post('/saveproduct', 'storeproduct');
+Route::get('/plist','list')->name('productlist');
 
+});
 
+Route::controller(OrderController::class)->middleware(['auth', 'verified'])->group(function(){
+Route::post('/confirm-order', 'confirmOrder')->name('confirm.order');
+Route::get('/stripe-success', 'stripeSuccess')->name('stripe.success');
+Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('user.orders');
+Route::get('/order-details/{id}', [OrderController::class, 'getOrderDetails']);
+Route::patch('/cancel-order/{id}', [OrderController::class, 'cancelOrder']);
+Route::get('/successorder', 'stripeSuccess')->name('stripe.success');
+Route::get('/successorder', [OrderController::class, 'paymentcomplete'])->name('ordersuccess');
+});
 
+Route::controller(CartController::class)->middleware(['auth', 'verified'])->group(function(){
+Route::get('/productdetails.', [CartController::class, 'view'])->name('productdetails.view');
+Route::get('/cart','showCart')->name('cartview');
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::delete('/cart/{id}', 'removeItem')->name('cart.remove');
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add.to.cart');
+Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+
+});
 
 //customer profile change password
 Route::put('/profile/change-password/{user}', [ProfileController::class, 'changePassword'])->name('profile.changePassword');

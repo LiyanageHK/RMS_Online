@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flame & Crust Pizzeria</title>
+@include('partials.header')
+@extends('layouts.appclient')
+   
     <style>
         :root {
-            --primary-red: #d92525;
-            --dark-red: #b31616;
+            --primary-orange: #E7592B;
             --light-red: #ff6b6b;
             --dark-bg: #1a1a1a;
             --light-bg: #f9f9f9;
@@ -40,6 +36,7 @@
             padding: 0 20px;
         }
 
+        /* Header Styles */
         header {
             background-color: var(--text-light);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -53,6 +50,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 0;
+            background-color:black;
         }
 
         .logo {
@@ -62,7 +60,7 @@
 
         .logo h1 {
             font-size: 28px;
-            color: var(--primary-red);
+            color: var(--primary-orange);
             margin-left: 10px;
         }
 
@@ -91,33 +89,316 @@
         }
 
         nav ul li a:hover {
-            color: var(--primary-red);
+            color: var(--primary-orange);
         }
 
-        .page-banner {
+        /* Hero Section */
+        .hero {
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-            height: 300px;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
             text-align: center;
             color: var(--text-light);
             padding-top: 80px;
         }
 
-        .page-banner h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background-color: var(--text-light);
         }
 
-        .welcome-message {
-            background: rgba(0,0,0,0.5);
-            padding: 10px 20px;
-            border-radius: 8px;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .feature-item {
+            padding: 20px;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+        }
+
+        .feature-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .feature-title {
+            color: var(--primary-orange);
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .feature-description {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-orange);
+            color: var(--text-light);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-orange);
+        }
+
+        /* Pizza Sizes Section */
+        .pizza-sizes {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+            text-align: center;
+        }
+
+        .sizes-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .size-item {
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .size-title {
+            color: var(--primary-orange);
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .size-subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .pizza-image {
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            background-color: #f8f8f8;
+        }
+
+        .pizza-image:hover {
+            transform: scale(1.05);
+        }
+
+        .pizza-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .pizza-image.large {
+            width: 260px;
+            height: 260px;
+        }
+
+        .pizza-image.medium {
+            width: 200px;
+            height: 200px;
+        }
+
+        .pizza-image.small {
+            width: 140px;
+            height: 140px;
+        }
+
+        @media (max-width: 768px) {
+            .sizes-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .size-item {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .pizza-image.large {
+                width: 200px;
+                height: 200px;
+            }
+
+            .pizza-image.medium {
+                width: 160px;
+                height: 160px;
+            }
+
+            .pizza-image.small {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        /* Pizza Specials */
+        .specials {
+            padding: 80px 0;
+            background-color: var(--text-light);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--primary-orange);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .pizza-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .pizza-card {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .pizza-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .pizza-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .pizza-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .pizza-card:hover .pizza-img img {
+            transform: scale(1.1);
+        }
+
+        .pizza-info {
+            padding: 20px;
+        }
+
+        .pizza-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--primary-orange);
+        }
+
+        .pizza-info p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .price {
+            font-weight: 700;
+            color: var(--primary-orange);
             font-size: 18px;
         }
 
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background-color: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            font-size: 80px;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            color: rgba(255,255,255,0.1);
+            font-family: serif;
+        }
+
+        .testimonial-card p {
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            color: var(--light-red);
+        }
+
+        /* Footer */
         footer {
             background-color: var(--dark-bg);
             color: var(--text-light);
@@ -183,15 +464,17 @@
             font-size: 14px;
         }
 
+        /* Mobile Menu */
         .mobile-menu-btn {
             display: none;
             background: none;
             border: none;
             font-size: 24px;
-            color: var(--primary-red);
+            color: var(--primary-orange);
             cursor: pointer;
         }
 
+        /* Responsive Styles */
         @media (max-width: 768px) {
             .header-container {
                 padding: 15px;
@@ -224,72 +507,51 @@
                 display: block;
             }
 
-            .page-banner h1 {
+            .hero h2 {
                 font-size: 36px;
             }
+
+            .hero p {
+                font-size: 16px;
+            }
         }
-
-
-        /* Style for the logout button in the user dropdown menu */
-.user-menu button {
-    background-color: var(#6c757d);
-    color: var(#1a1a1a);
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.user-menu button:hover {
-    background-color: var(#6c757d);
-    transform: scale(1.05);
-}
-
-.user-menu button:focus {
-    outline: none;
-}
-
-
-
-
     </style>
-</head>
-<body>
 
+
+
+
+
+@section('content')
+
+
+{{-- 
 <header>
-    <div class="container header-container">
-        <div class="logo">
-            <div>
-                <h1>FLAME & CRUST</h1>
-                <span>PIZZARIA</span>
-            </div>
+    <div class="header-container">
+        <div class="logo" style="display: flex; align-items: center; gap: 15px;">
+            <img src="{{ asset('uploads/logo/logo2.png') }}" alt="Flame & Crust Pizzeria Logo" style="width: 80px; height: auto;">
+            <h1 style="color: #fff; font-size: 1.5rem; margin: 0;">FLAME & CRUST PIZZERIA</h1>
         </div>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" style="background: none; border: none; color: #fff; font-size: 1.5rem; display: none;">
             <i class="fas fa-bars"></i>
         </button>
         <nav id="mainNav">
-            <ul>
-                <li><a href="{{ route('home') }}" @if(Request::routeIs('home')) class="active" @endif>HOME</a></li>
+            <ul style="display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; align-items: center;">
+                <li><a href="{{ route('welcome') }}" @if(Request::routeIs('welcome')) class="active" @endif>HOME</a></li>
                 <li><a href="{{ route('menu') }}" @if(Request::routeIs('menu')) class="active" @endif>MENU</a></li>
                 <li><a href="{{ route('about') }}" @if(Request::routeIs('about')) class="active" @endif>ABOUT US</a></li>
                 <li><a href="{{ route('contact') }}" @if(Request::routeIs('contact')) class="active" @endif>CONTACT US</a></li>
-
                 @guest
                     <li><a href="{{ route('login') }}">LOGIN</a></li>
                 @endguest
-
                 @auth
-                    <li class="user-dropdown">
-                        <a href="#" id="userMenuBtn">{{ Auth::user()->name }} <i class="fas fa-caret-down"></i></a>
-                        <ul class="user-menu" id="userMenu">
-                            <li><a href="{{ route('profile') }}">Profile</a></li>
+                    <li class="user-dropdown" style="position: relative;">
+                        <a href="#" id="userMenuBtn" style="display: flex; align-items: center;">{{ Auth::user()->name }} <i class="fas fa-caret-down" style="margin-left: 5px;"></i></a>
+                        <ul class="user-menu" id="userMenu" style="display: none; position: absolute; top: 100%; right: 0; background: #222; padding: 10px 0; min-width: 140px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 100;">
+                            <li><a href="{{ route('profile') }}" style="color: #fff; padding: 8px 20px; display: block;">Profile</a></li>
                             <li>
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
                                     @csrf
-                                    <button type="submit">Logout</button>
+                                    <button type="submit" style="background: none; border: none; color: #fff; padding: 8px 20px; width: 100%; text-align: left; cursor: pointer;">Logout</button>
                                 </form>
                             </li>
                         </ul>
@@ -298,17 +560,26 @@
             </ul>
         </nav>
     </div>
-</header>
+</header> --}}
 
-<div class="page-banner">
-    <h1>Welcome to Flame & Crust Pizzeria</h1>
-
-    @auth
-        <div class="welcome-message">
-            <p>Welcome, {{ Auth::user()->name }}!</p>
-        </div>
-    @endauth
-</div>
+<script>
+    // Show/hide user dropdown menu
+    document.addEventListener('DOMContentLoaded', function() {
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userMenu = document.getElementById('userMenu');
+        if(userMenuBtn && userMenu) {
+            userMenuBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                userMenu.style.display = userMenu.style.display === 'block' ? 'none' : 'block';
+            });
+            document.addEventListener('click', function(e) {
+                if (!userMenu.contains(e.target) && e.target !== userMenuBtn) {
+                    userMenu.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
 <section class="container" style="padding: 40px 20px; text-align: center;">
     <h2 style="color: var(--primary-red); margin-bottom: 20px;">Discover Our Passion for Pizza</h2>
     <p style="max-width: 800px; margin: 0 auto 30px;">
@@ -330,41 +601,7 @@
     </div>
 </section>
 
-
-<footer>
-    <div class="container">
-        <div class="footer-container">
-            <div class="footer-about">
-                <div class="footer-logo">
-                    <h2>FLAME & CRUST</h2>
-                    <span>PIZZARIA</span>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-            <div class="footer-links">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ route('menu') }}">Menu</a></li>
-                    <li><a href="{{ route('about') }}">About Us</a></li>
-                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
-                </ul>
-            </div>
-            <div class="footer-links">
-                <h3>Contact Us</h3>
-                <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Pizza Street, Food City</li>
-                    <li><i class="fas fa-phone"></i> (123) 456-7890</li>
-                    <li><i class="fas fa-envelope"></i> info@flameandcrust.com</li>
-                </ul>
-            </div>
-        </div>
-        <div class="copyright">
-            <p>&copy; {{ date('Y') }} Flame & Crust Pizzeria. All Rights Reserved.</p>
-        </div>
-    </div>
-</footer>
-
+@include('partials.footer')
 <script>
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mainNav = document.getElementById('mainNav');
