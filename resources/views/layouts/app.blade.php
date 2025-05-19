@@ -156,34 +156,36 @@
                             @csrf
                         </form>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="user-avatar">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </div>
-                            <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end profile-dropdown" aria-labelledby="navbarDropdown">
-                            <li class="dropdown-header">
-                                <div class="user-avatar mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.2rem;">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                                </div>
-                                <h6 class="mb-0">{{ Auth::user()->name }}</h6>
-                                <small class="text-muted">{{ Auth::user()->email }}</small>
-                            </li>
-                            <li><div class="dropdown-divider"></div></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('employees.profile') }}">
-                                    <i class="fas fa-user"></i> Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('employees.changePasswordForm') }}">
-                                    <i class="fas fa-key"></i> Change Password
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    <li class="nav-item">
+    <a class="nav-link d-flex align-items-center gap-2" href="{{ route('employees.profile') }}">
+        <div class="user-avatar">
+            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+        </div>
+        <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+    </a>
+</li>
+
+    <ul class="dropdown-menu dropdown-menu-end profile-dropdown" aria-labelledby="navbarDropdown">
+        <li class="dropdown-header text-center">
+            <div class="user-avatar mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.2rem;">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+            </div>
+            <h6 class="mb-0">{{ Auth::user()->name }}</h6>
+            <small class="text-muted">{{ Auth::user()->email }}</small>
+        </li>
+        <li><div class="dropdown-divider"></div></li>
+        <li>
+            <a class="dropdown-item" href="{{ route('employees.profile') }}">
+                <i class="fas fa-user"></i> Profile
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="{{ route('employees.changePasswordForm') }}">
+                <i class="fas fa-key"></i> Change Password
+            </a>
+        </li>
+    </ul>
+</li>
                 @endguest
             </ul>
         </nav>

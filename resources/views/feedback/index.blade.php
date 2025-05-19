@@ -14,10 +14,6 @@
 
     <!-- Table Section -->
     <div style="border: 1px solid #ddd; border-radius: 12px; background-color: #ffffff; padding: 30px 35px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 0 30px 40px 30px;">
-        <!-- Section Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-            <h3 style="margin: 0; font-size: 20px; color: #333;">Feedback Overview</h3>
-        </div>
 
         <!-- Feedback Table -->
         <div style="max-height: 450px; overflow-y: auto; width: 100%;">

@@ -13,7 +13,7 @@
             </a>
         </div>
 
-        <form action="{{ route('purchase_orders.update', $po->id) }}" method="POST">
+        <form id="poForm" action="{{ route('purchase_orders.update', $po->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -212,7 +212,6 @@
     // Run on load to calculate initial total
     updateTotalAmount();
 
-
     let pendingSendEmail = false;
     let poAction = null; // Track which button was clicked
     
@@ -281,7 +280,6 @@
             actionInput.value = 'draft';
         }
     });
-
 
 </script>
 @endpush

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-
+@section('title', 'Create GRN')
 
 @section('content')
 <div style="display: flex; justify-content: center; width: 100%; margin-top: 40px;">
@@ -22,7 +22,6 @@
                     <label for="grn_date" style="font-weight: bold;">GRN Date <span style="color: red;">*</span></label>
                     <input type="date" id="grn_date" name="grn_date" value="{{ date('Y-m-d') }}" readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f3f3f3;">
                 </div>
-
 
                 <div style="margin-bottom: 20px;">
                     <label for="reference_number" style="font-weight: bold;">Reference PO (optional)</label>
@@ -46,7 +45,6 @@
                         @endforeach
                     </select>
                 </div>
-
 
                 <div style="margin-bottom: 20px;">
                     <label for="supplier_id" style="font-weight: bold;">Supplier <span style="color: red;">*</span></label>
@@ -251,7 +249,6 @@
         supplierSelect.removeAttribute('disabled');
         supplierSelect.setAttribute('name', 'supplier_id');
     });
-
 </script>
 
 <style>

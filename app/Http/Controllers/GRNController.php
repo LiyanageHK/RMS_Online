@@ -38,7 +38,7 @@ class GRNController extends Controller
 {
     $suppliers = Supplier::all();
     $items = Items::all();
-    $purchaseOrders = PurchaseOrder::all();
+    $purchaseOrders = PurchaseOrder::where('status', 'Sent')->get();
     return view('GRN.create', compact('suppliers','items','purchaseOrders'));
 }
 
@@ -50,6 +50,16 @@ public function store(Request $request)
         'items.*.item_id' => 'required|exists:items,id',
         'items.*.quantity' => 'required|integer|min:1',
     ]);
+
+    if ($request->has('reference_number') && $request->reference_number) {
+        $po = PurchaseOrder::find($request->reference_number);
+        
+        if ($po) {
+            // Update PO status to 'received'
+            $po->status = 'Received';
+            $po->save();
+        }
+    }
 
     // Start calculating total
     $totalAmount = 0;
@@ -117,5 +127,23 @@ public function show($id)
         $grn->delete();
 
         return redirect()->route('grns.index')->with('success', 'GRN deleted successfully.');
+    }
+
+    public function downloadReport()
+    {
+        $grns = GRN::with('supplier')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $csvData = "ID,Supplier,GRN Date,Reference,Total Amount\n";
+
+        foreach ($grns as $grn) {
+            $csvData .= "{$grn->id},{$grn->supplier->name},{$grn->grn_date},{$grn->reference},{$grn->total_amount}\n";
+        }
+
+        $fileName = "grn_report_" . date('Y-m-d_H-i-s') . ".csv";
+        \Storage::put($fileName, $csvData);
+
+        return response()->download(storage_path("app/" . $fileName))->deleteFileAfterSend(true);
     }
 }
