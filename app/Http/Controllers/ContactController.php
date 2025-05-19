@@ -23,15 +23,28 @@ class ContactController extends Controller
             'message' => 'required|string|max:1000',
         ]);
 
+        $validated['status'] = 'Pending';
         Contact::create($validated);
 
         return redirect()->route('contact')->with('contact_success', 'Thank you for your message! We will get back to you shortly.');
     }
 
     // ADMIN SIDE
-    public function index()
+    public function index(Request $request)
     {
-        $messages = Contact::latest()->get();
+        $query = Contact::query();
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('email', 'like', "%$search%")
+                  ->orWhere('message', 'like', "%$search%");
+            });
+        }
+        $messages = $query->latest()->get();
         return view('contact.index', compact('messages'));
     }
 
@@ -44,18 +57,21 @@ class ContactController extends Controller
     public function reply(Request $request, $id)
     {
         $request->validate([
-            'reply_message' => 'required|string|max:2000',
+            'reply' => 'required|string|max:2000',
         ]);
 
         $contact = Contact::findOrFail($id);
 
         // Send email reply
-        Mail::to($contact->email)->send(new ContactFormMail([
-            'name' => $contact->name,
-            'email' => $contact->email,
-            'original_message' => $contact->message,
-            'reply_message' => $request->input('reply_message'),
-        ]));
+        \Mail::to($contact->email)->send(new \App\Mail\ContactReplyMail(
+            $contact->name,
+            $contact->email,
+            $contact->message,
+            $request->input('reply')
+        ));
+
+        $contact->status = 'Resolved';
+        $contact->save();
 
         return redirect()->route('contact.index')->with('success', 'Reply sent successfully!');
     }

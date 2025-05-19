@@ -33,10 +33,14 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 //use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GRNController;
+
 use App\Http\Controllers\OrderController;
+
+use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CusOrderController;
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminOrderController;
@@ -161,6 +165,11 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::post('role/update/{id}', [RoleController::class, 'update'])->name('admin.role.update');
     Route::get('role/delete/{id}', [RoleController::class, 'destroy'])->name('admin.role.destroy');
 
+
+    Route::get('grns/report', [GRNController::class, 'downloadReport'])->name('grns.report');
+Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadReport'])->name('purchase_orders.report');
+
+
     // Product Categories CRUD
     Route::prefix('productcategories')->group(function () {
         Route::get('/', [ProductCategoryController::class, 'index'])->name('admin.productcategories.index');
@@ -207,7 +216,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
   Route::post('/inventory/low-stock/{item}/alert', [InventoryController::class, 'sendLowStockAlert'])
     ->name('admin.inventory.send-low-stock-alert');
 
-
+// Order Status Management
+Route::get('/admin/orders', [OrderStatusController::class, 'index'])->name('orders.index');
+Route::post('/admin/orders/{order}/update-status', [OrderStatusController::class, 'updateStatus'])->name('orders.updateStatus');
 
 // Core resources
 Route::resource('/admin/suppliers', SupplierController::class);
@@ -269,8 +280,8 @@ Route::get('/customers/{userid}/loyalty', [CustomerController::class, 'loyalty']
 Route::post('/loyalty/redeem', [CustomerController::class, 'redeem'])->name('loyalty.redeem');
 Route::get('/customer/loyalty-program', [CustomerController::class, 'showLoyaltyProgram'])->name('loyalty-program');
 Route::get('/loyalty/insert', [CustomerController::class, 'insertLoyalCustomers'])->name('loyalty.insert'); 
-Route::get('orders/index', [OrderController::class, 'index'])->name('orders.index');
-Route::post('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::get('orders/index', [OrderStatusController::class, 'index'])->name('orders.index');
+Route::post('orders/{order}/update-status', [OrderStatusController::class, 'updateStatus'])->name('orders.updateStatus');
 
 
 });
@@ -281,6 +292,8 @@ Route::post('orders/{order}/update-status', [OrderController::class, 'updateStat
 
 Route::get('/inventory-center', [InventoryController::class, 'index']);
 
+Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadReport'])->name('purchase_orders.report');
+Route::get('grns/report', [GRNController::class, 'downloadReport'])->name('grns.report');
 
 
 
@@ -290,9 +303,9 @@ Route::get('/inventory-center', [InventoryController::class, 'index']);
 
 
 
-// Order Status Management
-// Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-// Route::post('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
+
+
 
 // Static client views
 //Route::view('about', 'client.about')->name('client.about');
@@ -440,14 +453,14 @@ Route::get('/plist','list')->name('productlist');
 
 });
 
-Route::controller(OrderController::class)->middleware(['auth', 'verified'])->group(function(){
+Route::controller(CusOrderController::class)->middleware(['auth', 'verified'])->group(function(){  
 Route::post('/confirm-order', 'confirmOrder')->name('confirm.order');
 Route::get('/stripe-success', 'stripeSuccess')->name('stripe.success');
-Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('user.orders');
-Route::get('/order-details/{id}', [OrderController::class, 'getOrderDetails']);
-Route::patch('/cancel-order/{id}', [OrderController::class, 'cancelOrder']);
+Route::get('/my-orders', [CusOrderController::class, 'userOrders'])->name('user.orders');
+Route::get('/order-details/{id}', [CusOrderController::class, 'getOrderDetails']);
+Route::patch('/cancel-order/{id}', [CusOrderController::class, 'cancelOrder']);
 Route::get('/successorder', 'stripeSuccess')->name('stripe.success');
-Route::get('/successorder', [OrderController::class, 'paymentcomplete'])->name('ordersuccess');
+Route::get('/successorder', [CusOrderController::class, 'paymentcomplete'])->name('ordersuccess');
 });
 
 Route::controller(CartController::class)->middleware(['auth', 'verified'])->group(function(){

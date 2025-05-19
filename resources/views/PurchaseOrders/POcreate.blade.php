@@ -13,7 +13,9 @@
             </a>
         </div>
 
-        <form action="{{ route('purchase_orders.store') }}" method="POST">
+
+        <form id="poForm" action="{{ route('purchase_orders.store') }}" method="POST">
+
             @csrf
 
             <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #F9F9F9; margin-bottom: 30px;">
@@ -79,9 +81,7 @@
                     <button type="submit" name="action" value="draft" style="background-color: #6c757d; color: white; font-size: 14px; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer;">
                         Save as Draft
                     </button>
-
                     <button type="submit" id="sendEmailBtn" name="action" value="send" class="btn btn-success" style="background-color: #0070FF; color: white; font-size: 14px; padding: 10px 18px; border: none; border-radius: 5px; cursor: pointer;">
-
                         Send as Email
                     </button>
                 </div>
@@ -150,12 +150,26 @@
 
     tableBody.addEventListener('input', function (e) {
         if (e.target.classList.contains('qty-input')) {
+            let value = parseInt(e.target.value) || 1;
+            if (value < 1) {
+                e.target.value = 1;
+                value = 1;
+            }
             const row = e.target.closest('tr');
             const price = parseFloat(row.querySelector('input[name$="[price]"]').value);
-            const qty = parseInt(e.target.value) || 0;
-            const total = (price * qty).toFixed(2);
+            const total = (price * value).toFixed(2);
             row.querySelector('.item-total').textContent = `$${total}`;
             updateTotalAmount();
+        }
+    });
+
+    // Prevent manual entry of numbers less than 1
+    tableBody.addEventListener('change', function (e) {
+        if (e.target.classList.contains('qty-input')) {
+            let value = parseInt(e.target.value) || 1;
+            if (value < 1) {
+                e.target.value = 1;
+            }
         }
     });
 
@@ -179,14 +193,29 @@
         totalAmount.value = `$${total.toFixed(2)}`;
     }
 
-
     document.getElementById('poForm').addEventListener('submit', function(e) {
         const form = this;
         const action = document.activeElement.value;
         const supplier = document.getElementById('supplier_id').value;
         const deliveryDate = document.getElementById('delivery_date').value;
         let hasItems = false;
-        document.querySelectorAll('#items_table tbody tr').forEach(row => { hasItems = true; });
+        let invalidQty = false;
+        document.querySelectorAll('#items_table tbody tr').forEach(row => {
+            hasItems = true;
+            const qty = parseInt(row.querySelector('.qty-input').value) || 0;
+            if (qty < 1) invalidQty = true;
+        });
+
+        // Use a hidden input to always set the action
+        let poAction = document.getElementById('po_action');
+        if (!poAction) {
+            poAction = document.createElement('input');
+            poAction.type = 'hidden';
+            poAction.id = 'po_action';
+            poAction.name = 'action';
+            form.appendChild(poAction);
+        }
+        poAction.value = action;
 
         if (action === 'send') {
             let valid = true;
@@ -200,6 +229,9 @@
             } else if (!hasItems) {
                 valid = false;
                 errorMsg = 'Please add at least one item.';
+            } else if (invalidQty) {
+                valid = false;
+                errorMsg = 'Quantity must be at least 1 for all items.';
             }
             if (!valid) {
                 e.preventDefault();
@@ -210,6 +242,7 @@
                 document.getElementById('sendEmailModal').style.display = 'flex';
                 // Only submit if user confirms
                 document.getElementById('confirmSendEmailBtn').onclick = function() {
+                    poAction.value = 'send';
                     document.getElementById('sendEmailModal').style.display = 'none';
                     form.submit();
                 };
@@ -221,10 +254,12 @@
             if (!supplier) {
                 e.preventDefault();
                 alert('Please select a supplier to save as draft.');
+            } else if (invalidQty) {
+                e.preventDefault();
+                alert('Quantity must be at least 1 for all items.');
             }
         }
     });
-
 </script>
 
 <style>

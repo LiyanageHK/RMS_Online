@@ -13,7 +13,7 @@
             </a>
         </div>
 
-        <form action="{{ route('purchase_orders.update', $po->id) }}" method="POST">
+        <form id="poForm" action="{{ route('purchase_orders.update', $po->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -92,6 +92,7 @@
                                 <td style="padding: 10px; text-align: center;">
                                     <button type="button" class="remove-btn" style="color: #e74c3c; border: none; background: none; cursor: pointer;">
                                         <span class="material-icons">delete</span>
+                                        <span style="font-weight: bold;">Delete</span>
                                     </button>
                                 </td>
                             </tr>
@@ -169,6 +170,7 @@
             <td style="padding: 10px; text-align: center;">
                 <button type="button" class="remove-btn" style="color: #e74c3c; border: none; background: none; cursor: pointer;">
                     <span class="material-icons">delete</span>
+                    <span style="font-weight: bold;">Delete</span>
                 </button>
             </td>
         `;
@@ -182,7 +184,7 @@
             const price = parseFloat(row.querySelector('input[name$="[price]"]').value);
             const qty = parseInt(e.target.value) || 0;
             const total = (price * qty).toFixed(2);
-            row.querySelector('.item-total').textContent = `$${total}`;
+            row.querySelector('.item-total').textContent = $${total};
             updateTotalAmount();
         }
     });
@@ -209,7 +211,6 @@
 
     // Run on load to calculate initial total
     updateTotalAmount();
-
 
     let pendingSendEmail = false;
     let poAction = null; // Track which button was clicked
@@ -279,7 +280,6 @@
             actionInput.value = 'draft';
         }
     });
-
 
 </script>
 @endpush

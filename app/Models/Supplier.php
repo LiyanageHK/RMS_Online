@@ -19,4 +19,14 @@ class Supplier extends Model
         'contact_person_phone',
         'contact_person_email',
     ];
+
+    public function purchaseOrders()
+    {
+        return $this->hasMany(PurchaseOrder::class, 'supplier_id');
+    }
+
+    public function grns()
+    {
+        return $this->hasMany(GRN::class, 'supplier_id');
+    }
 }

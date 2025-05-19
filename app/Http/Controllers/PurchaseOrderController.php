@@ -20,11 +20,16 @@ class PurchaseOrderController extends Controller
     }
 
     public function index(Request $request)
-{
-    $search = $request->input('search');
+    {
+        $search = $request->input('search');
 
-    $query = PurchaseOrder::with('supplier');
+        $query = PurchaseOrder::with('supplier');
 
+        if ($search) {
+            $query->whereHas('supplier', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })->orWhere('id', 'like', "%{$search}%");
+        }
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -32,18 +37,11 @@ class PurchaseOrderController extends Controller
             $query->whereIn('status', ['Draft', 'Sent', 'Received']);
         }
 
-    if ($search) {
-        $query->whereHas('supplier', function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-        })->orWhere('id', 'like', "%{$search}%");
+        $purchaseOrders = $query->latest()->get();
+
+
+        return view('PurchaseOrders.POindex', compact('purchaseOrders'));
     }
-
-
-    $purchaseOrders = $query->latest()->get();
-
-    return view('PurchaseOrders.POindex', compact('purchaseOrders'));
-}
-
 
     public function show($id)
     {
@@ -53,21 +51,19 @@ class PurchaseOrderController extends Controller
 
     public function edit($id)
     {
-        $po = PurchaseOrder::with('items')->findOrFail($id);  // Fetch the purchase order with items
-        $suppliers = Supplier::all();  // Fetch all suppliers for the dropdown
-        $items = Items::all();  // Fetch all items for the dropdown
-        return view('PurchaseOrders.edit', compact('po', 'suppliers', 'items'));  // Pass the data to the view
+        $po = PurchaseOrder::with('items')->findOrFail($id);  
+        $suppliers = Supplier::all();
+        $items = Items::all(); 
+        return view('PurchaseOrders.edit', compact('po', 'suppliers', 'items'));
     }
 
-public function destroy($id)
-{
-    $po = PurchaseOrder::findOrFail($id);
-    $po->delete();
+    public function destroy($id)
+    {
+        $po = PurchaseOrder::findOrFail($id);
+        $po->delete();
 
-    return redirect()->route('purchase_orders.index')->with('success', 'Purchase Order deleted successfully.');
-}
-
-    
+        return redirect()->route('purchase_orders.index')->with('success', 'Purchase Order deleted successfully.');
+    }
 
     public function store(Request $request)
     {
@@ -75,19 +71,17 @@ public function destroy($id)
         $purchaseOrder->supplier_id = $request->supplier_id;
         $purchaseOrder->order_date = $request->order_date;
         $purchaseOrder->delivery_date = $request->delivery_date;
-        $purchaseOrder->total_amount = str_replace(['$', ','], '', $request->total_amount);
-;
-
+        $purchaseOrder->total_amount = $request->filled('total_amount') 
+            ? (float) str_replace(['$', ','], '', $request->total_amount) 
+            : 0;
 
         if (in_array($request->action, ['send', 'send'])) {
             $purchaseOrder->status = 'Sent'; 
-
         } else {
-            $purchaseOrder->status = 'Draft'; // Draft when 'Save as Draft' button clicked
+            $purchaseOrder->status = 'Draft'; 
         }
 
         $purchaseOrder->save();
-
 
         if (is_array($request->items)) {
             foreach ($request->items as $itemId => $itemData) {
@@ -95,7 +89,7 @@ public function destroy($id)
                     'purchase_order_id' => $purchaseOrder->id,
                     'item_id' => $itemId,
                     'quantity' => (float) $itemData['quantity'],
-                    'price' => (float) $itemData['price'],
+                'price' => (float) $itemData['price'],
                     'total' => $itemData['quantity'] * $itemData['price'],
                 ]);
             }
@@ -104,14 +98,12 @@ public function destroy($id)
         if ($request->action === 'send') {
             $purchaseOrder->load(['supplier', 'items.item']);
             Mail::to($purchaseOrder->supplier->email)->send(new PurchaseOrderSent($purchaseOrder));
-
         }
 
         return redirect()->route('purchase_orders.index')->with('success', 'Purchase Order saved successfully');
     }
 
     public function update(Request $request, $id)
-
     {
         $po = PurchaseOrder::findOrFail($id);
         $po->supplier_id = $request->supplier_id;
@@ -161,11 +153,29 @@ public function destroy($id)
                     'total' => $item->total,
                 ];
             }),
-
         ]);
       
     }
 
-    
+    public function downloadReport()
+
+    {
+        $purchaseOrders = PurchaseOrder::with('supplier')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $csvData = "ID,Supplier,Order Date,Delivery Date,Status,Total Amount\n";
+
+        foreach ($purchaseOrders as $po) {
+            $csvData .= "{$po->id},{$po->supplier->name},{$po->order_date},{$po->delivery_date},{$po->status},{$po->total_amount}\n";
+        }
+
+        $fileName = "purchase_orders_report_" . date('Y-m-d_H-i-s') . ".csv";
+        \Storage::put($fileName, $csvData);
+
+
+        return response()->download(storage_path("app/" . $fileName))->deleteFileAfterSend(true);
+    }
+
 }
 

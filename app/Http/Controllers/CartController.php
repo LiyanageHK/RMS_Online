@@ -92,6 +92,7 @@ public function checkout()
 {
     $cartItems = Cart::with('product')->where('u_id', Auth::id())->get();
     $loyaltyCustomer = LoyaltyCustomer::where('user_id', Auth::id())->first();
+    $user = Auth::user();
     
     $subTotal = $cartItems->sum('subtotal');
     if ($loyaltyCustomer) {
@@ -112,7 +113,7 @@ public function checkout()
     $delivery = 100;
     $total = $subTotal - $discount + $delivery;
 
-    return view('CustomerOrders.checkout', compact('cartItems', 'subTotal', 'discount', 'delivery', 'total'));
+    return view('CustomerOrders.checkout', compact('cartItems', 'subTotal', 'discount', 'delivery', 'total', 'user'));
 }
 
 public function removeItem($id)

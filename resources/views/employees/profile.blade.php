@@ -79,16 +79,16 @@
             </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px;">
-    <a href="{{ route('employees.changePasswordForm') }}" class="btn btn-outline-secondary"
-       style="padding: 10px 20px; text-decoration: none; border: 1px solid #ccc; border-radius: 5px;">
-        Change Password
-    </a>
-
-    <button type="submit"
-            style="background-color: #E7592B; color: white; font-size: 14px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-        Update Profile
-    </button>
-</div>
+               <a href="{{ route('employees.changePasswordForm') }}" class="btn btn-outline-secondary"
+                   style="padding: 10px 20px; text-decoration: none; border: 1px solid #ccc; border-radius: 5px;">
+                    Change Password
+                </a> 
+                <button type="submit"
+                        style="background-color: #E7592B; color: white; font-size: 14px; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                    Update Profile
+                </button>
+                
+            </div>
         </form>
     </div>
 </div>
