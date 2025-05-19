@@ -33,7 +33,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 //use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GRNController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CartController;
@@ -161,6 +161,11 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::post('role/update/{id}', [RoleController::class, 'update'])->name('admin.role.update');
     Route::get('role/delete/{id}', [RoleController::class, 'destroy'])->name('admin.role.destroy');
 
+
+    Route::get('grns/report', [GRNController::class, 'downloadReport'])->name('grns.report');
+Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadReport'])->name('purchase_orders.report');
+
+
     // Product Categories CRUD
     Route::prefix('productcategories')->group(function () {
         Route::get('/', [ProductCategoryController::class, 'index'])->name('admin.productcategories.index');
@@ -269,8 +274,8 @@ Route::get('/customers/{userid}/loyalty', [CustomerController::class, 'loyalty']
 Route::post('/loyalty/redeem', [CustomerController::class, 'redeem'])->name('loyalty.redeem');
 Route::get('/customer/loyalty-program', [CustomerController::class, 'showLoyaltyProgram'])->name('loyalty-program');
 Route::get('/loyalty/insert', [CustomerController::class, 'insertLoyalCustomers'])->name('loyalty.insert'); 
-Route::get('orders/index', [OrderController::class, 'index'])->name('orders.index');
-Route::post('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::get('orders/index', [OrderStatusController::class, 'index'])->name('orders.index');
+Route::post('orders/{order}/update-status', [OrderStatusController::class, 'updateStatus'])->name('orders.updateStatus');
 
 
 });
@@ -280,7 +285,8 @@ Route::post('orders/{order}/update-status', [OrderController::class, 'updateStat
 // Employee Routes
 
 Route::get('/inventory-center', [InventoryController::class, 'index']);
-
+//Route::get('grns/report', [GRNController::class, 'downloadReport'])->name('grns.report');
+//Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadReport'])->name('purchase_orders.report');
 
 
 

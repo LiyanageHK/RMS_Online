@@ -117,6 +117,11 @@
             document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
                 if (formToSubmit) formToSubmit.submit();
             });
+
+            document.getElementById('downloadReport').addEventListener('click', function() {
+                const url = '{{ route('grns.report') }}';
+                window.location.href = url;
+});
         });
     </script>
 

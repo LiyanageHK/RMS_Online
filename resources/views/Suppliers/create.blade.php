@@ -40,10 +40,10 @@
                 <div style="margin-bottom: 15px;">
                     <label for="category" style="font-weight: bold;">Category <span style="color: red;">*</span></label>
                     <select id="category" name="category" required style="width: 99%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-                        <option value="" style="font-weight: bold:">-- Select Category --</option>
-                        <option value="Vegetables" {{ old('category') == 'Vegetables' ? 'selected' : '' }}>Vegetables</option>
-                        <option value="Meat" {{ old('category') == 'Meat' ? 'selected' : '' }}>Meat</option>
-                        <option value="Seafood" {{ old('category') == 'Seafood' ? 'selected' : '' }}>Seafood</option>
+                        <option value="" style="font-weight: bold;">-- Select Category --</option>
+                        @foreach($categories as $id => $name)
+                            <option value="{{ $id }}" {{ old('category') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
