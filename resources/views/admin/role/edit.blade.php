@@ -83,7 +83,12 @@
                     <div class="form-check form-switch">
                         <input class="form-check-input permission-toggle" type="checkbox" name="pro" id="pro" 
                             {{ old('pro', $permissions->pro) == '1' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="pro">Product Management</label>
+                        <label class="form-check-label" for="pro"> Procurement Center</label>
+                    </div>
+                     <div class="form-check form-switch">
+                        <input class="form-check-input permission-toggle" type="checkbox" name="crm" id="crm" 
+                            {{ old('pro', $permissions->crm) == '1' ? 'checked' : '' }}>
+                        <label class="form-check-label" for="pro">Customer relations Center</label>
                     </div>
                 </div>
             </div>

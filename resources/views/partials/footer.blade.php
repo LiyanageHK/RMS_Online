@@ -6,7 +6,7 @@
                     <img src="{{ asset('uploads/logo/logo2.png') }}" alt="Flame & Crust Pizzeria Logo" class="logo" style="width: 100px; height: auto;padding-left: 0px;margin-left: 0px;">
                 </div>
                 <div class="footer-logo">
-                   
+
                     <h2 style="color:#E7592B">FLAME & CRUST PIZZERIA</h2>
                 </div>
                 <p>Deliciously delivered! We’re a delivery-only pizzeria powered by smart tech to bring you fresh flavors, fast service, and seamless online ordering.</p>
@@ -14,10 +14,16 @@
             <div class="footer-links" style="margin-top: 100px;padding-left: 90px;">
                 <h3 style="color: #E7592B">Quick Links</h3>
                 <ul>
-                    <li><a href="{{ route('welcome') }}" >Home</a></li>
-                    <li><a href="{{ route('menu') }}">Menu</a></li>
-                    <li><a href="{{ route('about') }}">About Us</a></li>
-                    <li><a href="{{ route('contact') }}">Contact Us</a></li>
+
+
+                       <li><a href="#">HOME</a></li>
+                <li><a href="#">MENU</a></li>
+
+                <li><a href="#">ABOUT US</a></li>
+
+                <li><a href="#">CONTACT US</a></li>
+
+
                 </ul>
             </div>
             <div class="footer-links"style="margin-top: 100px;">

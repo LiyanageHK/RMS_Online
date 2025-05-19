@@ -128,7 +128,7 @@
                     <tr>
                         <th>Select</th>
                         <th>Item Name</th>
-                        <th>Quantity</th>
+                        <th>Quantity (g)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -254,7 +254,7 @@
         const imageInput = document.getElementById('imageInput');
 
         // Add event listener for image input
-        imageInput.addEventListener('change', previewImages);
+        if (imageInput) imageInput.addEventListener('change', previewImages);
 
         // Enable/disable quantity inputs based on checkbox state
         checkboxes.forEach((checkbox, index) => {
@@ -269,12 +269,20 @@
         // Form validation
         form.addEventListener('submit', function(e) {
             let hasSelectedItem = false;
-            checkboxes.forEach(checkbox => {
+            checkboxes.forEach((checkbox, idx) => {
                 if (checkbox.checked) {
                     hasSelectedItem = true;
+                    // Make sure quantity is filled for selected items
+                    if (!quantityInputs[idx].value) {
+                        e.preventDefault();
+                        quantityInputs[idx].classList.add('is-invalid');
+                    } else {
+                        quantityInputs[idx].classList.remove('is-invalid');
+                    }
+                } else {
+                    quantityInputs[idx].classList.remove('is-invalid');
                 }
             });
-
             if (!hasSelectedItem) {
                 e.preventDefault();
                 itemError.classList.remove('d-none');
