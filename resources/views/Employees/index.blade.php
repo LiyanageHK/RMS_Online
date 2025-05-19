@@ -26,53 +26,55 @@
         </div>
 
         <!-- Employee Table -->
-        <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
-            <thead style="background-color: #f9f9f9;">
-                <tr>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Employee ID</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Name</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Phone</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Email</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Position</th>
-                    <th style="padding: 12px; text-align: right;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($employees as $employee)
-                    <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                        <td style="padding: 12px;">EMP{{ str_pad($employee->id, 5, '0', STR_PAD_LEFT) }}</td>
-                        <td style="padding: 12px;">{{ $employee->name }}</td>
-                        <td style="padding: 12px;">{{ $employee->phone ?? '-' }}</td>
-                        <td style="padding: 12px;">{{ $employee->email }}</td>
-                        <td style="padding: 12px;">
+        <div style="max-height: 450px; overflow-y: auto; width: 100%;">
+            <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
+                <thead style="background-color: #f9f9f9; position: sticky; top: 0; z-index: 1;">
+                    <tr>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Employee ID</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Name</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Phone</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Email</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Position</th>
+                        <th style="padding: 12px; text-align: right; background: #f9f9f9;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($employees as $employee)
+                        <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                            <td style="padding: 12px;">EMP{{ str_pad($employee->id, 5, '0', STR_PAD_LEFT) }}</td>
+                            <td style="padding: 12px;">{{ $employee->name }}</td>
+                            <td style="padding: 12px;">{{ $employee->phone ?? '-' }}</td>
+                            <td style="padding: 12px;">{{ $employee->email }}</td>
+                            <td style="padding: 12px;">
     {{ \DB::table('role')->where('role', $employee->position)->value('role') }}
 </td>
 
-                        <td style="padding: 12px; text-align: right;">
-                            <a href="{{ route('employees.show', $employee->id) }}" style="margin-right: 8px; background-color: #6c757d; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
-                                <span class="material-icons" style="font-size: 16px; margin-right: 4px;">visibility</span> View
-                            </a>
-                            <a href="{{ route('employees.edit', $employee->id) }}" style="margin-right: 8px; background-color: #007bff; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
-                                <span class="material-icons" style="font-size: 16px; margin-right: 4px;">edit</span> Edit
-                            </a>
-                            <button onclick="showDeleteModal({{ $employee->id }}, '{{ $employee->name }}')" style="background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; cursor: pointer;">
-                                <span class="material-icons" style="font-size: 16px; margin-right: 4px;">delete</span> Delete
-                            </button>
+                            <td style="padding: 12px; text-align: right;">
+                                <a href="{{ route('employees.show', $employee->id) }}" style="margin-right: 8px; background-color: #6c757d; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
+                                    <span class="material-icons" style="font-size: 16px; margin-right: 4px;">visibility</span> View
+                                </a>
+                                <a href="{{ route('employees.edit', $employee->id) }}" style="margin-right: 8px; background-color: #007bff; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
+                                    <span class="material-icons" style="font-size: 16px; margin-right: 4px;">edit</span> Edit
+                                </a>
+                                <button onclick="showDeleteModal({{ $employee->id }}, '{{ $employee->name }}')" style="background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; cursor: pointer;">
+                                    <span class="material-icons" style="font-size: 16px; margin-right: 4px;">delete</span> Delete
+                                </button>
 
-                            <!-- Hidden Form for Deletion -->
-                            <form id="deleteForm-{{ $employee->id }}" action="{{ route('employees.destroy', $employee->id) }}" method="POST" style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" style="padding: 12px; text-align: center;">No employees found.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                                <!-- Hidden Form for Deletion -->
+                                <form id="deleteForm-{{ $employee->id }}" action="{{ route('employees.destroy', $employee->id) }}" method="POST" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" style="padding: 12px; text-align: center;">No employees found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Custom Confirmation Modal -->

@@ -27,7 +27,7 @@ class PurchaseOrderSent extends Mailable
     public function build()
     {
         return $this->subject('New Purchase Order from Flame and Crust')
-            ->view('email.purchase_order_sent');
+            ->view('emails.purchase-order-sent');
     }
     
 
@@ -47,7 +47,7 @@ class PurchaseOrderSent extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.purchase_order_sent',
+            view: 'emails.purchase-order-sent',
         );
     }
 

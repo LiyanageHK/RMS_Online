@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Models\OrderStatus;
+
 use Illuminate\Http\Request;
 
 class OrderStatusController extends Controller
 {
-    // Show orders with status confirmed or preparing
+
+    // Show orders with status ordered,confirmed or preparing
     public function index(Request $request)
 {
-    $query = Order::query();
+    $query = OrderStatus::query();
+
 
     if ($request->filled('order_number')) {
         $query->where('id', $request->order_number);
@@ -29,8 +32,9 @@ class OrderStatusController extends Controller
 }
 
 
-    // Update the status of an order
-    public function updateStatus(Request $request, Order $order)
+
+    public function updateStatus(Request $request, OrderStatus $order)
+
 {
     if ($request->action === 'cancel') {
         // Allow canceling from any state
@@ -52,3 +56,4 @@ class OrderStatusController extends Controller
 }
 
 }
+

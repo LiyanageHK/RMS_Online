@@ -33,6 +33,9 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseOrderController;
 //use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GRNController;
+
+use App\Http\Controllers\OrderController;
+
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FeedbackController;
@@ -213,7 +216,9 @@ Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadR
   Route::post('/inventory/low-stock/{item}/alert', [InventoryController::class, 'sendLowStockAlert'])
     ->name('admin.inventory.send-low-stock-alert');
 
-
+// Order Status Management
+Route::get('/admin/orders', [OrderStatusController::class, 'index'])->name('orders.index');
+Route::post('/admin/orders/{order}/update-status', [OrderStatusController::class, 'updateStatus'])->name('orders.updateStatus');
 
 // Core resources
 Route::resource('/admin/suppliers', SupplierController::class);
@@ -286,8 +291,9 @@ Route::post('orders/{order}/update-status', [OrderStatusController::class, 'upda
 // Employee Routes
 
 Route::get('/inventory-center', [InventoryController::class, 'index']);
-//Route::get('grns/report', [GRNController::class, 'downloadReport'])->name('grns.report');
-//Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadReport'])->name('purchase_orders.report');
+
+Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadReport'])->name('purchase_orders.report');
+Route::get('grns/report', [GRNController::class, 'downloadReport'])->name('grns.report');
 
 
 
@@ -297,9 +303,9 @@ Route::get('/inventory-center', [InventoryController::class, 'index']);
 
 
 
-// Order Status Management
-// Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-// Route::post('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
+
+
 
 // Static client views
 //Route::view('about', 'client.about')->name('client.about');

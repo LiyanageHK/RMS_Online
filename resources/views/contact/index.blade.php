@@ -4,7 +4,12 @@
     <!-- Top Row -->
     <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 30px;">
         <h2 style="font-size: 20px; margin: 0; font-weight: bold;">Contact Messages</h2>
-        <form method="GET" action="{{ route('contact.index') }}">
+        <form method="GET" action="{{ route('contact.index') }}" style="display: flex; gap: 10px; align-items: center;">
+            <select name="status" onchange="this.form.submit()" style="padding: 10px 12px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;">
+                <option value="">All Statuses</option>
+                <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : '' }}>Pending</option>
+                <option value="Resolved" {{ request('status') == 'Resolved' ? 'selected' : '' }}>Resolved</option>
+            </select>
             <input type="text" name="search" value="{{ request('search') }}"
                    placeholder="Search Contact Messages..."
                    oninput="if(this.value==='') this.form.submit();"
@@ -17,34 +22,44 @@
         
 
         <!-- Contact Messages Table -->
-        <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
-            <thead style="background-color: #f9f9f9;">
-                <tr>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Name</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Email</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Message</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($messages as $contact)
-                    <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                        <td style="padding: 12px;">{{ $contact->name }}</td>
-                        <td style="padding: 12px;">{{ $contact->email }}</td>
-                        <td style="padding: 12px; text-align: left; max-width: 300px; word-wrap: break-word;">{{ Str::limit($contact->message, 50) }}</td>
-                        <td style="padding: 12px; text-align: left;">
-                            <a href="{{ route('contact.show', $contact->id) }}" style="background-color: #6c757d; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
-                                <span class="material-icons" style="font-size: 16px; margin-right: 4px;">visibility</span> View / Reply
-                            </a>
-                        </td>
-                    </tr>
-                @empty
+        <div style="max-height: 450px; overflow-y: auto; width: 100%;">
+            <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
+                <thead style="background-color: #f9f9f9; position: sticky; top: 0; z-index: 1;">
                     <tr>
-                        <td colspan="4" style="padding: 12px; text-align: center;">No contact messages found.</td>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Name</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Email</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Message</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Status</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Actions</th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse($messages as $contact)
+                        <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                            <td style="padding: 12px;">{{ $contact->name }}</td>
+                            <td style="padding: 12px;">{{ $contact->email }}</td>
+                            <td style="padding: 12px; text-align: left; max-width: 300px; word-wrap: break-word;">{{ Str::limit($contact->message, 50) }}</td>
+                            <td style="padding: 12px; text-align: left;">
+                                @if($contact->status === 'Resolved')
+                                    <span style="color: #28a745; font-weight: bold;">Resolved</span>
+                                @else
+                                    <span style="color: #fd7e14; font-weight: bold;">Pending</span>
+                                @endif
+                            </td>
+                            <td style="padding: 12px; text-align: left;">
+                                <a href="{{ route('contact.show', $contact->id) }}" style="background-color: #6c757d; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
+                                    <span class="material-icons" style="font-size: 16px; margin-right: 4px;">visibility</span> View / Reply
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="padding: 12px; text-align: center;">No contact messages found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Custom Confirmation Modal -->

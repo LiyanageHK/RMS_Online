@@ -16,5 +16,7 @@ class OrderStatus extends Model
         'total',
         'delivery_date',
         'order_status',
-    ];
+
+    ];
 }
+
