@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class OrderStatusController extends Controller
 {
-    // Show orders with status confirmed or preparing
+    // Show orders with status ordered,confirmed or preparing
     public function index(Request $request)
 {
     $query = OrderStatus::query();

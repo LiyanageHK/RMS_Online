@@ -19,8 +19,9 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('employees.changePassword') }}">
+        <form method="POST" action="{{ route('employees.changePassword') }}" id="changePasswordForm">
             @csrf
+            <input type="hidden" name="confirm_change" id="confirm_change" value="0">
 
             <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #F9F9F9;">
 
@@ -62,6 +63,56 @@
                 </button>
             </div>
         </form>
+
+        <!-- Custom Confirmation Modal -->
+        <div id="confirmPasswordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
+            <div style="background-color: #fff; padding: 30px; border-radius: 12px; width: 400px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.15); text-align: center;">
+                <div style="margin-bottom: 15px;">
+                    <span class="material-icons" style="font-size: 40px; color: #E7592B;">lock_reset</span>
+                </div>
+                <h4 style="margin-bottom: 10px; font-size: 18px; color: #333;">Confirm Password Change</h4>
+                <p style="font-size: 15px; margin-bottom: 25px;">Are you sure you want to change your password? You will be logged out and will have to log in again.</p>
+                <div style="display: flex; justify-content: center; gap: 15px;">
+                    <button id="cancelPasswordBtn" type="button" style="padding: 10px 20px; background-color: #6c757d; border: none; color: #fff; border-radius: 5px; font-weight: bold; font-size: 14px; cursor: pointer;">Cancel</button>
+                    <button id="confirmPasswordBtn" type="button" style="padding: 10px 20px; background-color: #E7592B; border: none; color: #fff; border-radius: 5px; font-weight: bold; font-size: 14px; cursor: pointer;">Change Password</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        const form = document.getElementById('changePasswordForm');
+        const confirmInput = document.getElementById('confirm_change');
+        const confirmModal = document.getElementById('confirmPasswordModal');
+        const cancelBtn = document.getElementById('cancelPasswordBtn');
+        const confirmBtn = document.getElementById('confirmPasswordBtn');
+
+        form.addEventListener('submit', function(e) {
+            if (confirmInput.value === '1') {
+                // Show custom confirmation modal
+                e.preventDefault();
+                confirmModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                // First submit: set flag and prevent submit
+                e.preventDefault();
+                confirmInput.value = '1';
+                form.requestSubmit();
+            }
+        });
+
+        cancelBtn.addEventListener('click', function() {
+            confirmModal.style.display = 'none';
+            document.body.style.overflow = '';
+            confirmInput.value = '0';
+        });
+
+        confirmBtn.addEventListener('click', function() {
+            confirmModal.style.display = 'none';
+            document.body.style.overflow = '';
+            // Actually submit the form
+            form.submit();
+        });
+        </script>
     </div>
 </div>
 @endsection

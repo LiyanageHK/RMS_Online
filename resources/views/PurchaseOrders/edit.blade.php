@@ -92,6 +92,7 @@
                                 <td style="padding: 10px; text-align: center;">
                                     <button type="button" class="remove-btn" style="color: #e74c3c; border: none; background: none; cursor: pointer;">
                                         <span class="material-icons">delete</span>
+                                        <span style="font-weight: bold;">Delete</span>
                                     </button>
                                 </td>
                             </tr>
@@ -169,6 +170,7 @@
             <td style="padding: 10px; text-align: center;">
                 <button type="button" class="remove-btn" style="color: #e74c3c; border: none; background: none; cursor: pointer;">
                     <span class="material-icons">delete</span>
+                    <span style="font-weight: bold;">Delete</span>
                 </button>
             </td>
         `;

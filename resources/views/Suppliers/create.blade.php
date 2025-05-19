@@ -39,7 +39,7 @@
 
                 <div style="margin-bottom: 15px;">
                     <label for="category" style="font-weight: bold;">Category <span style="color: red;">*</span></label>
-                    <select id="category" name="category" required style="width: 99%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                    <select id="category" name="category" required style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                         <option value="" style="font-weight: bold;">-- Select Category --</option>
                         @foreach($categories as $id => $name)
                             <option value="{{ $id }}" {{ old('category') == $id ? 'selected' : '' }}>{{ $name }}</option>
@@ -77,7 +77,7 @@
 
                     <div style="flex: 1;">
                         <label for="contact_person_phone" style="font-weight: bold;">Contact Number</label>
-                        <input type="text" id="contact_person_phone" name="contact_person_phone" value="{{ old('contact_person_phone') }}" placeholder="+94XXXXXXXXXr" style="width: 93%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                        <input type="text" id="contact_person_phone" name="contact_person_phone" value="{{ old('contact_person_phone') }}" placeholder="+94XXXXXXXXX" style="width: 93%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                         <small id="contact-person-phone-error" style="color: red; display: none;">Please enter a valid phone number (+94XXXXXXXXX).</small>
                     </div>
                 </div>

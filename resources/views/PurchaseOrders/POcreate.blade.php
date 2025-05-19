@@ -148,12 +148,26 @@
 
     tableBody.addEventListener('input', function (e) {
         if (e.target.classList.contains('qty-input')) {
+            let value = parseInt(e.target.value) || 1;
+            if (value < 1) {
+                e.target.value = 1;
+                value = 1;
+            }
             const row = e.target.closest('tr');
             const price = parseFloat(row.querySelector('input[name$="[price]"]').value);
-            const qty = parseInt(e.target.value) || 0;
-            const total = (price * qty).toFixed(2);
+            const total = (price * value).toFixed(2);
             row.querySelector('.item-total').textContent = `$${total}`;
             updateTotalAmount();
+        }
+    });
+
+    // Prevent manual entry of numbers less than 1
+    tableBody.addEventListener('change', function (e) {
+        if (e.target.classList.contains('qty-input')) {
+            let value = parseInt(e.target.value) || 1;
+            if (value < 1) {
+                e.target.value = 1;
+            }
         }
     });
 
@@ -183,7 +197,23 @@
         const supplier = document.getElementById('supplier_id').value;
         const deliveryDate = document.getElementById('delivery_date').value;
         let hasItems = false;
-        document.querySelectorAll('#items_table tbody tr').forEach(row => { hasItems = true; });
+        let invalidQty = false;
+        document.querySelectorAll('#items_table tbody tr').forEach(row => {
+            hasItems = true;
+            const qty = parseInt(row.querySelector('.qty-input').value) || 0;
+            if (qty < 1) invalidQty = true;
+        });
+
+        // Use a hidden input to always set the action
+        let poAction = document.getElementById('po_action');
+        if (!poAction) {
+            poAction = document.createElement('input');
+            poAction.type = 'hidden';
+            poAction.id = 'po_action';
+            poAction.name = 'action';
+            form.appendChild(poAction);
+        }
+        poAction.value = action;
 
         if (action === 'send') {
             let valid = true;
@@ -197,6 +227,9 @@
             } else if (!hasItems) {
                 valid = false;
                 errorMsg = 'Please add at least one item.';
+            } else if (invalidQty) {
+                valid = false;
+                errorMsg = 'Quantity must be at least 1 for all items.';
             }
             if (!valid) {
                 e.preventDefault();
@@ -207,6 +240,7 @@
                 document.getElementById('sendEmailModal').style.display = 'flex';
                 // Only submit if user confirms
                 document.getElementById('confirmSendEmailBtn').onclick = function() {
+                    poAction.value = 'send';
                     document.getElementById('sendEmailModal').style.display = 'none';
                     form.submit();
                 };
@@ -218,6 +252,9 @@
             if (!supplier) {
                 e.preventDefault();
                 alert('Please select a supplier to save as draft.');
+            } else if (invalidQty) {
+                e.preventDefault();
+                alert('Quantity must be at least 1 for all items.');
             }
         }
     });
