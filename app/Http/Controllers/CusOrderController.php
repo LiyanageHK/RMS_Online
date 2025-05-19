@@ -11,11 +11,12 @@ use Stripe\Checkout\Session as StripeSession;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderPlacedMail;
 use App\Mail\OrderCancelledMail;
+use App\Models\LoyaltyCustomer;
 use App\Models\User;
 
 
 
-class OrderController extends Controller
+class CusOrderController extends Controller
 {
     // Show orders with status confirmed or preparing
     public function index()

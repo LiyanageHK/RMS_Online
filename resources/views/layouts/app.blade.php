@@ -251,8 +251,8 @@
                         <span class="material-icons toggle-icon">expand_more</span>
                     </button>
                     <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
-                        <a href="{{ route('AdminOrder') }}" class="submenu-link">Order Management</a>
-                        <a href="{{ route('admin.orders.index') }}" class="submenu-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">Kitchen</a>
+                        <a href="{{ route('admin.orders.index') }}" class="submenu-link">Order Management</a>
+                        <a href="" class="submenu-link">Kitchen</a>
                     </div>
                 </div>
 
