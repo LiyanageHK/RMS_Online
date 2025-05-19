@@ -18,12 +18,7 @@ use App\Models\User;
 
 class CusOrderController extends Controller
 {
-    // Show orders with status confirmed or preparing
-    public function index()
-    {
-        $orders = Order::whereIn('order_status', ['Confirmed', 'Preparing'])->get();
-        return view('orders.index', compact('orders'));
-    }
+   
 
 
     // Handle order confirmation

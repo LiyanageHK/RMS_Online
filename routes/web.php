@@ -38,7 +38,9 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CusOrderController;
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminOrderController;
+
 
 // Homepage
 Route::get('/', function () {
@@ -84,7 +86,7 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 
 
-Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+//Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
 
 Auth::routes();
 
@@ -94,12 +96,6 @@ Auth::routes();
 //})->name('contact');
 
 
-
-
-
-Route::get('/cart', function () {
-    return view('cart'); // Ensure you have a 'cart.blade.php' file in the 'resources/views' directory
-})->name('cart');
 
 Auth::routes();
 Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
@@ -183,6 +179,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
     Route::get('/user_permissions', [AuthController::class, 'getUserPermissions']);
     Route::post('/update_permission', [AuthController::class, 'updatePermission'])->name('admin.update.permission');
+  Route::get('inventory-predictions', [HomeController::class, 'getPredictions'])->name('inventory.predictions');
 
     Route::prefix('inventory')->group(function () {
         Route::get('/', [InventoryController::class, 'index'])->name('admin.inventory.index');
@@ -284,7 +281,7 @@ Route::post('/register', [RegUser::class, 'store']);
 Route::get('/profile', [ProfileController::class, 'show'])->middleware('auth');
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 Route::put('/profile/update/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
-Route::get('/profile/orders', [UserController::class, 'showOrderHistory'])->name('profile.orders');
+//Route::get('/profile/orders', [UserController::class, 'showOrderHistory'])->name('profile.orders');
 
 
 

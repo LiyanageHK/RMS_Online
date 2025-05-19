@@ -25,7 +25,7 @@ class UserLoginController extends Controller
 
         if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/homepage');
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([
