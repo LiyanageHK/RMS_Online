@@ -30,14 +30,17 @@ class SupplierController extends Controller
 
     public function create()
     {
-        return view('suppliers.create');
+        // Fetch categories from item categories table
+        $categories = \DB::table('item_categories')->pluck('name', 'id');
+        return view('suppliers.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
+        $categoryIds = \DB::table('item_categories')->pluck('id')->toArray();
         $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|in:Vegetables,Meat,Seafood',
+            'category' => ['required', 'in:' . implode(',', $categoryIds)],
             'email' => [
                 'required',
                 'email',

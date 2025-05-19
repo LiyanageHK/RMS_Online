@@ -13,6 +13,7 @@
             </a>
         </div>
 
+        <form id="poForm" action="{{ route('purchase_orders.store') }}" method="POST">
         <form action="{{ route('purchase_orders.store') }}" method="POST">
             @csrf
 

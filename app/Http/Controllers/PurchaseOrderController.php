@@ -39,6 +39,13 @@ class PurchaseOrderController extends Controller
     }
 
 
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    } else {
+        // default filter
+        $query->whereIn('status', ['Draft','Sent', 'Received']);
+}
+
     $purchaseOrders = $query->latest()->get();
 
     return view('PurchaseOrders.POindex', compact('purchaseOrders'));
@@ -95,7 +102,7 @@ public function destroy($id)
                     'purchase_order_id' => $purchaseOrder->id,
                     'item_id' => $itemId,
                     'quantity' => (float) $itemData['quantity'],
-                    'price' => (float) $itemData['price'],
+                'price' => (float) $itemData['price'],
                     'total' => $itemData['quantity'] * $itemData['price'],
                 ]);
             }
@@ -165,6 +172,23 @@ public function destroy($id)
         ]);
       
     }
+
+     public function downloadReport()
+    {
+        $purchaseOrders = PurchaseOrder::with('supplier')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $csvData = "ID,Supplier,Order Date,Delivery Date,Status,Total Amount\n";
+
+        foreach ($purchaseOrders as $po) {
+            $csvData .= "{$po->id},{$po->supplier->name},{$po->order_date},{$po->delivery_date},{$po->status},{$po->total_amount}\n";
+        }
+
+        $fileName = "purchase_orders_report_" . date('Y-m-d_H-i-s') . ".csv";
+        \Storage::put($fileName, $csvData);
+
+        return response()->download(storage_path("app/" . $fileName))->deleteFileAfterSend(true);}
 
     
 }

@@ -125,7 +125,7 @@ protected function callAIModel($historicalData)
     try {
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer '
+            'Authorization' => 'Bearer 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  '
         ])->post('https://models.github.ai/inference/chat/completions', [
             'messages' => [
                 [

@@ -38,7 +38,14 @@ class GRNController extends Controller
 {
     $suppliers = Supplier::all();
     $items = Items::all();
-    $purchaseOrders = PurchaseOrder::all();
+    $purchaseOrders = PurchaseOrder::where('status', 'Sent')->get();
+    // Ensure each PO item has a name property from the related Item
+    foreach ($purchaseOrders as $po) {
+        foreach ($po->items as $item) {
+            // If $item->item is the related Item model
+            $item->name = $item->item->name ?? '';
+
+    }}
     return view('GRN.create', compact('suppliers','items','purchaseOrders'));
 }
 
@@ -118,4 +125,22 @@ public function show($id)
 
         return redirect()->route('grns.index')->with('success', 'GRN deleted successfully.');
     }
+
+    public function downloadReport()
+    {
+        $grns = GRN::with('supplier')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $csvData = "ID,Supplier,GRN Date,Reference,Total Amount\n";
+
+        foreach ($grns as $grn) {
+            $csvData .= "{$grn->id},{$grn->supplier->name},{$grn->grn_date},{$grn->reference},{$grn->total_amount}\n";
+        }
+
+        $fileName = "grn_report_" . date('Y-m-d_H-i-s') . ".csv";
+        \Storage::put($fileName, $csvData);
+
+        return response()->download(storage_path("app/" . $fileName))->deleteFileAfterSend(true);
+}
 }
