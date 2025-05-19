@@ -13,7 +13,9 @@
             </a>
         </div>
 
+
         <form id="poForm" action="{{ route('purchase_orders.store') }}" method="POST">
+
             @csrf
 
             <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #F9F9F9; margin-bottom: 30px;">

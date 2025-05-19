@@ -39,11 +39,13 @@
 
                 <div style="margin-bottom: 15px;">
                     <label for="category" style="font-weight: bold;">Category <span style="color: red;">*</span></label>
+
                     <select id="category" name="category" required style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                         <option value="" style="font-weight: bold;">-- Select Category --</option>
                         @foreach($categories as $id => $name)
                             <option value="{{ $id }}" {{ old('category') == $id ? 'selected' : '' }}>{{ $name }}</option>
                         @endforeach
+
                     </select>
                 </div>
 

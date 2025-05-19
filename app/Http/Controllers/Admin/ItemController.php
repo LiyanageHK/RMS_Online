@@ -27,12 +27,13 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        DB::insert("INSERT INTO items (category_id, name, price, description, created_at, updated_at)
-                    VALUES (?, ?, ?, ?, NOW(), NOW())", [
+        DB::insert("INSERT INTO items (category_id, name, price, description,alert_level, created_at, updated_at)
+                    VALUES (?, ?, ?, ?,?, NOW(), NOW())", [
             $request->category_id,
             $request->name,
             $request->price,
-            $request->description
+            $request->description,
+            $request->alert_level
         ]);
         return redirect('/admin/items')->with('success', 'Item Added!');
     }
@@ -47,12 +48,13 @@ class ItemController extends Controller
 
     public function update(Request $request, $id)
     {
-        DB::update("UPDATE items SET category_id = ?, name = ?, price = ?, description = ?, updated_at = NOW()
+        DB::update("UPDATE items SET category_id = ?, name = ?, price = ?, description = ?,alert_level = ?, updated_at = NOW()
                     WHERE id = ?", [
             $request->category_id,
             $request->name,
             $request->price,
             $request->description,
+            $request->alert_level,
             $id
         ]);
         return redirect('/admin/items')->with('success', 'Item Updated!');

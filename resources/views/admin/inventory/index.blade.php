@@ -8,7 +8,7 @@
         <h2 style="font-size: 20px; margin: 0; font-weight: 500;">Inventory Overview</h2>
         <div style="display: flex; gap: 10px;">
             <a href="{{ route('admin.inventory.low-stock') }}" 
-               style="display: inline-block; background-color: #dc3545; color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; font-size: 14px;">
+               style="display: none; background-color: #dc3545; color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; font-size: 14px;">
                 <i class="fas fa-exclamation-triangle"></i> Low Stock Alerts
             </a>
             <input type="text" id="searchInput" placeholder="Search inventory..." 

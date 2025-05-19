@@ -29,7 +29,7 @@
     <div class="header-container">
         <div class="logo" style="display: flex; align-items: center; gap: 15px;">
             <img src="{{ asset('uploads/logo/logo2.png') }}" alt="Flame & Crust Pizzeria Logo" style="width: 80px; height: auto;">
-            <h1 style="color: #fff; font-size: 1.5rem; margin: 0;">FLAME & CRUST PIZZERIA</h1>
+            <h1 style="color: #E7592B; font-size: 1.5rem; margin: 0;">FLAME & CRUST PIZZERIA</h1>
         </div>
         <button class="mobile-menu-btn" id="mobileMenuBtn" style="background: none; border: none; color: #fff; font-size: 1.5rem; display: none;">
             <i class="fas fa-bars"></i>

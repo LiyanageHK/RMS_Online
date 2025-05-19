@@ -39,6 +39,7 @@ class GRNController extends Controller
     $suppliers = Supplier::all();
     $items = Items::all();
     $purchaseOrders = PurchaseOrder::where('status', 'Sent')->get();
+
     return view('GRN.create', compact('suppliers','items','purchaseOrders'));
 }
 
@@ -145,5 +146,7 @@ public function show($id)
         \Storage::put($fileName, $csvData);
 
         return response()->download(storage_path("app/" . $fileName))->deleteFileAfterSend(true);
+
     }
+
 }

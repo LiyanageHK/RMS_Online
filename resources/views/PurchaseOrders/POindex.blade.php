@@ -4,7 +4,7 @@
     <!-- Top Row -->
     <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 30px;">
         <h2 style="font-size: 20px; margin: 0; font-weight: bold;">Purchase Orders</h2>
-        
+
         <!-- Filter and Search Form -->
         <form method="GET" action="{{ route('purchase_orders.index') }}" style="display: flex; gap: 15px; align-items: center;">
             <!-- Status Filter Dropdown -->
@@ -15,20 +15,21 @@
                 <option value="received" {{ request('status') == 'received' ? 'selected' : '' }}>Received</option>
             </select>
 
-            <!-- Search Input -->
             <input type="text" name="search" value="{{ request('search') }}"
                    placeholder="Search purchase orders..." 
-                   oninput="if(this.value==='') this.form.submit();"
-                   style="padding: 10px 12px; width: 260px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;">
+                   oninput="if(this.value==='') this.form.submit();">
         </form>
+        
     </div>
 
     <!-- Table Section -->
     <div style="border: 1px solid #ddd; border-radius: 10px; background-color: #ffffff; padding: 25px 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin: 0 30px 40px 30px;">
 
         <!-- Section Header -->
+
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
     <h3 style="margin: 0; font-size: 18px; color: #333;">Overview</h3>
+
 
     <!-- Button Group Container -->
     <div style="display: flex; gap: 10px;">
@@ -139,7 +140,9 @@
             document.getElementById('downloadReport').addEventListener('click', function() {
                 const url = '{{ route('purchase_orders.report') }}';
                 window.location.href = url;
+
             });
+
         });
     </script>
 @endsection

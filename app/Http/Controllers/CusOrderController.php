@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Cart;
@@ -12,18 +11,27 @@ use Stripe\Checkout\Session as StripeSession;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderPlacedMail;
 use App\Mail\OrderCancelledMail;
-use App\Models\User;
 use App\Models\LoyaltyCustomer;
+use App\Models\User;
 
 
 
-class OrderController extends Controller
+class CusOrderController extends Controller
 {
-    // Show orders with status confirmed or preparing
-    public function index()
+   
+
+    // Update the status of an order
+    public function updateStatus(Order $order)
     {
-        $orders = Order::whereIn('order_status', ['Confirmed', 'Preparing'])->get();
-        return view('orders.index', compact('orders'));
+        if ($order->order_status === 'Confirmed') {
+            $order->order_status = 'Preparing';
+        } elseif ($order->order_status === 'Preparing') {
+            $order->order_status = 'Waiting for Delivery';
+        }
+
+        $order->save();
+
+        return redirect()->back();
     }
 
 
@@ -44,28 +52,12 @@ class OrderController extends Controller
         if ($cartItems->isEmpty()) {
             return back()->with('error', 'Cart is empty');
         }
-         // calculate discount
-        $loyaltyCustomer = LoyaltyCustomer::where('user_id', Auth::id())->first();
+
         $subTotal = $cartItems->sum('subtotal');
-        if ($loyaltyCustomer) {
-            switch (strtolower($loyaltyCustomer->loyalty_level)) {
-                case 'bronze':
-                    $discount = $subTotal * 0.05;
-                    break;
-                case 'silver':
-                    $discount = $subTotal * 0.10;
-                    break;
-                case 'gold':
-                    $discount = $subTotal * 0.15;
-                    break;
-                default:
-                    $discount = 0;
-            }
-        }else{$discount = 0;}
+        $discount = 40;
         $delivery = 100;
         $total = $subTotal - $discount + $delivery;
 
-        
         if ($request->payment_method === 'cod') {
             // CASH ON DELIVERY
 
@@ -206,7 +198,7 @@ class OrderController extends Controller
 }
 
 
-     public function cancelOrder($id)
+        public function cancelOrder($id)
         {
             $order = Order::where('id', $id)->where('u_id', Auth::id())->firstOrFail();
 
@@ -231,9 +223,8 @@ class OrderController extends Controller
         {
             
             return view('CustomerOrders.paymentsucce');
-        }
+}
 
 
 
 }
-
