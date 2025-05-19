@@ -265,8 +265,8 @@
 
                         <a href="{{ route('orders.index') }}" class="submenu-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">Order Updates</a>
 
-                        {{-- <a href="{{ route('AdminOrder') }}" class="submenu-link">Order Management</a> --}}
-                        <a href="{{ route('admin.orders.index') }}" class="submenu-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">Kitchen</a>
+                        <a href="{{ route('admin.orders.index') }}" class="submenu-link">Order Management</a>
+                        <a href="" class="submenu-link">Kitchen</a>
 
                     </div>
                 </div>

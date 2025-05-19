@@ -37,6 +37,7 @@ use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CusOrderController;
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminOrderController;
@@ -446,14 +447,14 @@ Route::get('/plist','list')->name('productlist');
 
 });
 
-Route::controller(OrderController::class)->middleware(['auth', 'verified'])->group(function(){
+Route::controller(CusOrderController::class)->middleware(['auth', 'verified'])->group(function(){  
 Route::post('/confirm-order', 'confirmOrder')->name('confirm.order');
 Route::get('/stripe-success', 'stripeSuccess')->name('stripe.success');
-Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('user.orders');
-Route::get('/order-details/{id}', [OrderController::class, 'getOrderDetails']);
-Route::patch('/cancel-order/{id}', [OrderController::class, 'cancelOrder']);
+Route::get('/my-orders', [CusOrderController::class, 'userOrders'])->name('user.orders');
+Route::get('/order-details/{id}', [CusOrderController::class, 'getOrderDetails']);
+Route::patch('/cancel-order/{id}', [CusOrderController::class, 'cancelOrder']);
 Route::get('/successorder', 'stripeSuccess')->name('stripe.success');
-Route::get('/successorder', [OrderController::class, 'paymentcomplete'])->name('ordersuccess');
+Route::get('/successorder', [CusOrderController::class, 'paymentcomplete'])->name('ordersuccess');
 });
 
 Route::controller(CartController::class)->middleware(['auth', 'verified'])->group(function(){

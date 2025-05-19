@@ -415,7 +415,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(data => {
       itemSubtotalElement.textContent = data.itemSubtotal;
       document.getElementById('subtotal').textContent = data.subTotal;
-      document.getElementById('discount').textContent = data.discount;s
+      document.getElementById('discount').textContent = data.discount;
       document.getElementById('total').textContent = data.total;
     })
     .catch(error => console.error('Quantity update failed:', error));

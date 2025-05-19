@@ -73,14 +73,19 @@
             <input type="hidden" name="order_status" value="{{ request('order_status') }}">
             <input type="hidden" name="from_date" value="{{ request('from_date') }}">
             <input type="hidden" name="to_date" value="{{ request('to_date') }}">
-            <button type="submit" class="btn btn-outline-success">Download All as PDF</button>
+            <button type="submit" 
+                    style="background-color: #28a745; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; cursor: pointer;">
+                <span class="material-icons" style="font-size: 16px; margin-right: 4px;">picture_as_pdf</span> Download All as PDF
+            </button>
         </form>
 
-        <form method="POST" action="{{ url('admin/orders/delete-all') }}" onsubmit="return confirm('Are you sure to delete ALL orders?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-outline-danger">Delete All</button>
-        </form>
+        <form  method="POST" action="{{ url('admin/orders/delete-all')}}" onsubmit="return confirm('Are you sure to delete ALL orders?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="delete-button" style="background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; cursor: pointer;">
+                                    <span class="material-icons" style="font-size: 16px; margin-right: 4px;">delete</span> Delete All Orders
+                                </button>
+                            </form>
     </div>
 
   <!-- Orders Table -->
@@ -118,15 +123,18 @@
                             @endforeach
                         </td>
                         <td>
-                            <a href="{{ url('admin/orders/download/' . $order->id) }}" class="btn btn-sm btn-outline-primary">PDF</a>
+                            <a href="{{ url('admin/orders/download/' . $order->id) }}" 
+                              style="margin-right: 8px; background-color: #28a745; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
+                                <span class="material-icons" style="font-size: 16px; margin-right: 4px;">picture_as_pdf</span> PDF
+                            </a>
                         </td>
                         <td>
-                            <form id="deleteForm-{{$order->id}}" method="POST" action="{{ url('admin/orders/delete/' . $order->id) }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" onclick="showDeleteModal({{ $order->id }})" class="btn btn-outline-danger btn-delete">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <form id="deleteForm-{{ $order->id }}" method="POST" action="{{ url('admin/orders/delete/' . $order->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="delete-button" data-name="{{ $order->customer_name ?? 'Order #' . $order->id }}" onclick="showDeleteModal({{ $order->id }})" style="background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; cursor: pointer;">
+                                    <span class="material-icons" style="font-size: 16px; margin-right: 4px;">delete</span> Delete
+                                </button>
                             </form>
                         </td>
                     </tr>
