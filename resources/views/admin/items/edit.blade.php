@@ -21,7 +21,7 @@
         </div>
         <div class="mb-3">
             <label>Price (Rs.)</label>
-            <input type="number" name="price" step="0.01" value="{{ $item->price }}" class="form-control" required>
+            <input type="number" name="price" step="0.01" value="{{ $item->price }}"  min="0" class="form-control" required>
         </div>
         <div class="mb-3">
             <label>Description</label>

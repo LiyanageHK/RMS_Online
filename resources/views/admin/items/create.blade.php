@@ -20,7 +20,7 @@
         </div>
         <div class="mb-3">
             <label>Price of 1kg (Rs.)</label>
-            <input type="number" name="price" step="0.01" class="form-control" required>
+            <input type="number" name="price" step="0.01" min="0" class="form-control" required>
         </div>
         <div class="mb-3">
             <label>Description</label>
