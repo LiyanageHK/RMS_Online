@@ -1,5 +1,4 @@
-
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+<link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 
@@ -523,43 +522,44 @@
     <!-- Header -->
 @section('content')
 
-    <div class="container">
-        <h1>Login</h1>
+    <div class="login-flex-container" style="display: flex; align-items: center; justify-content: center; min-height: 70vh; margin-left: 120px;">
+        <div class="login-form-section" style="flex: 1; max-width: 400px;">
+            <h1>Login</h1>
 
-        <!-- Display Validation Errors -->
-        @if ($errors->any())
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
+            <!-- Display Validation Errors -->
+            @if ($errors->any())
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
 
-        <!-- Login Form -->
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" required>
+            <!-- Login Form -->
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
 
+                <label for="password">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="password" required>
+                    <i class="fas fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                </div>
 
+                <button type="submit">Login</button>
+            </form>
 
+            <br><br>
+            <!-- Register Link -->
+            <p>Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
 
-            <label for="password">Password</label>
-            <div class="password-wrapper">
-                <input type="password" name="password" id="password" required>
-                <i class="fas fa-eye" id="togglePassword" style="cursor: pointer;"></i>
-            </div>
-
-
-            <button type="submit">Login</button>
-        </form>
-
-        <br><br>
-        <!-- Register Link -->
-        <p>Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
-
-         <!-- Admin Question -->
-        <p>Are you an Admin?<a href="{{ route('admin.login') }}">Click here</a></p>
+             <!-- Admin Question -->
+            <p>Are you an Admin?<a href="{{ route('admin.login') }}">Click here</a></p>
+        </div>
+        <div class="login-image-section" style="flex: 1; display: flex; justify-content: center; align-items: flex-start; margin-top: 120px;">
+            <img src="/images/Login Pizza.png" alt="Login Pizza" style="max-width: 60%; height: auto; border-radius: 20px;">
+        </div>
     </div>
 
     @endsection
