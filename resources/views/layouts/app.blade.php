@@ -122,17 +122,20 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Notification Button -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-bell"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;display:none;" id="notificationCount">0</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="min-width: 300px;">
-                        <li class="dropdown-header">Notifications</li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><span class="dropdown-item text-muted">No new notifications</span></li>
-                    </ul>
-                </li>
+                
+                    
+            <?php if(Auth::user()->position =='admin'): ?>
+            <li class="nav-item dropdown"></li>
+                <a class="nav-link position-relative dropdown-toggle" href="#" id="notificationDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false"
+                   onclick="event.preventDefault(); $('#notificationModal').modal('show'); fetchNotifications();">
+                    <i class="fas fa-bell"></i>
+                    <span class="position-absolute top-0 start-58 translate-middle badge rounded-pill bg-danger"
+                          style="font-size:10px;display:none;" id="notificationCount">0</span>
+                </a>
+            </li>
+            <?php endif; ?>
+              
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
@@ -430,6 +433,12 @@
                         button.classList.add('active');
                     }
                 });
+
+
+                 var dropdownTrigger = document.getElementById('notificationDropdown');
+        if (dropdownTrigger) {
+            var dropdown = new bootstrap.Dropdown(dropdownTrigger);
+        }
             });
         </script>
         @endauth
@@ -457,6 +466,91 @@
             </main>
         </div>
     </div>
+
+    <!-- Notification Dropdown Modal Styled Like Real Notification Dropdown -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="position: fixed; top: 60px; right: 30px; width: 340px; max-width: 95vw; margin: 0; pointer-events: none;">
+            <div class="modal-content border-0 shadow-lg" style="background: #fff; color: #222; border-radius: 10px; pointer-events: auto;">
+                <div class="modal-header py-2 px-3 border-0" style="background: #f8f9fa; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                    <h6 class="modal-title mb-0" id="notificationModalLabel" style="font-weight: 600; font-size: 1rem;">
+                        <i class="fas fa-bell me-2 text-warning"></i>Notifications
+                    </h6>
+                </div>
+                <div class="modal-body p-0" style="border-radius: 0 0 10px 10px;">
+                    <div id="notificationContent">
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
+                            <p class="mt-2" style="font-size: 0.95rem;">Loading notifications...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        #notificationModal .modal-dialog {
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+        }
+        #notificationModal .modal-content {
+            min-height: 180px;
+            max-height: 65vh;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        #notificationModal .modal-header {
+            padding: 10px 18px;
+        }
+        #notificationModal .modal-title {
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+        #notificationModal .modal-body {
+            max-height: 320px;
+            overflow-y: auto;
+            padding: 0;
+        }
+        #notificationContent ul.list-group {
+            border-radius: 0;
+            margin: 0;
+        }
+        #notificationContent .list-group-item {
+            border: none;
+            border-bottom: 1px solid #f1f1f1;
+            padding: 10px 16px;
+            font-size: 14px;
+            background: #fff;
+            transition: background 0.2s;
+            cursor: pointer;
+            border-radius: 0;
+        }
+        #notificationContent .list-group-item:last-child {
+            border-bottom: none;
+        }
+        #notificationContent .list-group-item:hover {
+            background: #f8f9fa;
+        }
+        #notificationContent .text-muted {
+            font-size: 13px;
+        }
+        #notificationContent .text-center {
+            color: #888;
+        }
+        /* Hide modal backdrop for cleaner look */
+        .modal-backdrop.show {
+            opacity: 0.0 !important;
+            background-color: #222 !important;
+        }
+  
+        /* Reduce out-of-modal dark overlay */
+        .modal-backdrop.show {
+            opacity: 0.0 !important;
+            background-color: #222 !important;
+        }
+
+    </style>
+
+
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -539,12 +633,62 @@
         });
  // Call prediction function only on admin.home route
     
-            pradiction();
+            fetchNotifications();
+
+         
+
+    if (window.location.pathname === '/admin/home') {
+        pradiction();
+    }
+        // Call fetchNotifications function every 5 seconds
+        setInterval(function() {
+                fetchNotifications();
+            }, 5000); // Fetch notifications every 5 seconds
+       
+   
   
+   
         console.log('Dashboard predictions initialized');
     });
 </script>
 <script>
+
+
+
+
+ function fetchNotifications() {
+    $.ajax({
+        url: '/admin/notifications',
+        method: 'GET',
+        success: function(data) {
+            $('#notificationCount').text(data.count);
+            if (data.count > 0) {
+                $('#notificationCount').show();
+            } else {
+                $('#notificationCount').hide();
+            }
+
+            let notificationsHtml = '';
+            if (data.notifications && data.notifications.length > 0) {
+                notificationsHtml = '<ul class="list-group">';
+                data.notifications.forEach(notification => {
+                    notificationsHtml += `<li class="list-group-item">${notification.message}</li>`;
+                });
+                notificationsHtml += '</ul>';
+            } else {
+                notificationsHtml = '<div class="text-muted text-center py-3">No new notifications</div>';
+            }
+
+            $('#notificationContent').html(notificationsHtml);
+        }
+    });
+}
+
+
+   
+
+
+                      
 function pradiction() {
     let predictionChart = null;
     loadPredictions();

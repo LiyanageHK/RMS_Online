@@ -136,6 +136,32 @@ public function sendLowStockAlert(Request $request, $itemId)
 
     return back()->with('success', 'Low stock notifications sent successfully');
 }
+
+    /**
+     * Fetch low stock notifications for AJAX requests.
+     * Returns JSON with count and notification messages.
+     */
+    public function notifications()
+    {
+        $lowStock = DB::table('live_inventory')
+            ->whereColumn('on_hand_quantity', '<=', 'alert_level')
+            ->orWhere('on_hand_quantity', '<=', 0)
+            ->orderBy('on_hand_quantity')
+            ->get();
+
+        $notifications = [];
+        foreach ($lowStock as $item) {
+            $notifications[] = [
+                'message' => "{$item->item_name} is low on stock (On hand: {$item->on_hand_quantity})"
+            ];
+        }
+
+        return response()->json([
+            'count' => count($notifications),
+            'notifications' => $notifications
+        ]);
+    }
+
     public function updateAlertLevel(Request $request, $id)
     {
         $request->validate([
@@ -148,4 +174,24 @@ public function sendLowStockAlert(Request $request, $itemId)
 
         return back()->with('success', 'Alert level updated successfully');
     }
+
+    // public function lowStockItemCount()
+    // {
+    //     $lowStockCount = DB::table('live_inventory')
+    //         ->whereColumn('on_hand_quantity', '<=', 'alert_level')
+    //         ->orWhere('on_hand_quantity', '<=', 0)
+    //         ->count();
+
+    //     return response()->json(['low_stock_count' => $lowStockCount]);
+    // }
+    // public function lowstockNotification()
+    // {
+    //     $lowStock = DB::table('live_inventory')
+    //         ->whereColumn('on_hand_quantity', '<=', 'alert_level')
+    //         ->orWhere('on_hand_quantity', '<=', 0)
+    //         ->orderBy('on_hand_quantity')
+    //         ->get();
+
+    //     return response()->json($lowStock);
+    // }
 }

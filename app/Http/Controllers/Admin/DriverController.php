@@ -22,7 +22,7 @@ class DriverController extends Controller
 
         return view('driver.pendingAllocation', [
             'orders' => $orders,
-            'section' => 'delivery', // or 'customer' based on context
+            'section' => 'delivery',
         ]);
 
 
@@ -52,7 +52,7 @@ public function allocateDriver(Request $request)
     public function allocationDetails()
     {
         $deliveries = Delivery::all();
-        $section = 'delivery'; 
+        $section = 'delivery';
 
 
         return view('driver.allocation_details', compact('deliveries', 'section'));

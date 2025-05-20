@@ -145,21 +145,35 @@ class CustomerController extends Controller
         return view('customer.show', compact('user', 'orders','section'));
     }
     public function destroy($id)
-    {
-        // Find the user to delete
+{
+    \DB::beginTransaction();
+
+    try {
+        // Find the user
         $user = User::findOrFail($id);
 
-        // Delete the profile image if it exists
+        // Delete profile image if exists
         if ($user->profile_image) {
             Storage::disk('public')->delete($user->profile_image);
         }
 
-        // Delete the user record
+        // Delete related sessions
+        \DB::table('sessions')->where('user_id', $user->user_id)->delete();
+
+        // Delete the user
         $user->delete();
 
-        // Redirect back to the customer overview with a success message
+        \DB::commit();
+
         return redirect()->route('customer.overview')->with('success', 'Customer deleted.');
+    } catch (\Exception $e) {
+        \DB::rollBack();
+        return back()->withErrors('Error deleting customer: ' . $e->getMessage());
     }
+
+
+}
+
 
 
 

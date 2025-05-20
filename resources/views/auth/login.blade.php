@@ -3,6 +3,7 @@
 @section('title', 'Employee Login')
 
 @section('content')
+
 <form method="POST" action="{{ route('admin.login') }}">
     @csrf
 
@@ -40,24 +41,7 @@
     </div>
 
 
-    <!-- Remember Me & Forgot Password -->
-    <!-- <div class="remember-forgot">
-
-        <div class="remember-me">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="remember"
-                       name="remember" {{ old('remember') ? 'checked' : '' }}>
-                <label class="form-check-label" for="remember">
-                    Remember Me
-                </label>
-            </div>
-        </div>
-        @if (Route::has('password.request'))
-            <div class="forgot-password">
-                <a href="{{ route('password.request') }}">Forgot Password?</a>
-            </div>
-        @endif
-    </div> -->
+    
 
     <!-- Login Button -->
     <div class="form-group">
@@ -66,8 +50,6 @@
         </button>
     </div>
 
-    <!-- Divider -->
-    <!-- <div class="divider">OR</div> -->
 
 </form>
 @endsection
