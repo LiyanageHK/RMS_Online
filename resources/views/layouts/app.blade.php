@@ -124,7 +124,7 @@
                 <!-- Notification Button -->
                 
                     
-            <?php if(Auth::user()->position =='admin'): ?>
+            <?php if(Auth::user()->position =='Admin'): ?>
             <li class="nav-item dropdown"></li>
                 <a class="nav-link position-relative dropdown-toggle" href="#" id="notificationDropdown" role="button"
                    data-bs-toggle="dropdown" aria-expanded="false"
