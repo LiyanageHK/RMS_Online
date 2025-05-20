@@ -217,8 +217,8 @@ Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadR
     ->name('admin.inventory.send-low-stock-alert');
 
 // Order Status Management
-Route::get('/admin/orders', [OrderStatusController::class, 'index'])->name('orders.index');
-Route::post('/admin/orders/{order}/update-status', [OrderStatusController::class, 'updateStatus'])->name('orders.updateStatus');
+// Route::get('/admin/orders', [OrderStatusController::class, 'index'])->name('orders.index');
+// Route::post('/admin/orders/{order}/update-status', [OrderStatusController::class, 'updateStatus'])->name('orders.updateStatus');
 
 // Core resources
 Route::resource('/admin/suppliers', SupplierController::class);
@@ -292,8 +292,8 @@ Route::post('orders/{order}/update-status', [OrderStatusController::class, 'upda
 
 Route::get('/inventory-center', [InventoryController::class, 'index']);
 
-Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadReport'])->name('purchase_orders.report');
-Route::get('grns/report', [GRNController::class, 'downloadReport'])->name('grns.report');
+// Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadReport'])->name('purchase_orders.report');
+// Route::get('grns/report', [GRNController::class, 'downloadReport'])->name('grns.report');
 
 
 
