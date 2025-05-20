@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class EmployeeController extends Controller
 {
@@ -32,6 +34,7 @@ class EmployeeController extends Controller
 
         return view('employees.index', compact('employees'));
     }
+
 
     /**
      * Show the form for creating a new employee.
@@ -84,7 +87,7 @@ class EmployeeController extends Controller
     ]);
 
     return redirect()->route('employees.index')
-        ->with('success', 'Employee created successfully. Default password is their NIC.');
+        ->with('success', 'Employee created successfully.');
 }
 
     /**
@@ -194,8 +197,11 @@ $employee->update([
         $employee->password = Hash::make($request->new_password);
         $employee->save();
 
-        return redirect()->route('employees.show', $employee)
-            ->with('success', 'Password changed successfully');
+        // Log out the user after password change
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login')->with('success', 'Password changed successfully. Please log in with your new password.');
     }
 
     /**
@@ -232,7 +238,35 @@ $employee->update([
 
         $employee->update($request->all());
 
-        return redirect()->route('employees.profile')
-            ->with('success', 'Profile updated successfully');
+        return redirect()->route('home')->with('success', 'Profile updated successfully');
+    }
+
+
+
+
+
+    // use HasFactory;
+
+    //protected $table = 'employees'; // Ensure this is the correct table name
+
+    /*protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'position',
+        'address',
+    ];
+
+    // You can define scopes here if you want
+    public function driver()
+    {
+        return $this->belongsTo(Employee::class, 'driver_id');
     }
 }
+*/
+
+
+
+
+}
+

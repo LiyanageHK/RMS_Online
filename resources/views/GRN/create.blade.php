@@ -23,17 +23,28 @@
                     <input type="date" id="grn_date" name="grn_date" value="{{ date('Y-m-d') }}" readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f3f3f3;">
                 </div>
 
-       <div style="margin-bottom: 20px;">
-    <label for="reference_number" style="font-weight: bold;">Reference PO (optional)</label>
-    <select id="reference_number" name="reference_number" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-        <option value="">-- Select PO --</option>
-        @foreach($purchaseOrders as $po)
-            <option value="{{ $po->id }}">PO{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}</option>
-        @endforeach
-    </select>
-</div>
-
-
+                <div style="margin-bottom: 20px;">
+                    <label for="reference_number" style="font-weight: bold;">Reference PO (optional)</label>
+                    <select id="reference_number" name="reference_number" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                        <option value="">-- Select PO --</option>
+                        @foreach($purchaseOrders as $po)
+                            @if($po->status === 'Sent')
+                                <?php
+                                    $poItems = [];
+                                    foreach ($po->items as $item) {
+                                        $poItems[] = [
+                                            'item_id' => $item->item_id ?? $item->id,
+                                            'name' => $item->name ?? ($item->item->name ?? null),
+                                            'price' => $item->price ?? ($item->item->price ?? null),
+                                            'quantity' => $item->quantity ?? 1
+                                        ];
+                                    }
+                                ?>
+                                <option value="{{ $po->id }}" data-supplier="{{ $po->supplier_id }}" data-items='@json($poItems)'>PO{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
 
                 <div style="margin-bottom: 20px;">
                     <label for="supplier_id" style="font-weight: bold;">Supplier <span style="color: red;">*</span></label>
@@ -140,6 +151,10 @@
 
     tableBody.addEventListener('input', function (e) {
         if (e.target.classList.contains('qty-input')) {
+            // Prevent negative or zero quantities
+            if (e.target.value === '' || parseInt(e.target.value) < 1) {
+                e.target.value = 1;
+            }
             const row = e.target.closest('tr');
             const price = parseFloat(row.querySelector('input[name$="[price]"]').value);
             const qty = parseInt(e.target.value) || 0;
@@ -169,7 +184,71 @@
         totalAmount.value = `$${total.toFixed(2)}`;
     }
 
-    
+    // Autofill supplier and items when PO is selected
+    const referenceSelect = document.getElementById('reference_number');
+    const supplierSelect = document.getElementById('supplier_id');
+
+    referenceSelect.addEventListener('change', function() {
+        const selected = referenceSelect.options[referenceSelect.selectedIndex];
+        const supplierId = selected.getAttribute('data-supplier');
+        const itemsJson = selected.getAttribute('data-items');
+        if (supplierId) {
+            supplierSelect.value = supplierId;
+            supplierSelect.removeAttribute('disabled'); // ensure enabled
+            supplierSelect.setAttribute('name', 'supplier_id');
+        } else {
+            supplierSelect.value = '';
+            supplierSelect.removeAttribute('disabled');
+            supplierSelect.setAttribute('name', 'supplier_id');
+        }
+        // Clear current items
+        tableBody.innerHTML = '';
+        addedItemIds.clear();
+        if (itemsJson) {
+            try {
+                const items = JSON.parse(itemsJson.replace(/&quot;/g, '"'));
+                items.forEach(function(item) {
+                    addedItemIds.add(String(item.item_id));
+                    const row = document.createElement('tr');
+                    row.setAttribute('data-id', item.item_id);
+                    row.innerHTML = `
+                        <td>
+                            ${item.name}
+                            <input type="hidden" name="items[${item.item_id}][item_id]" value="${item.item_id}">
+                            <input type="hidden" name="items[${item.item_id}][name]" value="${item.name}">
+                        </td>
+                        <td>
+                            $${parseFloat(item.price).toFixed(2)}
+                            <input type="hidden" name="items[${item.item_id}][price]" value="${item.price}">
+                        </td>
+                        <td>
+                            <input type="number" name="items[${item.item_id}][quantity]" value="${item.quantity > 0 ? item.quantity : 1}" min="1" class="qty-input" style="width: 60px; padding: 5px;">
+                        </td>
+                        <td class="item-total">$${(parseFloat(item.price) * parseInt(item.quantity > 0 ? item.quantity : 1)).toFixed(2)}</td>
+                        <td style="text-align: center;">
+                            <button type="button" class="remove-btn" style="color: #dc3545; border: none; background: none; cursor: pointer; display: flex; align-items: center; gap: 5px;cursor: pointer;">
+                                <span class="material-icons">delete</span>
+                                <span style="font-weight: bold;">Delete</span>
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+                updateTotalAmount();
+            } catch (e) {
+                // ignore parse errors
+            }
+        } else {
+            updateTotalAmount();
+        }
+    });
+
+    // Ensure supplier select is enabled and has a name before submit so its value is sent
+    const grnForm = document.querySelector('form[action*="grns.store"]');
+    grnForm.addEventListener('submit', function() {
+        supplierSelect.removeAttribute('disabled');
+        supplierSelect.setAttribute('name', 'supplier_id');
+    });
 </script>
 
 <style>

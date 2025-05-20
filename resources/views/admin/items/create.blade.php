@@ -26,6 +26,10 @@
             <label>Description</label>
             <textarea name="description" class="form-control"></textarea>
         </div>
+        <div class="mb-3">
+            <label>Alert Level</label>
+            <input type="number" name="alert_level" class="form-control" min="5" required>
+        </div>
         <button class="btn btn-success">Save</button>
     </form>
 </div>

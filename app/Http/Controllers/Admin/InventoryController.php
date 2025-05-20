@@ -5,36 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Employee;
+use App\Mail\LowStockAlert;
+use Illuminate\Support\Facades\Mail;
+
 
 class InventoryController extends Controller
 {
     public function index()
     {
-        // Get all items with their current inventory status
-        $inventory = DB::table('items')
-            ->leftJoin('item_categories', 'items.category_id', '=', 'item_categories.id')
-            ->select(
-                'items.id',
-                'items.name as item_name',
-                'item_categories.name as category_name',
-                'items.price',
-                'items.description',
-                DB::raw('COALESCE(grn.quantity, 0) as total_received'),
-                DB::raw('COALESCE(orders.ordered_qty, 0) as total_ordered'),
-                DB::raw('COALESCE(grn.quantity, 0) - COALESCE(orders.ordered_qty, 0) as current_stock')
-            )
-            ->leftJoin(DB::raw('(SELECT item_id, SUM(quantity) as quantity 
-                                FROM grn_items 
-                                GROUP BY item_id) as grn'), 
-                      'items.id', '=', 'grn.item_id')
-            ->leftJoin(DB::raw('(SELECT product_id, SUM(quantity) as ordered_qty 
-                                FROM order_details 
-                                JOIN orders ON order_details.order_id = orders.id 
-                                WHERE orders.order_status = "Completed" 
-                                GROUP BY product_id) as orders'), 
-                      'items.id', '=', 'orders.product_id')
-            ->orderBy('item_categories.name')
-            ->orderBy('items.name')
+        // Get all inventory items from the view
+        $inventory = DB::table('live_inventory')
+            ->orderBy('category_name')
+            ->orderBy('item_name')
             ->get();
 
         return view('admin.inventory.index', compact('inventory'));
@@ -42,7 +25,7 @@ class InventoryController extends Controller
 
     public function show($id)
     {
-        // Get detailed inventory history for a specific item
+        // Get item details from the items table
         $item = DB::table('items')
             ->join('item_categories', 'items.category_id', '=', 'item_categories.id')
             ->where('items.id', $id)
@@ -54,59 +37,161 @@ class InventoryController extends Controller
                 ->with('error', 'Item not found');
         }
 
-        // Get GRN history
+         $admins = DB::table('employees')
+        ->where('position', 'admin')
+        ->get();
+
+        // Get current stock from the view
+        $currentStock = DB::table('live_inventory')
+            ->where('item_id', $id)
+            ->value('on_hand_quantity');
+
+        // Get GRN history (still need raw query as view doesn't track individual transactions)
         $grnHistory = DB::table('grn_items')
-            ->join('grn', 'grn_items.grn_id', '=', 'grn.id')
+            ->join('grns', 'grn_items.grn_id', '=', 'grns.id')
             ->where('grn_items.item_id', $id)
-            ->select('grn_items.*', 'grn.created_at as grn_date')
-            ->orderBy('grn.created_at', 'desc')
+            ->select('grn_items.*', 'grns.created_at as grn_date')
+            ->orderBy('grns.created_at', 'desc')
             ->get();
 
-        // Get order history
+        // Get order history (still need raw query)
         $orderHistory = DB::table('order_details')
             ->join('orders', 'order_details.order_id', '=', 'orders.id')
-            ->where('order_details.product_id', $id)
-            ->where('orders.order_status', 'Completed')
-            ->select('order_details.*', 'orders.created_at as order_date')
+            ->join('product_items', 'order_details.product_id', '=', 'product_items.product_id')
+            ->where('product_items.item_id', $id)
+            ->where('orders.order_status', '!=', 'Cancelled')
+            ->select(
+                'order_details.*',
+                'orders.created_at as order_date',
+                DB::raw('(order_details.quantity * product_items.quantity) as item_quantity')
+            )
             ->orderBy('orders.created_at', 'desc')
             ->get();
 
-        // Calculate current stock
-        $totalReceived = $grnHistory->sum('quantity');
-        $totalOrdered = $orderHistory->sum('quantity');
-        $currentStock = $totalReceived - $totalOrdered;
-
-        return view('admin.inventory.show', compact('item', 'grnHistory', 'orderHistory', 'currentStock'));
+        return view('admin.inventory.show', compact(
+            'item',
+            'grnHistory',
+            'orderHistory',
+            'currentStock',
+              'admins'
+        ));
     }
 
-    public function lowStock()
+public function lowStock()
+{
+    \Log::info('lowStock method called');
+
+    $lowStock = DB::table('live_inventory')
+        ->whereColumn('on_hand_quantity', '<=', 'alert_level')
+        ->orWhere('on_hand_quantity', '<=', 0)
+        ->orderBy('on_hand_quantity')
+        ->get();
+
+    \Log::debug('Low stock items:', ['count' => $lowStock->count(), 'items' => $lowStock]);
+
+    $admins = Employee::where('position', 'admin')->get();
+
+    \Log::debug('Admin users:', ['count' => $admins->count(), 'admins' => $admins]);
+
+    return view('admin.inventory.low-stock', compact('lowStock', 'admins'));
+}
+
+    // In InventoryController.php
+
+public function sendLowStockAlert(Request $request, $itemId)
+{
+    $item = DB::table('items')->find($itemId);
+    
+    if (!$item) {
+        return back()->with('error', 'Item not found');
+    }
+
+    $request->validate([
+        'recipients' => 'required|array',
+        'recipients.*' => 'email',
+        'additional_message' => 'nullable|string'
+    ]);
+
+    $admins = DB::table('employees')
+        ->where('position', 'admin')
+        ->whereIn('email', $request->recipients)
+        ->get();
+
+    if ($admins->isEmpty()) {
+        return back()->with('error', 'No valid admin recipients selected');
+    }
+
+    $currentStock = DB::table('live_inventory')
+        ->where('item_id', $itemId)
+        ->value('on_hand_quantity');
+
+    foreach ($admins as $admin) {
+        Mail::to($admin->email)->send(new LowStockAlert(
+            $item,
+            $currentStock,
+            $admin,
+            $request->additional_message
+        ));
+    }
+
+    return back()->with('success', 'Low stock notifications sent successfully');
+}
+
+    /**
+     * Fetch low stock notifications for AJAX requests.
+     * Returns JSON with count and notification messages.
+     */
+    public function notifications()
     {
-        // Get items with low stock (less than 10)
-        $lowStock = DB::table('items')
-            ->leftJoin('item_categories', 'items.category_id', '=', 'item_categories.id')
-            ->select(
-                'items.id',
-                'items.name as item_name',
-                'item_categories.name as category_name',
-                'items.price',
-                DB::raw('COALESCE(grn.quantity, 0) as total_received'),
-                DB::raw('COALESCE(orders.ordered_qty, 0) as total_ordered'),
-                DB::raw('COALESCE(grn.quantity, 0) - COALESCE(orders.ordered_qty, 0) as current_stock')
-            )
-            ->leftJoin(DB::raw('(SELECT item_id, SUM(quantity) as quantity 
-                                FROM grn_items 
-                                GROUP BY item_id) as grn'), 
-                      'items.id', '=', 'grn.item_id')
-            ->leftJoin(DB::raw('(SELECT product_id, SUM(quantity) as ordered_qty 
-                                FROM order_details 
-                                JOIN orders ON order_details.order_id = orders.id 
-                                WHERE orders.order_status = "Completed" 
-                                GROUP BY product_id) as orders'), 
-                      'items.id', '=', 'orders.product_id')
-            ->having('current_stock', '<', 10)
-            ->orderBy('current_stock')
+        $lowStock = DB::table('live_inventory')
+            ->whereColumn('on_hand_quantity', '<=', 'alert_level')
+            ->orWhere('on_hand_quantity', '<=', 0)
+            ->orderBy('on_hand_quantity')
             ->get();
 
-        return view('admin.inventory.low-stock', compact('lowStock'));
+        $notifications = [];
+        foreach ($lowStock as $item) {
+            $notifications[] = [
+                'message' => "{$item->item_name} is low on stock (On hand: {$item->on_hand_quantity})"
+            ];
+        }
+
+        return response()->json([
+            'count' => count($notifications),
+            'notifications' => $notifications
+        ]);
     }
+
+    public function updateAlertLevel(Request $request, $id)
+    {
+        $request->validate([
+            'alert_level' => 'required|integer|min:0'
+        ]);
+
+        DB::table('items')
+            ->where('id', $id)
+            ->update(['alert_level' => $request->alert_level]);
+
+        return back()->with('success', 'Alert level updated successfully');
+    }
+
+    // public function lowStockItemCount()
+    // {
+    //     $lowStockCount = DB::table('live_inventory')
+    //         ->whereColumn('on_hand_quantity', '<=', 'alert_level')
+    //         ->orWhere('on_hand_quantity', '<=', 0)
+    //         ->count();
+
+    //     return response()->json(['low_stock_count' => $lowStockCount]);
+    // }
+    // public function lowstockNotification()
+    // {
+    //     $lowStock = DB::table('live_inventory')
+    //         ->whereColumn('on_hand_quantity', '<=', 'alert_level')
+    //         ->orWhere('on_hand_quantity', '<=', 0)
+    //         ->orderBy('on_hand_quantity')
+    //         ->get();
+
+    //     return response()->json($lowStock);
+    // }
 }

@@ -10,53 +10,54 @@
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- AdminLTE -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"> 
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
     <style>
         .profile-dropdown {
             min-width: 200px;
         }
-        
+
         .profile-dropdown .dropdown-header {
             background: #f8f9fa;
             padding: 10px;
             text-align: center;
         }
-        
+
         .profile-dropdown .user-info {
             padding: 10px;
             border-bottom: 1px solid #dee2e6;
         }
-        
+
         .profile-dropdown .dropdown-item {
             padding: 8px 15px;
             transition: all 0.3s ease;
         }
-        
+
         .profile-dropdown .dropdown-item:hover {
             background-color: #f8f9fa;
             padding-left: 20px;
         }
-        
+
         .profile-dropdown .dropdown-item i {
             width: 20px;
             margin-right: 10px;
             color: #6c757d;
         }
-        
+
         .profile-dropdown .dropdown-divider {
             margin: 5px 0;
         }
-        
+
         .navbar-nav .nav-link {
             padding: 0.5rem 1rem;
         }
-        
+
         .user-avatar {
             width: 32px;
             height: 32px;
@@ -103,7 +104,7 @@
     color: var(--primary-color) !important;
 }
 </style>
-    
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -121,17 +122,20 @@
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <!-- Notification Button -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-bell"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;display:none;" id="notificationCount">0</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="min-width: 300px;">
-                        <li class="dropdown-header">Notifications</li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><span class="dropdown-item text-muted">No new notifications</span></li>
-                    </ul>
-                </li>
+                
+                    
+            <?php if(Auth::user()->position =='admin'): ?>
+            <li class="nav-item dropdown"></li>
+                <a class="nav-link position-relative dropdown-toggle" href="#" id="notificationDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false"
+                   onclick="event.preventDefault(); $('#notificationModal').modal('show'); fetchNotifications();">
+                    <i class="fas fa-bell"></i>
+                    <span class="position-absolute top-0 start-58 translate-middle badge rounded-pill bg-danger"
+                          style="font-size:10px;display:none;" id="notificationCount">0</span>
+                </a>
+            </li>
+            <?php endif; ?>
+              
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
@@ -155,34 +159,36 @@
                             @csrf
                         </form>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="user-avatar">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </div>
-                            <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end profile-dropdown" aria-labelledby="navbarDropdown">
-                            <li class="dropdown-header">
-                                <div class="user-avatar mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.2rem;">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                                </div>
-                                <h6 class="mb-0">{{ Auth::user()->name }}</h6>
-                                <small class="text-muted">{{ Auth::user()->email }}</small>
-                            </li>
-                            <li><div class="dropdown-divider"></div></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('employees.profile') }}">
-                                    <i class="fas fa-user"></i> Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('employees.changePasswordForm') }}">
-                                    <i class="fas fa-key"></i> Change Password
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    <li class="nav-item">
+    <a class="nav-link d-flex align-items-center gap-2" href="{{ route('employees.profile') }}">
+        <div class="user-avatar">
+            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+        </div>
+        <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+    </a>
+</li>
+
+    <ul class="dropdown-menu dropdown-menu-end profile-dropdown" aria-labelledby="navbarDropdown">
+        <li class="dropdown-header text-center">
+            <div class="user-avatar mx-auto mb-2" style="width: 48px; height: 48px; font-size: 1.2rem;">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+            </div>
+            <h6 class="mb-0">{{ Auth::user()->name }}</h6>
+            <small class="text-muted">{{ Auth::user()->email }}</small>
+        </li>
+        <li><div class="dropdown-divider"></div></li>
+        <li>
+            <a class="dropdown-item" href="{{ route('employees.profile') }}">
+                <i class="fas fa-user"></i> Profile
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="{{ route('employees.changePasswordForm') }}">
+                <i class="fas fa-key"></i> Change Password
+            </a>
+        </li>
+    </ul>
+</li>
                 @endguest
             </ul>
         </nav>
@@ -209,8 +215,8 @@
                 </a>
 
 
-                 
-               
+
+
 
                 <div id="inventorynav">
                     <button class="sidebar-btn" onclick="toggleMenu(this)">
@@ -239,22 +245,52 @@
     </div>
 </div>
 
+            <!-- Customer Center -->
                 <div id="cusnav">
-                    <button class="sidebar-btn">
+                    <button class="sidebar-btn" onclick="toggleMenu(this)">
                         <span class="btn-content"><span class="material-icons">group</span> Customer Center</span>
+                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
+
+                <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+                    <a href="{{ route('customer.overview') }}" class="submenu-link {{ request()->routeIs('customer.overview')  ? 'active' : '' }}">Customer Overview</a>
+                    <a href="{{ url('/admin/customer/loyalty-program') }}" class="submenu-link {{ request()->is('admin/customer/loyalty-program') ?  'active' : '' }}">Loyalty Program</a>
+                    <a href="{{ url('/admin/send-email') }}" class="submenu-link {{ request()->is('send-email') ?  'active' : '' }}">Email Services</a>
                 </div>
+            </div>
+
+
 
                 <div id="ordernav">
-                    <button class="sidebar-btn">
-                        <span class="btn-content"><span class="material-icons">shopping_cart</span> Order Center</span>
+                    <button class="sidebar-btn" onclick="toggleMenu(this)">
+                        <span class="btn-content"><span class="material-icons">people</span> Order Center</span>
+                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
+                    <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+
+                        <a href="{{ route('orders.index') }}" class="submenu-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">Order Updates</a>
+
+                        <a href="{{ route('admin.orders.index') }}" class="submenu-link">Order Management</a>
+                        <a href="" class="submenu-link">Kitchen</a>
+
+                    </div>
                 </div>
 
+                <!-- Delivery Center -->
+
                 <div id="delinav">
-                    <button class="sidebar-btn">
+                    <button class="sidebar-btn" onclick="toggleMenu(this)">
                         <span class="btn-content"><span class="material-icons">local_shipping</span> Delivery Center</span>
+                        <span class="material-icons toggle-icon">expand_more</span>
                     </button>
+
+                <div class="submenu" style="display: none; margin-left: 20px; margin-top: 6px; text-align: left;">
+                    <a href="{{ url('admin/delivery-history') }}" class="submenu-link {{ request()->is('delivery-history') ?  'active' : '' }}">Delivery History</a>
+                    <a href="{{ url('admin/drivers') }}" class="submenu-link {{ request()->is('drivers') ?  'active' : '' }}">Driver List</a>
+                    <a href="{{ url('admin/driver/pending-allocation') }}" class="submenu-link {{ request()->is('admin/driver/pending-allocation') ?  'active' : '' }}">Driver Allocation</a>
+                    <a href="{{ url('admin/driver/orders/dispatched') }}" class="submenu-link {{ request()->is('driver/orders/dispatched') ?  'active' : '' }}">Delivery Confirmation </a>
+                </div>
+
                 </div>
 
                 <!-- Employee Center -->
@@ -279,8 +315,8 @@
                 </div>
             </div>
 
-            <!-- Contact & Feedback Section -->
-<div id="contact-feedback-nav">
+    <div id="crmnav">        <!-- Contact & Feedback Section -->
+
     <button class="sidebar-btn" onclick="toggleMenu(this)">
         <span class="btn-content"><span class="material-icons">message</span> Customer Relations Center</span>
         <span class="material-icons toggle-icon">expand_more</span>
@@ -289,11 +325,13 @@
         <a href="{{ route('contact.index') }}" class="submenu-link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Contact Messages</a>
         <a href="{{ route('feedback.index') }}" class="submenu-link {{ request()->routeIs('feedback.*') ? 'active' : '' }}">Feedback Messages</a>
     </div>
-</div>
+
+
+    </div>
 
         </aside>
 
-        
+
         <!-- Material Icons CDN -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style>
@@ -365,10 +403,10 @@
             function toggleMenu(button) {
                 const submenu = button.nextElementSibling;
                 const icon = button.querySelector('.toggle-icon');
-                
+
                 // Check if any submenu link is active
                 const hasActiveLink = submenu.querySelector('.submenu-link.active') !== null;
-                
+
                 if (hasActiveLink) {
                     submenu.style.display = "block";
                     icon.textContent = "expand_less";
@@ -395,6 +433,12 @@
                         button.classList.add('active');
                     }
                 });
+
+
+                 var dropdownTrigger = document.getElementById('notificationDropdown');
+        if (dropdownTrigger) {
+            var dropdown = new bootstrap.Dropdown(dropdownTrigger);
+        }
             });
         </script>
         @endauth
@@ -423,13 +467,98 @@
         </div>
     </div>
 
+    <!-- Notification Dropdown Modal Styled Like Real Notification Dropdown -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="position: fixed; top: 60px; right: 30px; width: 340px; max-width: 95vw; margin: 0; pointer-events: none;">
+            <div class="modal-content border-0 shadow-lg" style="background: #fff; color: #222; border-radius: 10px; pointer-events: auto;">
+                <div class="modal-header py-2 px-3 border-0" style="background: #f8f9fa; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                    <h6 class="modal-title mb-0" id="notificationModalLabel" style="font-weight: 600; font-size: 1rem;">
+                        <i class="fas fa-bell me-2 text-warning"></i>Notifications
+                    </h6>
+                </div>
+                <div class="modal-body p-0" style="border-radius: 0 0 10px 10px;">
+                    <div id="notificationContent">
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
+                            <p class="mt-2" style="font-size: 0.95rem;">Loading notifications...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        #notificationModal .modal-dialog {
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+        }
+        #notificationModal .modal-content {
+            min-height: 180px;
+            max-height: 65vh;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        #notificationModal .modal-header {
+            padding: 10px 18px;
+        }
+        #notificationModal .modal-title {
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+        #notificationModal .modal-body {
+            max-height: 320px;
+            overflow-y: auto;
+            padding: 0;
+        }
+        #notificationContent ul.list-group {
+            border-radius: 0;
+            margin: 0;
+        }
+        #notificationContent .list-group-item {
+            border: none;
+            border-bottom: 1px solid #f1f1f1;
+            padding: 10px 16px;
+            font-size: 14px;
+            background: #fff;
+            transition: background 0.2s;
+            cursor: pointer;
+            border-radius: 0;
+        }
+        #notificationContent .list-group-item:last-child {
+            border-bottom: none;
+        }
+        #notificationContent .list-group-item:hover {
+            background: #f8f9fa;
+        }
+        #notificationContent .text-muted {
+            font-size: 13px;
+        }
+        #notificationContent .text-center {
+            color: #888;
+        }
+        /* Hide modal backdrop for cleaner look */
+        .modal-backdrop.show {
+            opacity: 0.0 !important;
+            background-color: #222 !important;
+        }
+  
+        /* Reduce out-of-modal dark overlay */
+        .modal-backdrop.show {
+            opacity: 0.0 !important;
+            background-color: #222 !important;
+        }
+
+    </style>
+
+
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-    
+
     @stack('scripts')
 </body>
 </html>
@@ -491,10 +620,174 @@
                 } else {
                     $('#pronav').hide();
                 }
+                // Customer Relations Center permissions
+                if (response.crm === 1) {
+                    $('#crmnav').show();
+                } else {
+                    $('#crmnav').hide();
+                }
             },
             error: function(xhr, status, error) {
                 console.error("Error fetching permissions:", error);
             }
         });
+ // Call prediction function only on admin.home route
+    
+            fetchNotifications();
+
+         
+
+    if (window.location.pathname === '/admin/home') {
+        pradiction();
+    }
+        // Call fetchNotifications function every 5 seconds
+        setInterval(function() {
+                fetchNotifications();
+            }, 5000); // Fetch notifications every 5 seconds
+       
+   
+  
+   
+        console.log('Dashboard predictions initialized');
     });
+</script>
+<script>
+
+
+
+
+ function fetchNotifications() {
+    $.ajax({
+        url: '/admin/notifications',
+        method: 'GET',
+        success: function(data) {
+            $('#notificationCount').text(data.count);
+            if (data.count > 0) {
+                $('#notificationCount').show();
+            } else {
+                $('#notificationCount').hide();
+            }
+
+            let notificationsHtml = '';
+            if (data.notifications && data.notifications.length > 0) {
+                notificationsHtml = '<ul class="list-group">';
+                data.notifications.forEach(notification => {
+                    notificationsHtml += `<li class="list-group-item">${notification.message}</li>`;
+                });
+                notificationsHtml += '</ul>';
+            } else {
+                notificationsHtml = '<div class="text-muted text-center py-3">No new notifications</div>';
+            }
+
+            $('#notificationContent').html(notificationsHtml);
+        }
+    });
+}
+
+
+   
+
+
+                      
+function pradiction() {
+    let predictionChart = null;
+    loadPredictions();
+    $('#refreshPredictions').click(function(e) {
+        e.preventDefault();
+        loadPredictions();
+    });
+    function loadPredictions() {
+        showLoadingState();
+        $.get('{{ route("inventory.predictions") }}', function(response) {
+            if (response.predictions && response.predictions.length) {
+                renderPredictions(response.predictions);
+            } else {
+                showErrorState('No predictions available');
+            }
+        }).fail(function() {
+            showErrorState('Failed to load predictions');
+        });
+    }
+    function showLoadingState() {
+        $('#predictionLoading').show();
+        $('#nextWeekPredictionChart').hide();
+        $('#topPredictionsList').html(
+            `<div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Loading predictions...</p>
+            </div>`
+        );
+    }
+    function showErrorState(msg) {
+        $('#predictionLoading').hide();
+        $('#nextWeekPredictionChart').hide();
+        $('#topPredictionsList').html(`<div class="alert alert-danger">${msg}</div>`);
+    }
+    function renderPredictions(predictions) {
+        predictions.sort((a, b) => b.predicted_restock - a.predicted_restock);
+        updateTopPredictionsList(predictions);
+        updatePredictionChart(predictions);
+        $('#predictionLoading').hide();
+        $('#nextWeekPredictionChart').show();
+    }
+    function updateTopPredictionsList(predictions) {
+        let html = '<ol class="mb-0">';
+        predictions.slice(0, 5).forEach(item => {
+            let badge = 'bg-primary';
+            if (item.urgency === 'high') badge = 'bg-danger';
+            if (item.urgency === 'medium') badge = 'bg-warning text-dark';
+            html += `<li class="mb-2"><strong>${item.name}</strong>
+                <span class="badge ${badge} float-end">${item.predicted_restock} (${item.urgency})</span></li>`;
+        });
+        html += '</ol>';
+        $('#topPredictionsList').html(html);
+    }
+    function updatePredictionChart(predictions) {
+        const top = predictions.slice(0, 5);
+        const labels = top.map(i => i.name);
+        const data = top.map(i => i.predicted_restock);
+        const bg = top.map(i => i.urgency === 'high' ? 'rgba(220,53,69,0.5)' : i.urgency === 'medium' ? 'rgba(255,193,7,0.5)' : 'rgba(13,110,253,0.5)');
+        const border = top.map(i => i.urgency === 'high' ? 'rgba(220,53,69,1)' : i.urgency === 'medium' ? 'rgba(255,193,7,1)' : 'rgba(13,110,253,1)');
+        const ctx = document.getElementById('nextWeekPredictionChart').getContext('2d');
+        if (predictionChart) {
+            predictionChart.data.labels = labels;
+            predictionChart.data.datasets[0].data = data;
+            predictionChart.data.datasets[0].backgroundColor = bg;
+            predictionChart.data.datasets[0].borderColor = border;
+            predictionChart.update();
+        } else {
+            predictionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Predicted Restock Needed',
+                        data: data,
+                        backgroundColor: bg,
+                        borderColor: border,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    const item = top[ctx.dataIndex];
+                                    return [`Item: ${item.name}`, `Restock Needed: ${ctx.raw}`, `Urgency: ${item.urgency}`];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Quantity Needed' } },
+                        x: { title: { display: true, text: 'Items' } }
+                    }
+                }
+            });
+        }
+    }
+}
 </script>

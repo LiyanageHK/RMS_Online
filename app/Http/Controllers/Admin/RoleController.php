@@ -24,7 +24,7 @@ class RoleController extends Controller
         ]);
 
         DB::insert('INSERT INTO role (role, description) VALUES (?,?)', [
-            strtolower($request->input('role')),
+            $request->input('role'),
             $request->input('description'),
         ]);
         $role_id = DB::getPdo()->lastInsertId();
@@ -54,7 +54,7 @@ class RoleController extends Controller
     
             // Update role information
             DB::update('UPDATE role SET role = ?, description = ? WHERE id = ?', [
-                strtolower($request->input('role')),
+                $request->input('role'),
                 $request->input('description'),
                 $id,
             ]);
@@ -68,6 +68,7 @@ class RoleController extends Controller
                 'emp' => $request->has('emp') ? '1' : '0',
                 'acc' => $request->has('acc') ? '1' : '0',
                 'pro' => $request->has('pro') ? '1' : '0',
+                'crm' => $request->has('crm') ? '1' : '0',
             ];
     
             // Update permissions
@@ -78,7 +79,8 @@ class RoleController extends Controller
                 deli = ?, 
                 emp = ?, 
                 acc = ?, 
-                pro = ? 
+                pro = ?,
+                crm = ? 
                 WHERE role = ?', [
                 $permissions['inv'],
                 $permissions['cus'],
@@ -87,6 +89,7 @@ class RoleController extends Controller
                 $permissions['emp'],
                 $permissions['acc'],
                 $permissions['pro'],
+                $permissions['crm'],
                 $id
             ]);
     

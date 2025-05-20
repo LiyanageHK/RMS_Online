@@ -39,12 +39,12 @@
                 <div style="margin-bottom: 20px;">
     <label for="category" style="font-weight: bold;">Category <span style="color: red;">*</span></label>
     <select id="category" name="category" required
-            style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-        <option value="">-- Select Category --</option>
-        <option value="Vegetables" {{ old('category', $supplier->category) == 'Vegetables' ? 'selected' : '' }}>Vegetables</option>
-        <option value="Meat" {{ old('category', $supplier->category) == 'Meat' ? 'selected' : '' }}>Meat</option>
-        <option value="Seafood" {{ old('category', $supplier->category) == 'Seafood' ? 'selected' : '' }}>Seafood</option>
-    </select>
+        style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+    <option value="">-- Select Category --</option>
+    @foreach($categories as $id => $name)
+    <option value="{{ $id }}" {{ old('category', $supplier->category) == $name ? 'selected' : '' }}>{{ $name }}</option>
+@endforeach
+</select>
 </div>
 
                 <div style="margin-bottom: 20px;">
@@ -62,7 +62,7 @@
                 </div>
 
                 <div style="margin-bottom: 30px;">
-                    <label for="address" style="font-weight: bold;">Address</label>
+                    <label for="address" style="font-weight: bold;">Address<span style="color: red;">*</span></label>
                     <textarea id="address" name="address" rows="3"
                               style="width: 97%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">{{ old('address', $supplier->address) }}</textarea>
                 </div>

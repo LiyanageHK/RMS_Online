@@ -1,5 +1,5 @@
 @extends('layouts.appclient')
-   
+
     <style>
         :root {
             --primary-orange: #E7592B;
@@ -567,16 +567,16 @@
             <div class="featured-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
                 <!-- Pizza Item 1 -->
                 <div class="featured-item" style="position: relative; overflow: hidden; border-radius: 10px;">
-                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-                         alt="Pizza Margherita" 
+                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                         alt="Pizza Margherita"
                          style="width: 100%; height: 400px; object-fit: cover;">
                     <div class="overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);"></div>
                 </div>
 
                 <!-- Pizza Item with Menu Button -->
                 <div class="featured-item" style="position: relative; overflow: hidden; border-radius: 10px;">
-                    <img src="{{ asset('uploads/products/Pizza Napoletana.png') }}" 
-                         alt="Pizza" 
+                    <img src="{{ asset('uploads/products/Pizza Napoletana.png') }}"
+                         alt="Pizza"
                          style="width: 100%; height: 400px; object-fit: cover;">
                     <div class="overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);">
                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 100%;">
@@ -597,8 +597,8 @@
 
                 <!-- Pizza Item 2 -->
                 <div class="featured-item" style="position: relative; overflow: hidden; border-radius: 10px;">
-                    <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-                         alt="Pepperoni Pizza" 
+                    <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                         alt="Pepperoni Pizza"
                          style="width: 100%; height: 400px; object-fit: cover;">
                     <div class="overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);"></div>
                 </div>
@@ -686,7 +686,7 @@
                 <h2 style="font-size: 2.5rem; color: #333; margin-bottom: 20px;">Delivery Service</h2>
                 <p style="color: #666; max-width: 800px; margin: 0 auto;">Serving you with excellence and care</p>
             </div>
-            
+
             <!-- Delivery Features -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 50px;">
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
@@ -699,7 +699,7 @@
                         <li style="margin-bottom: 10px;">Nugegoda</li>
                     </ul>
                 </div>
-                
+
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
                     <i class="fas fa-clock" style="font-size: 2.5rem; color: var(--primary-orange); margin-bottom: 20px;"></i>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Operating Hours</h3>
@@ -709,7 +709,7 @@
                         <li>7 Days a Week</li>
                     </ul>
                 </div>
-                
+
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
                     <i class="fas fa-heart" style="font-size: 2.5rem; color: var(--primary-orange); margin-bottom: 20px;"></i>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Our Promise</h3>
@@ -748,31 +748,33 @@
                     </div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">How to Join</h3>
                     <p style="color: #666; margin-bottom: 15px;">Order with us 3 times and automatically become a loyalty member!</p>
-                    <p style="color: #666;">Start earning points from your very first order as a member.</p>
+                    <p style="color: #666;">Unlock higher levels and more rewards as you order more.</p>
                 </div>
 
-                <!-- Earn Points -->
+                <!-- Loyalty Levels -->
+                <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <i class="fas fa-trophy" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Loyalty Levels</h3>
+                    <ul style="list-style: none; padding: 0; color: #666; margin-bottom: 0;">
+                        <li style="margin-bottom: 10px;"><strong>Silver:</strong> 3–4 Orders</li>
+                        <li style="margin-bottom: 10px;"><strong>Gold:</strong> 5–9 Orders</li>
+                        <li><strong>Platinum:</strong> 10+ Orders</li>
+                    </ul>
+                    <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="color: #666; font-style: italic;">Higher levels mean more exclusive rewards!</p>
+                    </div>
+                </div>
+
+                <!-- Loyalty Points Opportunity -->
                 <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
                     <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                         <i class="fas fa-coins" style="font-size: 2rem; color: white;"></i>
                     </div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Earn Points</h3>
-                    <p style="color: #666; margin-bottom: 15px;">Earn 1 point for every Rs. 100 spent</p>
-                    <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
-                        <p style="color: #666; font-style: italic;">Example: Rs. 1,500 order = 15 Points</p>
-                    </div>
-                </div>
-
-                <!-- Redeem Points -->
-                <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                    <div style="width: 70px; height: 70px; background-color: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                        <i class="fas fa-gift" style="font-size: 2rem; color: white;"></i>
-                    </div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Redeem Rewards</h3>
-                    <p style="color: #666; margin-bottom: 15px;">1 Point = Rs. 1 discount on your next order</p>
-                    <div style="background: #f8f8f8; padding: 15px; border-radius: 10px; margin-top: 15px;">
-                        <p style="color: #666; font-style: italic;">Example: 50 Points = Rs. 50 discount</p>
-                    </div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-orange);">Your Chance to Save</h3>
+                    <p style="color: #666; margin-bottom: 15px;">Every order earns you loyalty points! Join Now!</p>
+                    <p style="color: #666;">It's a great opportunity to save on future pizzas and enjoy exclusive perks.</p>
                 </div>
             </div>
 

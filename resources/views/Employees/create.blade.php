@@ -63,7 +63,7 @@
                 <div style="margin-bottom: 20px;">
                     <label for="position" style="font-weight: bold;">Position <span style="color: red;">*</span></label>
                     <select id="position" name="position" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-    <option value="">Select Position</option>
+    <option value="">--Select Position--</option>
     @foreach($roles as $role)
         <option value="{{ $role->role }}" {{ old('position') == $role->role ? 'selected' : '' }}>{{ $role->role }}</option>
     @endforeach
