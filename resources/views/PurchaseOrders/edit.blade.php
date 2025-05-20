@@ -184,7 +184,7 @@
             const price = parseFloat(row.querySelector('input[name$="[price]"]').value);
             const qty = parseInt(e.target.value) || 0;
             const total = (price * qty).toFixed(2);
-            row.querySelector('.item-total').textContent = $${total};
+            row.querySelector('.item-total').textContent = `$${total}`;
             updateTotalAmount();
         }
     });

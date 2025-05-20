@@ -39,7 +39,6 @@ class PurchaseOrderController extends Controller
 
         $purchaseOrders = $query->latest()->get();
 
-
         return view('PurchaseOrders.POindex', compact('purchaseOrders'));
     }
 
@@ -89,7 +88,7 @@ class PurchaseOrderController extends Controller
                     'purchase_order_id' => $purchaseOrder->id,
                     'item_id' => $itemId,
                     'quantity' => (float) $itemData['quantity'],
-                'price' => (float) $itemData['price'],
+                    'price' => (float) $itemData['price'],
                     'total' => $itemData['quantity'] * $itemData['price'],
                 ]);
             }
@@ -154,11 +153,9 @@ class PurchaseOrderController extends Controller
                 ];
             }),
         ]);
-      
     }
 
     public function downloadReport()
-
     {
         $purchaseOrders = PurchaseOrder::with('supplier')
             ->orderBy('id', 'desc')
@@ -173,9 +170,6 @@ class PurchaseOrderController extends Controller
         $fileName = "purchase_orders_report_" . date('Y-m-d_H-i-s') . ".csv";
         \Storage::put($fileName, $csvData);
 
-
         return response()->download(storage_path("app/" . $fileName))->deleteFileAfterSend(true);
     }
-
 }
-
