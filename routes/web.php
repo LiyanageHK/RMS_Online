@@ -198,6 +198,8 @@ Route::get('purchase_orders/report', [PurchaseOrderController::class, 'downloadR
         Route::get('/low-stock', [InventoryController::class, 'lowStock'])->name('admin.inventory.low-stock');
     });
 
+    Route::get('/notifications', [InventoryController::class, 'notifications'])->name('admin.notifications');
+
 
     // Admin Order CRUD
     Route::prefix('/orders')->group(function () {
