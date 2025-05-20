@@ -39,13 +39,7 @@ class GRNController extends Controller
     $suppliers = Supplier::all();
     $items = Items::all();
     $purchaseOrders = PurchaseOrder::where('status', 'Sent')->get();
-    // Ensure each PO item has a name property from the related Item
-    foreach ($purchaseOrders as $po) {
-        foreach ($po->items as $item) {
-            // If $item->item is the related Item model
-            $item->name = $item->item->name ?? '';
 
-    }}
     return view('GRN.create', compact('suppliers','items','purchaseOrders'));
 }
 
@@ -57,6 +51,16 @@ public function store(Request $request)
         'items.*.item_id' => 'required|exists:items,id',
         'items.*.quantity' => 'required|integer|min:1',
     ]);
+
+    if ($request->has('reference_number') && $request->reference_number) {
+        $po = PurchaseOrder::find($request->reference_number);
+        
+        if ($po) {
+            // Update PO status to 'received'
+            $po->status = 'Received';
+            $po->save();
+        }
+    }
 
     // Start calculating total
     $totalAmount = 0;
@@ -142,5 +146,7 @@ public function show($id)
         \Storage::put($fileName, $csvData);
 
         return response()->download(storage_path("app/" . $fileName))->deleteFileAfterSend(true);
-}
+
+    }
+
 }

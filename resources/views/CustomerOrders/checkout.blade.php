@@ -346,16 +346,16 @@
             <div class="row mb-3">
               <div class="col-md-6">
                 <label class="form-label">Full Name</label>
-                <input type="text" class="form-control" name="name" required />
+                <input type="text" class="form-control" name="name" value="{{$user->name}}"  required />
               </div>
               <div class="col-md-6">
                 <label class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" name="Number" required />
+                <input type="tel" class="form-control" name="Number" value="{{$user->phone}}" required />
               </div>
             </div>
             <div class="mb-3">
               <label class="form-label">Address</label>
-              <input type="text" class="form-control" name="address" required />
+              <input type="text" class="form-control" name="address" value="{{$user->address}}" required />
             </div>
             <div class="mb-3">
               <label class="form-label">Landmarks</label>

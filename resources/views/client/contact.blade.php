@@ -279,8 +279,9 @@ footer {
                        style="width: 100%; padding: 16px; font-size: 18px; border: 1px solid #ccc; border-radius: 8px;">
             </div>
             <div style="margin-bottom: 25px;">
-                <input type="email" name="email" placeholder="Your Email" required
+                <input type="email" name="email" id="contact-email" placeholder="Your Email" required
                        style="width: 100%; padding: 16px; font-size: 18px; border: 1px solid #ccc; border-radius: 8px;">
+                <span id="email-error" style="display:none; color:#dc3545; font-size:14px; margin-top:5px;">Please enter a valid email address.</span>
             </div>
             <div style="margin-bottom: 25px;">
                 <textarea name="message" rows="6" placeholder="Your Message" required
@@ -380,6 +381,20 @@ footer {
             confirmButtonColor: '#E7592B'
         });
     @endif
+
+    // Real-time email validation
+    const emailInput = document.getElementById('contact-email');
+    const emailError = document.getElementById('email-error');
+    if(emailInput) {
+        emailInput.addEventListener('input', function() {
+            const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!pattern.test(this.value)) {
+                emailError.style.display = 'block';
+            } else {
+                emailError.style.display = 'none';
+            }
+        });
+    }
 </script>
 @endsection
 

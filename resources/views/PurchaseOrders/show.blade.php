@@ -15,7 +15,7 @@
             <div style="padding: 25px 28px;">
                 {{-- PO Header --}}
                 <div style="margin-bottom: 25px;">
-                    <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 6px;">PO #{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}</h3>
+                    <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 6px;">PO{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}</h3>
                     <span style="color: #888;">Order Date: {{ \Carbon\Carbon::parse($po->created_at)->format('d M Y') }}</span><br>
                     <span style="color: #555;">Status: {{ ucfirst($po->status) }}</span>
                 </div>

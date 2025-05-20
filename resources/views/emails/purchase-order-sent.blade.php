@@ -4,7 +4,7 @@
 <body style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 30px;">
     <div style="max-width: 600px; margin: auto; background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
         <h2 style="color: #343a40; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;">
-            Purchase Order #{{ $po->id }}
+            Purchase Order No:{{ $po->id }}
         </h2>
 
         <p><strong>Supplier:</strong> {{ $po->supplier->name }}</p>
@@ -19,7 +19,7 @@
         <h3 style="margin-top: 30px; color:rgb(9, 10, 10);">Order Items</h3>
         <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
             <thead>
-                <tr style="background-color: #007bff; color: white;">
+                <tr style="background-color: #E7592B; color: white;">
                     <th style="padding: 10px; text-align: left;">Item</th>
                     <th style="padding: 10px; text-align: right;">Quantity</th>
                     <th style="padding: 10px; text-align: right;">Price</th>

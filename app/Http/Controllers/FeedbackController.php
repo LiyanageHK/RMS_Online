@@ -21,9 +21,13 @@ class FeedbackController extends Controller
     }
 
     // ADMIN SIDE
-    public function index()
+    public function index(Request $request)
     {
-        $feedbacks = Feedback::latest()->get();
+        $query = Feedback::query();
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+        $feedbacks = $query->latest()->get();
         return view('feedback.index', compact('feedbacks'));
     }
 

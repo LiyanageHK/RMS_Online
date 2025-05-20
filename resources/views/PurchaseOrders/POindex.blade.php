@@ -4,6 +4,7 @@
     <!-- Top Row -->
     <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 30px;">
         <h2 style="font-size: 20px; margin: 0; font-weight: bold;">Purchase Orders</h2>
+
         <!-- Filter and Search Form -->
         <form method="GET" action="{{ route('purchase_orders.index') }}" style="display: flex; gap: 15px; align-items: center;">
             <!-- Status Filter Dropdown -->
@@ -13,6 +14,7 @@
                 <option value="sent" {{ request('status') == 'sent' ? 'selected' : '' }}>Sent</option>
                 <option value="received" {{ request('status') == 'received' ? 'selected' : '' }}>Received</option>
             </select>
+
             <input type="text" name="search" value="{{ request('search') }}"
                    placeholder="Search purchase orders..." 
                    oninput="if(this.value==='') this.form.submit();">
@@ -24,68 +26,75 @@
     <div style="border: 1px solid #ddd; border-radius: 10px; background-color: #ffffff; padding: 25px 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin: 0 30px 40px 30px;">
 
         <!-- Section Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-            <h3 style="margin: 0; font-size: 18px; color: #333;">Overview</h3>
-            <!-- Button Group Container -->
-    <div style="display: flex; gap: 10px;">
-            <a href="{{ route('purchase_orders.create') }}"
-               style="padding: 8px 14px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 6px; font-size: 14px; transition: background-color 0.3s;">
-                + Add New PO
-            </a>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+    <h3 style="margin: 0; font-size: 18px; color: #333;">Overview</h3>
+
+
+    <!-- Button Group Container -->
+    <div style="display: flex; gap: 10px;">
+        <a href="{{ route('purchase_orders.create') }}"
+           style="padding: 8px 14px; background-color: #28a745; color: #fff; text-decoration: none; border-radius: 6px; font-size: 14px; transition: background-color 0.3s;">
+            + Add New PO
+        </a>
         <button id="downloadReport" class="btn"
                 style="padding: 8px 14px; background-color: #E7592B; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">
             Download Report
-        </button></div>
+        </button>
+    </div>
 </div>
 
-        <!-- Purchase Order Table -->
-        <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
-            <thead style="background-color: #f9f9f9;">
-                <tr>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">PO Number</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Supplier</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Order Date</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Delivery Date</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Status</th>
-                    <th style="padding: 12px; text-align: left; font-weight: 600;">Total Amount</th>
-                    <th style="padding: 12px; text-align: right;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($purchaseOrders as $po)
-                    <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                        <td style="padding: 12px;">PO{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}</td>
-                        <td style="padding: 12px;">{{ $po->supplier->name }}</td>
-                        <td style="padding: 12px;">{{ $po->created_at->format('Y-m-d') }}</td>
-                        <td style="padding: 12px;">{{ $po->delivery_date ? \Carbon\Carbon::parse($po->delivery_date)->format('Y-m-d') : '-' }}</td>
-                        <td style="padding: 12px;">{{ ucfirst($po->status) }}</td>
-                        <td style="padding: 12px;">Rs. {{ number_format($po->total_amount, 2) }}</td>
-                        <td style="padding: 12px; text-align: right;">
-                            <a href="{{ route('purchase_orders.show', $po->id) }}" style="margin-right: 8px; background-color: #6c757d; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
-                                <span class="material-icons" style="font-size: 16px; margin-right: 4px;">visibility</span> View
-                            </a>
-                            @if($po->status === 'Draft')
-                            <a href="{{ route('purchase_orders.edit', $po->id) }}" style="margin-right: 8px; background-color: #007bff; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
-                                <span class="material-icons" style="font-size: 16px; margin-right: 4px;">edit</span> Edit
-                            </a>
-                            @endif
 
-                            <form action="{{ route('purchase_orders.destroy', $po->id) }}" method="POST" class="delete-form" style="display: inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" class="delete-button" data-name="PO#{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}" style="background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; cursor: pointer;">
-                                    <span class="material-icons" style="font-size: 16px; margin-right: 4px;">delete</span> Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
+        <!-- Purchase Order Table -->
+        <div style="max-height: 450px; overflow-y: auto; width: 100%;">
+            <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
+                <thead style="background-color: #f9f9f9; position: sticky; top: 0; z-index: 1;">
                     <tr>
-                        <td colspan="7" style="padding: 12px; text-align: center;">No purchase orders found.</td>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">PO Number</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Supplier</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Order Date</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Delivery Date</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Status</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; background: #f9f9f9;">Total Amount</th>
+                        <th style="padding: 12px; text-align: right; background: #f9f9f9;"></th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse($purchaseOrders as $po)
+                        <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                            <td style="padding: 12px;">PO{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}</td>
+                            <td style="padding: 12px;">{{ $po->supplier->name }}</td>
+                            <td style="padding: 12px;">{{ $po->created_at->format('Y-m-d') }}</td>
+                            <td style="padding: 12px;">{{ $po->delivery_date ? \Carbon\Carbon::parse($po->delivery_date)->format('Y-m-d') : '-' }}</td>
+                            <td style="padding: 12px;">{{ ucfirst($po->status) }}</td>
+                            <td style="padding: 12px;">Rs. {{ number_format($po->total_amount, 2) }}</td>
+                            <td style="padding: 12px; text-align: right;">
+                                <a href="{{ route('purchase_orders.show', $po->id) }}" style="margin-right: 8px; background-color: #6c757d; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
+                                    <span class="material-icons" style="font-size: 16px; margin-right: 4px;">visibility</span> View
+                                </a>
+                                @if($po->status === 'Draft')
+                                <a href="{{ route('purchase_orders.edit', $po->id) }}" style="margin-right: 8px; background-color: #007bff; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
+                                    <span class="material-icons" style="font-size: 16px; margin-right: 4px;">edit</span> Edit
+                                </a>
+                                @endif
+
+                                <form action="{{ route('purchase_orders.destroy', $po->id) }}" method="POST" class="delete-form" style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="delete-button" data-name="PO#{{ str_pad($po->id, 5, '0', STR_PAD_LEFT) }}" style="background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-size: 13px; display: inline-flex; align-items: center; cursor: pointer;">
+                                        <span class="material-icons" style="font-size: 16px; margin-right: 4px;">delete</span> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" style="padding: 12px; text-align: center;">No purchase orders found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Custom Confirmation Modal -->
@@ -131,7 +140,9 @@
             document.getElementById('downloadReport').addEventListener('click', function() {
                 const url = '{{ route('purchase_orders.report') }}';
                 window.location.href = url;
-});
+
+            });
+
         });
     </script>
 @endsection

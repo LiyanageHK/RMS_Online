@@ -16,10 +16,10 @@
             <div style="padding: 25px 28px;">
                 {{-- GRN Header --}}
                 <div style="margin-bottom: 25px;">
-                    <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 6px;">GRN #{{ str_pad($grn->id, 5, '0', STR_PAD_LEFT) }}</h3>
+                    <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 6px;">GRN{{ str_pad($grn->id, 5, '0', STR_PAD_LEFT) }}</h3>
                     <span style="color: #888;">Date: {{ \Carbon\Carbon::parse($grn->grn_date)->format('d M Y') }}</span><br>
                     @if($grn->reference)
-                        <span style="color: #555;">Reference #: <strong>{{ $grn->reference }}</strong></span>
+                        <span style="color: #555;">Reference No: <strong>{{ $grn->reference }}</strong></span>
                     @endif
                 </div>
 

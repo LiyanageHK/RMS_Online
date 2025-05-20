@@ -289,7 +289,7 @@
                 <form id="cancel-form-{{ $order->id }}" method="POST" action="/cancel-order/{{ $order->id }}">
                     @csrf
                     @method('PATCH')
-                    <button type="submit" onclick="showDeleteModal()" class="btn btn-danger w-100">
+                    <button type="button" onclick="showDeleteModal({{ $order->id }})" class="btn btn-danger w-100">
                         Cancel Order
                     </button>
                 </form>
@@ -350,21 +350,22 @@
 </script>
 
 <script>
-let formToSubmit = null;
+    let selectedOrderId = null;
 
-function showDeleteModal() {
-  formToSubmit = document.getElementById('deleteForm-');
-  document.getElementById('modalMessage').textContent = `Are you sure you want to cancel?`;
-  document.getElementById('confirmModal').style.display = 'flex';
-}
+    function showDeleteModal(orderId) {
+        selectedOrderId = orderId;
+        document.getElementById('confirmModal').style.display = 'flex';
+    }
 
-document.getElementById('cancelBtn').addEventListener('click', function () {
-  document.getElementById('confirmModal').style.display = 'none';
-  formToSubmit = null;
-});
+    document.getElementById('cancelBtn').addEventListener('click', function() {
+        document.getElementById('confirmModal').style.display = 'none';
+        selectedOrderId = null;
+    });
 
-document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-  if (formToSubmit) formToSubmit.submit();
-});
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        if (selectedOrderId !== null) {
+            document.getElementById(`cancel-form-${selectedOrderId}`).submit();
+        }
+    });
 </script>
 @endsection

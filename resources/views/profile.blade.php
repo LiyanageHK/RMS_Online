@@ -735,7 +735,7 @@
       <div class="button-group">
 
 
-        <a href="{{ route('profile.orders') }}" class="btn">View Order History</a>
+        <a href="{{ route('user.orders') }}" class="btn">View Order History</a>
 
     </div>
 
