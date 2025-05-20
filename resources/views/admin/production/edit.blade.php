@@ -64,12 +64,12 @@
                 <div class="col-md-4">
                     <label for="small">Small</label>
                     <div class="input-group mb-2">
-                        <input type="number" step="0.5" name="small" id="small" class="form-control @error('small') is-invalid @enderror" value="{{ old('small', $product->small) }}" required>
+                        <input type="number" step="0.5" min="1" name="small" id="small" class="form-control @error('small') is-invalid @enderror" value="{{ old('small', $product->small) }}" required>
                         <span class="input-group-text">x</span>
                     </div>
                     <div class="input-group">
                         <span class="input-group-text">Rs.</span>
-                        <input type="number" step="0.01" name="small_price" class="form-control @error('small_price') is-invalid @enderror" value="{{ old('small_price', $product->small_price) }}" required>
+                        <input type="number" step="0.01" min="0" name="small_price" class="form-control @error('small_price') is-invalid @enderror" value="{{ old('small_price', $product->small_price) }}" required>
                     </div>
                     @error('small')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -81,12 +81,12 @@
                 <div class="col-md-4">
                     <label for="medium">Medium</label>
                     <div class="input-group mb-2">
-                        <input type="number" step="0.5" name="medium" id="medium" class="form-control @error('medium') is-invalid @enderror" value="{{ old('medium', $product->medium) }}" required>
+                        <input type="number" step="0.5" min="1" name="medium" id="medium" class="form-control @error('medium') is-invalid @enderror" value="{{ old('medium', $product->medium) }}" required>
                         <span class="input-group-text">x</span>
                     </div>
                     <div class="input-group">
                         <span class="input-group-text">Rs.</span>
-                        <input type="number" step="0.01" name="medium_price" class="form-control @error('medium_price') is-invalid @enderror" value="{{ old('medium_price', $product->medium_price) }}" required>
+                        <input type="number" step="0.01" min="0" name="medium_price" class="form-control @error('medium_price') is-invalid @enderror" value="{{ old('medium_price', $product->medium_price) }}" required>
                     </div>
                     @error('medium')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -98,12 +98,12 @@
                 <div class="col-md-4">
                     <label for="large">Large</label>
                     <div class="input-group mb-2">
-                        <input type="number" step="0.5" name="large" id="large" class="form-control @error('large') is-invalid @enderror" value="{{ old('large', $product->large) }}" required>
+                        <input type="number" step="0.5" min="1" name="large" id="large" class="form-control @error('large') is-invalid @enderror" value="{{ old('large', $product->large) }}" required>
                         <span class="input-group-text">x</span>
                     </div>
                     <div class="input-group">
                         <span class="input-group-text">Rs.</span>
-                        <input type="number" step="0.01" name="large_price" class="form-control @error('large_price') is-invalid @enderror" value="{{ old('large_price', $product->large_price) }}" required>
+                        <input type="number" step="0.01" min="0" name="large_price" class="form-control @error('large_price') is-invalid @enderror" value="{{ old('large_price', $product->large_price) }}" required>
                     </div>
                     @error('large')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -178,7 +178,7 @@
                         <tr>
                             <td>
                                 <input type="checkbox" name="item_ids[]" value="{{ $item->id }}" class="item-checkbox"
-                                    {{ isset($selected[$item->id]) ? 'checked' : '' }}>
+                                    {{ isset($selected[$item->id]) ? 'checked' : '' }} >
                             </td>
                             <td>{{ $item->name }}</td>
                             <td>
