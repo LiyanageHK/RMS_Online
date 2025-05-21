@@ -91,7 +91,7 @@
                 <p><strong>Payment Status:</strong> {{ $order->payment_status }}</p>
                 <p><strong>Order Status:</strong> {{ $order->order_status }}</p>
                 <p><strong>Date:</strong> {{ $order->created_at->format('F d, Y h:i A') }}</p>
-                <p><strong>Total:</strong> ${{ number_format($order->total, 2) }}</p>
+                <p><strong>Total:</strong> LKR {{ number_format($order->total, 2) }}</p>
             </div>
 
             <table class="items">
@@ -118,7 +118,7 @@
     @endforeach
 
     <div class="total-summary">
-        Total of All Orders: ${{ number_format($totalSum, 2) }}
+        Total of All Orders: LKR {{ number_format($totalSum, 2) }}
     </div>
 
     <div class="footer">

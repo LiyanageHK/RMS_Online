@@ -26,7 +26,7 @@
 </head>
 <body>
 <div class="container mt-5">
-
+<div style="border: 1px solid #ddd; border-radius: 10px; background-color: #ffffff; padding: 25px 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin: 0 30px 40px 30px;">
   <h2 class="mb-4">Orders Management</h2>
 
   <!-- Filter Section -->
@@ -90,45 +90,45 @@
 
   <!-- Orders Table -->
   <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle">
-            <thead class="table-dark">
+        <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
+            <thead style="background-color: #f9f9f9;">
                 <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Phone</th>
-                    <th>Total</th>
-                    <th>Payment</th>
-                    <th>Status</th>
-                    <th>Details</th>
-                    <th>PDF</th>
-                    <th>Delete</th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;"></th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">Name</th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">Address</th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">Phone</th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">Total</th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">Payment</th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">Status</th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">Details</th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;"></th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;"></th>
                 </tr>
             </thead>
             <tbody>
                 @php $totalAmount = 0; @endphp
                 @forelse($orders as $index => $order)
                     @php $totalAmount += $order->total; @endphp
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $order->name }}</td>
-                        <td>{{ $order->address }}</td>
-                        <td>{{ $order->phone }}</td>
-                        <td>${{ number_format($order->total, 2) }}</td>
-                        <td>{{ $order->payment_status }}</td>
-                        <td>{{ $order->order_status }}</td>
-                        <td>
+                    <tr style="background-color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <td style="padding: 12px;">{{ $index + 1 }}</td>
+                        <td style="padding: 12px;">{{ $order->name }}</td>
+                        <td style="padding: 12px;">{{ $order->address }}</td>
+                        <td style="padding: 12px;">{{ $order->phone }}</td>
+                        <td style="padding: 12px;">LKR {{ number_format($order->total, 2) }}</td>
+                        <td style="padding: 12px;">{{ $order->payment_status }}</td>
+                        <td style="padding: 12px;">{{ $order->order_status }}</td>
+                        <td style="padding: 12px;">
                             @foreach($order->details as $detail)
                                 {{ $detail->product_name }} x{{ $detail->quantity }} ({{ $detail->extra_toppings }})<br>
                             @endforeach
                         </td>
-                        <td>
+                        <td style="padding: 12px; text-align: right;">
                             <a href="{{ url('admin/orders/download/' . $order->id) }}" 
                               style="margin-right: 8px; background-color: #28a745; color: white; padding: 6px 10px; border-radius: 4px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center;">
                                 <span class="material-icons" style="font-size: 16px; margin-right: 4px;">picture_as_pdf</span> PDF
                             </a>
                         </td>
-                        <td>
+                        <td style="padding: 12px; text-align: right;">
                             <form id="deleteForm-{{ $order->id }}" method="POST" action="{{ url('admin/orders/delete/' . $order->id) }}">
                                 @csrf
                                 @method('DELETE')
@@ -147,12 +147,12 @@
             <tfoot class="table-light">
                 <tr>
                     <th colspan="4">Total of All Orders:</th>
-                    <th colspan="6">${{ number_format($totalAmount, 2) }}</th>
+                    <th colspan="6">LKR {{ number_format($totalAmount, 2) }}</th>
                 </tr>
             </tfoot>
     </table>
   </div>
-
+</div>
 </div>
 
 <hr>

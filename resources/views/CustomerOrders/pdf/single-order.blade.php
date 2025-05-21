@@ -110,7 +110,7 @@
         </tbody>
     </table>
 
-    <p class="total">Total: <strong>${{ number_format($order->total, 2) }}</strong></p>
+    <p class="total">Total: <strong>LKR {{ number_format($order->total, 2) }}</strong></p>
 
     <div class="footer">
         <p>Generated on {{ now()->format('F d, Y h:i A') }}</p>
